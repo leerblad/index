@@ -102,15 +102,20 @@
     .nav-dropdown-menu {
       display: none;
       position: absolute;
-      top: calc(100% + 6px);
+      top: 100%;
       left: 0;
+      padding-top: 8px;
+      min-width: 200px;
+      z-index: 200;
+      flex-direction: column;
+    }
+    .nav-dropdown-menu-inner {
       background: #fff;
       border: 0.5px solid #e5e5e5;
       border-radius: 12px;
       padding: 6px;
-      min-width: 200px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-      z-index: 200;
+      display: flex;
       flex-direction: column;
       gap: 2px;
     }
@@ -379,9 +384,11 @@
       <div class="nav-dropdown">
         <a class="nav-btn active" href="rekenen.html">Rekenen</a>
         <div class="nav-dropdown-menu">
-          <a class="nav-dropdown-item" href="rekenen.html">Tafelsommen</a>
-          <span class="nav-dropdown-item soon">Tafelspellen<span class="tag">binnenkort</span></span>
-          <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+          <div class="nav-dropdown-menu-inner">
+            <a class="nav-dropdown-item" href="rekenen.html">Tafelsommen</a>
+            <span class="nav-dropdown-item soon">Tafelspellen<span class="tag">binnenkort</span></span>
+            <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+          </div>
         </div>
       </div>
       <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
@@ -411,10 +418,10 @@
       <div class="tafel-grid" id="tafelGrid">
         <div class="tafel-item"><input type="checkbox" id="t0" value="0"><label for="t0">Tafel van 0</label></div>
         <div class="tafel-item"><input type="checkbox" id="t1" value="1"><label for="t1">Tafel van 1</label></div>
-        <div class="tafel-item"><input type="checkbox" id="t2" value="2" checked><label for="t2">Tafel van 2</label></div>
+        <div class="tafel-item"><input type="checkbox" id="t2" value="2"><label for="t2">Tafel van 2</label></div>
         <div class="tafel-item"><input type="checkbox" id="t3" value="3"><label for="t3">Tafel van 3</label></div>
         <div class="tafel-item"><input type="checkbox" id="t4" value="4"><label for="t4">Tafel van 4</label></div>
-        <div class="tafel-item"><input type="checkbox" id="t5" value="5" checked><label for="t5">Tafel van 5</label></div>
+        <div class="tafel-item"><input type="checkbox" id="t5" value="5"><label for="t5">Tafel van 5</label></div>
         <div class="tafel-item"><input type="checkbox" id="t6" value="6"><label for="t6">Tafel van 6</label></div>
         <div class="tafel-item"><input type="checkbox" id="t7" value="7"><label for="t7">Tafel van 7</label></div>
         <div class="tafel-item"><input type="checkbox" id="t8" value="8"><label for="t8">Tafel van 8</label></div>
@@ -527,7 +534,7 @@
     if (gekozen.length === 0) { alert('Kies minimaal één tafel.'); return; }
 
     let pool = [];
-    gekozen.forEach(t => { for (let i = 0; i <= 10; i++) pool.push({ a: t, b: i }); });
+    gekozen.forEach(t => { for (let i = 0; i <= 10; i++) pool.push({ a: i, b: t }); });
 
     shuffle(pool);
     huidigeSommen = [];
@@ -613,7 +620,7 @@
     const beschikbaarH = ph - mb - startY;
     const sommenPerKolom = Math.ceil(sommen.length / colCount);
     const aantalGroepen = Math.ceil(sommenPerKolom / 5);
-    const gapH = 3;
+    const gapH = 2;
     const rowH = (beschikbaarH - (aantalGroepen - 1) * gapH) / sommenPerKolom;
 
     doc.setFont('helvetica', 'normal');

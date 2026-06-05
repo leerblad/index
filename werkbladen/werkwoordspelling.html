@@ -115,15 +115,20 @@
     .nav-dropdown-menu {
       display: none;
       position: absolute;
-      top: calc(100% + 6px);
+      top: 100%;
       left: 0;
+      padding-top: 8px;
+      min-width: 200px;
+      z-index: 200;
+      flex-direction: column;
+    }
+    .nav-dropdown-menu-inner {
       background: #fff;
       border: 0.5px solid #e5e5e5;
       border-radius: 12px;
       padding: 6px;
-      min-width: 200px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-      z-index: 200;
+      display: flex;
       flex-direction: column;
       gap: 2px;
     }
@@ -371,9 +376,11 @@
       <div class="nav-dropdown">
         <a class="nav-btn" href="rekenen.html">Rekenen</a>
         <div class="nav-dropdown-menu">
-          <a class="nav-dropdown-item" href="rekenen.html">Tafelsommen</a>
-          <span class="nav-dropdown-item soon">Tafelspellen<span class="tag">binnenkort</span></span>
-          <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+          <div class="nav-dropdown-menu-inner">
+            <a class="nav-dropdown-item" href="rekenen.html">Tafelsommen</a>
+            <span class="nav-dropdown-item soon">Tafelspellen<span class="tag">binnenkort</span></span>
+            <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+          </div>
         </div>
       </div>
       <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
