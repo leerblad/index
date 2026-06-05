@@ -484,6 +484,11 @@
 </footer>
 
 <script>
+  /* Reset checkboxes bij laden (browser kan vorige staat onthouden) */
+  window.addEventListener('load', () => {
+    document.querySelectorAll('#tafelGrid input[type="checkbox"]').forEach(cb => cb.checked = false);
+  });
+
   /* ── Submenu navigatie ── */
   function toonSectie(naam, el) {
     document.querySelectorAll('.sectie-panel').forEach(p => p.classList.remove('active'));
