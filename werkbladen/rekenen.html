@@ -59,7 +59,7 @@
     .logo-tagline-line { height: 1px; width: 36px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); opacity: 0.4; }
     .logo-tagline { font-size: 8.5px; letter-spacing: 3px; color: #2A7FD4; font-weight: 400; text-transform: uppercase; }
 
-    nav { display: flex; gap: 4px; flex-wrap: wrap; }
+    nav { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
     .nav-btn {
       font-size: 16px;
       font-weight: 400;
@@ -69,27 +69,67 @@
       padding: 10px 20px;
       border-radius: 24px;
       cursor: pointer;
-      transition: background 0.15s, color 0.15s;
+      transition: background 0.18s, color 0.18s;
       white-space: nowrap;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
     }
-    .nav-btn:hover { background: #f0f0f0; color: #1a1a1a; }
-    .nav-btn.active {
+    .nav-btn:hover,
+    .nav-dropdown:hover > .nav-btn {
       background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
       color: #fff;
+    }
+    .nav-btn.active {
+      background: #e8f4fd;
+      color: #2A7FD4;
       font-weight: 500;
     }
+    .nav-btn.active:hover { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
     .nav-btn.soon { color: #ccc; cursor: default; pointer-events: none; }
     .tag {
       font-size: 9px;
-      background: #f0f0f0;
-      color: #bbb;
+      background: rgba(255,255,255,0.25);
+      color: inherit;
       padding: 2px 6px;
       border-radius: 10px;
       margin-left: 4px;
     }
+    .nav-btn:not(:hover) .tag { background: #f0f0f0; color: #bbb; }
+
+    /* ── Nav dropdown ── */
+    .nav-dropdown { position: relative; display: inline-flex; }
+    .nav-dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      background: #fff;
+      border: 0.5px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 6px;
+      min-width: 200px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      z-index: 200;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .nav-dropdown:hover .nav-dropdown-menu { display: flex; }
+    .nav-dropdown-item {
+      font-size: 14px;
+      color: #555;
+      padding: 9px 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.12s, color 0.12s;
+      white-space: nowrap;
+    }
+    .nav-dropdown-item:hover { background: #e8f4fd; color: #2A7FD4; }
+    .nav-dropdown-item.soon { color: #ccc; pointer-events: none; }
+    .nav-dropdown-item.soon .tag { background: #f5f5f5; color: #ccc; }
 
     /* ── Main layout ── */
     .main {
@@ -239,15 +279,22 @@
     .sommen-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 6px 12px;
+      gap: 0 16px;
+    }
+    .sommen-groep {
+      display: contents;
     }
     .som-item {
       font-size: 14px;
-      padding: 7px 0;
+      padding: 6px 0;
       border-bottom: 0.5px solid #f0f0f0;
       display: flex;
       align-items: center;
-      gap: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+    .som-gap {
+      grid-column: 1 / -1;
+      height: 10px;
     }
     /* ── Aantal-knoppen ── */
     .aantal-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
@@ -329,7 +376,14 @@
     </a>
     <nav>
       <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
-      <a class="nav-btn active" href="rekenen.html">Rekenen</a>
+      <div class="nav-dropdown">
+        <a class="nav-btn active" href="rekenen.html">Rekenen</a>
+        <div class="nav-dropdown-menu">
+          <a class="nav-dropdown-item" href="rekenen.html">Tafelsommen</a>
+          <span class="nav-dropdown-item soon">Tafelspellen<span class="tag">binnenkort</span></span>
+          <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+        </div>
+      </div>
       <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
       <span class="nav-btn soon">Werkboekjes<span class="tag">binnenkort</span></span>
     </nav>
@@ -480,20 +534,31 @@
     while (huidigeSommen.length < gekozenAantal) huidigeSommen.push(...pool);
     huidigeSommen = shuffle(huidigeSommen).slice(0, gekozenAantal);
 
-    /* Toon in UI — gegroepeerd per 5 */
+    /* Toon in UI — 4 kolommen, gegroepeerd per 5 rijen per kolom */
     const grid = document.getElementById('sommenGrid');
     grid.innerHTML = '';
-    huidigeSommen.forEach((s, i) => {
-      if (i > 0 && i % 5 === 0) {
+    const colCount = 4;
+    const perKolom = Math.ceil(huidigeSommen.length / colCount);
+
+    /* Bouw rij voor rij zodat CSS grid ze netjes naast elkaar zet */
+    for (let rij = 0; rij < perKolom; rij++) {
+      /* Groepsafstand na elke 5e rij */
+      if (rij > 0 && rij % 5 === 0) {
         const gap = document.createElement('div');
-        gap.style.cssText = 'grid-column: 1 / -1; height: 6px;';
+        gap.className = 'som-gap';
         grid.appendChild(gap);
       }
-      const div = document.createElement('div');
-      div.className = 'som-item';
-      div.innerHTML = `${s.a} &times; ${s.b} = ___`;
-      grid.appendChild(div);
-    });
+      for (let col = 0; col < colCount; col++) {
+        const idx = col * perKolom + rij;
+        const div = document.createElement('div');
+        div.className = 'som-item';
+        if (idx < huidigeSommen.length) {
+          const s = huidigeSommen[idx];
+          div.innerHTML = `${s.a} &times; ${s.b} = <span style="display:inline-block;width:32px;border-bottom:1px solid #ccc;margin-left:4px;">&nbsp;</span>`;
+        }
+        grid.appendChild(div);
+      }
+    }
 
     const gekozenTafels = gekozen;
     const tafelnamen = gekozenTafels.length === 11
@@ -541,45 +606,44 @@
     doc.setDrawColor(220);
     doc.line(ml, mt + 12, pw - mr, mt + 12);
 
-    /* Sommen in 4 kolommen, gegroepeerd per 5 */
+    /* Layout: 4 kolommen, per kolom gegroepeerd per 5 rijen */
     const colCount = 4;
     const colW = bw / colCount;
     const startY = mt + 17;
     const beschikbaarH = ph - mb - startY;
-
-    /* Per kolom max 25 rijen + 4 groepsgaten = 25 rijen */
     const sommenPerKolom = Math.ceil(sommen.length / colCount);
-    const groepen = Math.ceil(sommenPerKolom / 5);
-    const gapH = 3; /* mm extra ruimte na elke groep van 5 */
-    const totaalRijen = sommenPerKolom;
-    const totaalGaten = Math.max(0, groepen - 1);
-    const rowH = (beschikbaarH - totaalGaten * gapH) / totaalRijen;
+    const aantalGroepen = Math.ceil(sommenPerKolom / 5);
+    const gapH = 3;
+    const rowH = (beschikbaarH - (aantalGroepen - 1) * gapH) / sommenPerKolom;
 
     doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
 
-    sommen.forEach((s, idx) => {
-      const col = Math.floor(idx / sommenPerKolom);
-      const rowInKol = idx % sommenPerKolom;
-      const groepInKol = Math.floor(rowInKol / 5);
-      const x = ml + col * colW;
-      const y = startY + rowInKol * rowH + groepInKol * gapH;
+    /* Kolom voor kolom, rij voor rij — zelfde volgorde als preview */
+    for (let col = 0; col < colCount; col++) {
+      for (let rij = 0; rij < sommenPerKolom; rij++) {
+        const idx = col * sommenPerKolom + rij;
+        if (idx >= sommen.length) break;
+        const s = sommen[idx];
+        const groepInKol = Math.floor(rij / 5);
+        const x = ml + col * colW;
+        const y = startY + rij * rowH + groepInKol * gapH;
 
-      if (isAntwoord) {
-        /* Antwoord: som + = antwoord */
-        doc.setFontSize(9);
-        doc.setTextColor(30);
-        doc.text(`${s.a} × ${s.b} = ${s.a * s.b}`, x, y);
-      } else {
-        /* Werkblad: som + antwoordlijn */
-        doc.setFontSize(10);
-        doc.setTextColor(30);
         const somTekst = `${s.a} × ${s.b} = `;
+        doc.setTextColor(30);
         doc.text(somTekst, x, y);
-        doc.setDrawColor(180);
-        const lineStart = x + doc.getTextWidth(somTekst);
-        doc.line(lineStart, y + 0.3, lineStart + 12, y + 0.3);
+
+        const lineX = x + doc.getTextWidth(somTekst);
+        if (isAntwoord) {
+          /* Antwoord op de lijn, zelfde positie als werkblad */
+          doc.setTextColor(30);
+          doc.text(String(s.a * s.b), lineX + 1, y);
+        } else {
+          doc.setDrawColor(180);
+          doc.line(lineX, y + 0.3, lineX + 12, y + 0.3);
+        }
       }
-    });
+    }
 
     /* Footer */
     doc.setFontSize(7);
