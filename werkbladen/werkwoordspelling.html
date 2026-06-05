@@ -74,16 +74,19 @@
 
     nav { display: flex; gap: 4px; flex-wrap: wrap; }
     .nav-btn {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 400;
       color: #888;
       border: none;
       background: none;
-      padding: 9px 18px;
-      border-radius: 22px;
+      padding: 10px 20px;
+      border-radius: 24px;
       cursor: pointer;
       transition: background 0.15s, color 0.15s;
       white-space: nowrap;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
     }
     .nav-btn:hover { background: #f0f0f0; color: #1a1a1a; }
     .nav-btn.active {
@@ -91,7 +94,7 @@
       color: #fff;
       font-weight: 500;
     }
-    .nav-btn.soon { color: #ccc; cursor: default; }
+    .nav-btn.soon { color: #ccc; cursor: default; pointer-events: none; }
     .nav-btn.soon:hover { background: none; color: #ccc; }
     .tag {
       font-size: 9px;
@@ -326,10 +329,10 @@
       </div>
     </a>
     <nav>
-      <button class="nav-btn active" onclick="toonSectie('spelling', this)">Werkwoordspelling</button>
-      <button class="nav-btn soon" onclick="toonSectie('rekenen', this)">Rekenen<span class="tag">binnenkort</span></button>
-      <button class="nav-btn soon" onclick="toonSectie('lezen', this)">Lezen<span class="tag">binnenkort</span></button>
-      <button class="nav-btn soon" onclick="toonSectie('werkboekjes', this)">Werkboekjes<span class="tag">binnenkort</span></button>
+      <a class="nav-btn active" href="werkwoordspelling.html">Werkwoordspelling</a>
+      <span class="nav-btn soon">Rekenen<span class="tag">binnenkort</span></span>
+      <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
+      <span class="nav-btn soon">Werkboekjes<span class="tag">binnenkort</span></span>
     </nav>
   </div>
 </header>
@@ -489,15 +492,6 @@
   let gegenereerdeZinnen     = [];
   let gegenereerdeAntwoorden = [];
   let gegenereerdeWerkmeta   = '';
-
-  /* ── Navigatie ── */
-  function toonSectie(naam, el) {
-    if (el.classList.contains('soon')) return;
-    document.querySelectorAll('section[id^="sectie-"]').forEach(s => s.style.display = 'none');
-    document.getElementById('sectie-' + naam).style.display = 'block';
-    document.querySelectorAll('.nav-btn:not(.soon)').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
-  }
 
   /* ── Pas opties aan op basis van groep-curriculum ── */
   function applyGroepConfig() {
