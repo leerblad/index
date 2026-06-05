@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leerblad – Rekenen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: #f8f8f8;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    /* ── Topbar ── */
+    .topbar {
+      background: #fff;
+      border-bottom: 0.5px solid #e5e5e5;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 160px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 84px;
+      gap: 1rem;
+    }
+    .logo-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .logo-text {
+      font-size: 40px;
+      font-weight: 200;
+      letter-spacing: 1.5px;
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
+    .logo-tagline-row { display: flex; align-items: center; gap: 7px; }
+    .logo-tagline-line { height: 1px; width: 36px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); opacity: 0.4; }
+    .logo-tagline { font-size: 8.5px; letter-spacing: 3px; color: #2A7FD4; font-weight: 400; text-transform: uppercase; }
+
+    nav { display: flex; gap: 4px; flex-wrap: wrap; }
+    .nav-btn {
+      font-size: 16px;
+      font-weight: 400;
+      color: #888;
+      border: none;
+      background: none;
+      padding: 10px 20px;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+    .nav-btn:hover { background: #f0f0f0; color: #1a1a1a; }
+    .nav-btn.active {
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      color: #fff;
+      font-weight: 500;
+    }
+    .nav-btn.soon { color: #ccc; cursor: default; pointer-events: none; }
+    .tag {
+      font-size: 9px;
+      background: #f0f0f0;
+      color: #bbb;
+      padding: 2px 6px;
+      border-radius: 10px;
+      margin-left: 4px;
+    }
+
+    /* ── Main layout ── */
+    .main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 160px 4rem;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 300;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    .section-sub {
+      font-size: 13px;
+      color: #999;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Submenu ── */
+    .submenu {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .sub-btn {
+      font-size: 13px;
+      border: 0.5px solid #e0e0e0;
+      background: #fff;
+      color: #555;
+      padding: 9px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sub-btn:hover { border-color: #2A7FD4; color: #2A7FD4; }
+    .sub-btn.active {
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      border-color: transparent;
+      color: #fff;
+      font-weight: 500;
+    }
+    .sub-btn.soon { opacity: 0.45; cursor: default; pointer-events: none; }
+
+    /* ── Kaarten ── */
+    .card {
+      background: #fff;
+      border: 0.5px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .card-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: #2A7FD4;
+      margin-bottom: 12px;
+    }
+
+    /* ── Tafel checkboxes ── */
+    .tafel-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .tafel-item {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .tafel-item input[type="checkbox"] { display: none; }
+    .tafel-item label {
+      font-size: 13px;
+      border: 0.5px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #555;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .tafel-item label:hover { border-color: #2A7FD4; color: #2A7FD4; background: #e8f4fd; }
+    .tafel-item input:checked + label {
+      border-color: #2A7FD4;
+      background: #e8f4fd;
+      color: #2A7FD4;
+      font-weight: 500;
+    }
+    .alle-btn {
+      font-size: 13px;
+      border: 0.5px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #555;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .alle-btn:hover { border-color: #2A7FD4; color: #2A7FD4; background: #e8f4fd; }
+    .alle-btn.active { border-color: #2A7FD4; background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
+
+    /* ── Genereer-knop ── */
+    .generate-btn {
+      font-size: 14px;
+      font-weight: 500;
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      color: #fff;
+      border: none;
+      padding: 13px 32px;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .generate-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .generate-btn:active { transform: translateY(0); }
+    .generate-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    /* ── Output ── */
+    .output-area {
+      background: #fff;
+      border: 0.5px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      display: none;
+    }
+    .output-area.visible { display: block; }
+    .output-title {
+      font-size: 17px;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    .output-instr { font-size: 13px; color: #999; margin-bottom: 1rem; }
+    .sommen-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px 12px;
+    }
+    .som-item {
+      font-size: 14px;
+      padding: 7px 0;
+      border-bottom: 0.5px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .som-nr { font-size: 11px; color: #ccc; min-width: 20px; }
+
+    /* ── Actie-knoppen ── */
+    .action-row { display: flex; gap: 8px; margin-top: 1.25rem; flex-wrap: wrap; }
+    .action-btn {
+      font-size: 12.5px;
+      border: 0.5px solid #e0e0e0;
+      background: #fff;
+      color: #555;
+      padding: 9px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .action-btn:hover { border-color: #2A7FD4; color: #2A7FD4; }
+    .action-btn.primary {
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      color: #fff;
+      border-color: transparent;
+    }
+    .action-btn.primary:hover { opacity: 0.85; }
+
+    /* ── Binnenkort placeholder ── */
+    .soon-placeholder {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #ccc;
+    }
+    .soon-placeholder .soon-icon { font-size: 40px; margin-bottom: 1rem; }
+    .soon-placeholder p { font-size: 14px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1100px) {
+      .topbar-inner, .main { padding-left: 2rem; padding-right: 2rem; }
+    }
+    @media (max-width: 600px) {
+      .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
+      nav { gap: 2px; }
+      .nav-btn { font-size: 12px; padding: 5px 10px; }
+      .main { padding: 1.5rem 1rem 3rem; }
+      .sommen-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ── Sectie-panelen ── */
+    .sectie-panel { display: none; }
+    .sectie-panel.active { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-link" href="../index.html">
+      <span class="logo-text">Leerblad</span>
+      <div class="logo-tagline-row">
+        <div class="logo-tagline-line"></div>
+        <div class="logo-tagline">Werkbladen op maat</div>
+        <div class="logo-tagline-line"></div>
+      </div>
+    </a>
+    <nav>
+      <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
+      <a class="nav-btn active" href="rekenen.html">Rekenen</a>
+      <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
+      <span class="nav-btn soon">Werkboekjes<span class="tag">binnenkort</span></span>
+    </nav>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+  <h1 class="section-title">Rekenen</h1>
+  <p class="section-sub">Kies een onderdeel om een werkblad te maken.</p>
+
+  <!-- Submenu -->
+  <div class="submenu">
+    <button class="sub-btn active" onclick="toonSectie('tafels', this)">Tafelsommen</button>
+    <button class="sub-btn soon" disabled>Tafelspellen<span class="tag">binnenkort</span></button>
+    <button class="sub-btn soon" disabled>Redactiesommen<span class="tag">binnenkort</span></button>
+  </div>
+
+  <!-- ══ TAFELSOMMEN ══ -->
+  <div id="sectie-tafels" class="sectie-panel active">
+
+    <!-- Stap 1: kies tafels -->
+    <div class="card">
+      <div class="card-label">Stap 1 &nbsp;·&nbsp; Kies de tafels</div>
+      <div class="tafel-grid" id="tafelGrid">
+        <div class="tafel-item"><input type="checkbox" id="t0" value="0"><label for="t0">Tafel van 0</label></div>
+        <div class="tafel-item"><input type="checkbox" id="t1" value="1"><label for="t1">Tafel van 1</label></div>
+        <div class="tafel-item"><input type="checkbox" id="t2" value="2" checked><label for="t2">Tafel van 2</label></div>
+        <div class="tafel-item"><input type="checkbox" id="t3" value="3"><label for="t3">Tafel van 3</label></div>
+        <div class="tafel-item"><input type="checkbox" id="t4" value="4"><label for="t4">Tafel van 4</label></div>
+        <div class="tafel-item"><input type="checkbox" id="t5" value="5" checked><label for="t5">Tafel van 5</label></div>
+        <div class="tafel-item"><input type="checkbox" id="t6" value="6"><label for="t6">Tafel van 6</label></div>
+        <div class="tafel-item"><input type="checkbox" id="t7" value="7"><label for="t7">Tafel van 7</label></div>
+        <div class="tafel-item"><input type="checkbox" id="t8" value="8"><label for="t8">Tafel van 8</label></div>
+        <div class="tafel-item"><input type="checkbox" id="t9" value="9"><label for="t9">Tafel van 9</label></div>
+        <div class="tafel-item"><input type="checkbox" id="t10" value="10"><label for="t10">Tafel van 10</label></div>
+      </div>
+      <button class="alle-btn" id="alleBtn" onclick="toggleAlle()">Alle tafels</button>
+    </div>
+
+    <!-- Stap 2: genereer -->
+    <div class="card">
+      <div class="card-label">Stap 2 &nbsp;·&nbsp; Werkblad genereren</div>
+      <button class="generate-btn" onclick="genereerTafels()">Werkblad genereren</button>
+    </div>
+
+    <!-- Output -->
+    <div class="output-area" id="outputArea">
+      <div class="output-title" id="outputTitle">Tafelsommen</div>
+      <div class="output-instr">100 sommen in willekeurige volgorde. Elke keer opnieuw gegenereerd.</div>
+      <div class="sommen-grid" id="sommenGrid"></div>
+      <div class="action-row">
+        <button class="action-btn" onclick="genereerTafels()">Opnieuw genereren</button>
+        <button class="action-btn primary" onclick="maakPDF()">Download PDF</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ TAFELSPELLEN (binnenkort) ══ -->
+  <div id="sectie-tafelspellen" class="sectie-panel">
+    <div class="soon-placeholder">
+      <div class="soon-icon">&#127922;</div>
+      <p>Tafelspellen komen binnenkort beschikbaar.</p>
+    </div>
+  </div>
+
+  <!-- ══ REDACTIESOMMEN (binnenkort) ══ -->
+  <div id="sectie-redactie" class="sectie-panel">
+    <div class="soon-placeholder">
+      <div class="soon-icon">&#128221;</div>
+      <p>Redactiesommen komen binnenkort beschikbaar.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer style="border-top:0.5px solid #e5e5e5;background:#fff;padding:1.25rem 0;text-align:center;font-size:12px;color:#bbb;">
+  www.leerblad.nl
+</footer>
+
+<script>
+  /* ── Submenu navigatie ── */
+  function toonSectie(naam, el) {
+    document.querySelectorAll('.sectie-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('sectie-' + naam).classList.add('active');
+    el.classList.add('active');
+  }
+
+  /* ── Alle tafels toggle ── */
+  let alleActief = false;
+  function toggleAlle() {
+    alleActief = !alleActief;
+    document.getElementById('alleBtn').classList.toggle('active', alleActief);
+    document.querySelectorAll('#tafelGrid input[type="checkbox"]').forEach(cb => {
+      cb.checked = alleActief;
+    });
+  }
+
+  /* Sync "Alle tafels" knop bij handmatig aanvinken */
+  document.querySelectorAll('#tafelGrid input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const alle = document.querySelectorAll('#tafelGrid input[type="checkbox"]');
+      alleActief = [...alle].every(c => c.checked);
+      document.getElementById('alleBtn').classList.toggle('active', alleActief);
+    });
+  });
+
+  /* ── Fisher-Yates shuffle ── */
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  /* ── Genereer 100 sommen ── */
+  let huidigeSommen = [];
+
+  function genereerTafels() {
+    const gekozen = [...document.querySelectorAll('#tafelGrid input:checked')].map(c => +c.value);
+    if (gekozen.length === 0) {
+      alert('Kies minimaal één tafel.');
+      return;
+    }
+
+    /* Maak pool: alle combinaties tafel × 0..10 */
+    let pool = [];
+    gekozen.forEach(t => {
+      for (let i = 0; i <= 10; i++) pool.push({ a: t, b: i });
+    });
+
+    /* Shuffle en vul aan tot 100 */
+    shuffle(pool);
+    huidigeSommen = [];
+    while (huidigeSommen.length < 100) {
+      huidigeSommen.push(...pool);
+    }
+    huidigeSommen = shuffle(huidigeSommen).slice(0, 100);
+
+    /* Toon in UI */
+    const grid = document.getElementById('sommenGrid');
+    grid.innerHTML = '';
+    huidigeSommen.forEach((s, i) => {
+      const div = document.createElement('div');
+      div.className = 'som-item';
+      div.innerHTML = `<span class="som-nr">${i + 1}.</span> ${s.a} &times; ${s.b} = ___`;
+      grid.appendChild(div);
+    });
+
+    /* Titel bijwerken */
+    const tafelnamen = gekozen.map(t => `tafel van ${t}`).join(', ');
+    document.getElementById('outputTitle').textContent = `Tafelsommen (${tafelnamen})`;
+
+    document.getElementById('outputArea').classList.add('visible');
+    document.getElementById('outputArea').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  /* ── PDF genereren ── */
+  function maakPDF() {
+    if (huidigeSommen.length === 0) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+    const pw = 210, ph = 297;
+    const ml = 14, mr = 14, mt = 14, mb = 14;
+    const bw = pw - ml - mr;
+
+    /* Naam veld rechtsboven */
+    doc.setFontSize(9);
+    doc.setTextColor(150);
+    doc.text('Naam:', pw - mr - 52, mt + 4);
+    doc.setDrawColor(180);
+    doc.line(pw - mr - 44, mt + 4.5, pw - mr, mt + 4.5);
+
+    /* Titel */
+    const gekozen = [...document.querySelectorAll('#tafelGrid input:checked')].map(c => +c.value);
+    const titelTekst = gekozen.length === 11
+      ? 'Tafelsommen 0 t/m 10'
+      : 'Tafelsommen — tafel van ' + gekozen.join(', ');
+
+    doc.setFontSize(16);
+    doc.setTextColor(30);
+    doc.setFont('helvetica', 'normal');
+    doc.text(titelTekst, ml, mt + 4);
+
+    /* Subtitel */
+    doc.setFontSize(8);
+    doc.setTextColor(160);
+    doc.text('100 sommen · www.leerblad.nl', ml, mt + 9.5);
+
+    /* Scheidingslijn */
+    doc.setDrawColor(220);
+    doc.line(ml, mt + 12, pw - mr, mt + 12);
+
+    /* Sommen in 4 kolommen */
+    const colCount = 4;
+    const colW = bw / colCount;
+    const rowCount = 25; /* 4 × 25 = 100 */
+    const startY = mt + 16;
+    const rowH = (ph - mb - startY) / rowCount;
+
+    doc.setFontSize(10);
+    doc.setTextColor(30);
+    doc.setFont('helvetica', 'normal');
+
+    huidigeSommen.forEach((s, idx) => {
+      const col = Math.floor(idx / rowCount);
+      const row = idx % rowCount;
+      const x = ml + col * colW;
+      const y = startY + row * rowH;
+
+      /* Nummer */
+      doc.setFontSize(7);
+      doc.setTextColor(180);
+      doc.text(`${idx + 1}.`, x, y);
+
+      /* Som */
+      doc.setFontSize(10);
+      doc.setTextColor(30);
+      doc.text(`${s.a} × ${s.b} = `, x + 5, y);
+
+      /* Antwoordlijn */
+      doc.setDrawColor(180);
+      const lineStart = x + 5 + doc.getTextWidth(`${s.a} × ${s.b} = `);
+      doc.line(lineStart, y + 0.3, lineStart + 14, y + 0.3);
+    });
+
+    /* Footer */
+    doc.setFontSize(7);
+    doc.setTextColor(180);
+    doc.text('www.leerblad.nl', pw / 2, ph - mb + 4, { align: 'center' });
+
+    doc.save('tafelsommen-leerblad.pdf');
+  }
+</script>
+</body>
+</html>
