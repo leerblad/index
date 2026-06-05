@@ -4926,5 +4926,437 @@
     "vorm": "wij-vorm",
     "zin": "Volgend jaar ___ wij waarschijnlijk naar een andere stad. (verhuizen)",
     "antwoord": "verhuizen"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Morgen ___ ik mijn nieuwe stripboek. (bekijken)",
+    "antwoord": "bekijk"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "___ ik koud aan? (voelen)",
+    "antwoord": "Voel"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ mijn fiets naast de ingang. (parkeren)",
+    "antwoord": "parkeer"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ de planten in de tuin. (bemesten)",
+    "antwoord": "bemest"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een hut van dekens. (bouwen)",
+    "antwoord": "bouw"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ mijn woordenschat door veel te lezen. (vergroten)",
+    "antwoord": "vergroot"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ in een gezellig huis. (leven)",
+    "antwoord": "leef"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ elke woensdagmiddag met vrienden. (voetballen)",
+    "antwoord": "voetbal"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ de juf als ik binnenkom. (begroeten)",
+    "antwoord": "begroet"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een geheim tegen mijn vriend. (fluisteren)",
+    "antwoord": "fluister"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ mijn oma voor het cadeau. (bedanken)",
+    "antwoord": "bedank"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ goed naar de uitleg. (luisteren)",
+    "antwoord": "luister"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "hij-vorm",
+    "zin": "Hij ___ leuke avonturen op vakantie. (beleven)",
+    "antwoord": "beleeft"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "hij-vorm",
+    "zin": "Hij ___ dat het straks gaat regenen. (vermoeden)",
+    "antwoord": "vermoedt"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een mooie vlinder. (fotograferen)",
+    "antwoord": "fotografeer"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "hij-vorm",
+    "zin": "Hij ___ dat we vandaag buitenspelen. (hopen)",
+    "antwoord": "hoopt"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ mijn step bij het hek. (parkeren)",
+    "antwoord": "parkeer"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ om de grappige mop. (lachen)",
+    "antwoord": "lach"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een spannend verhaal. (vertellen)",
+    "antwoord": "vertel"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ graag dieren. (tekenen)",
+    "antwoord": "teken"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ de lucht blauw. (kleuren)",
+    "antwoord": "kleur"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "hij-vorm",
+    "zin": "Zij ___ de som uit. (rekenen)",
+    "antwoord": "rekent"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ met mijn hond door het park. (wandelen)",
+    "antwoord": "wandel"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ vaak verstoppertje. (spelen)",
+    "antwoord": "speel"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "hij-vorm",
+    "zin": "Hij ___ mee met het liedje. (zingen)",
+    "antwoord": "zingt"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ over de plas. (springen)",
+    "antwoord": "spring"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ snel naar de bel. (rennen)",
+    "antwoord": "ren"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een glas melk. (drinken)",
+    "antwoord": "drink"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ graag aardbeien. (eten)",
+    "antwoord": "eet"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ mijn moeder in de keuken. (helpen)",
+    "antwoord": "help"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ mijn handen voor het eten. (wassen)",
+    "antwoord": "was"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ iedere avond mijn tanden. (poetsen)",
+    "antwoord": "poets"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ mijn verdwenen sok. (zoeken)",
+    "antwoord": "zoek"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een muntje op straat. (vinden)",
+    "antwoord": "vind"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ mijn huiswerk netjes. (maken)",
+    "antwoord": "maak"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ nieuwe woorden. (leren)",
+    "antwoord": "leer"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een spannend boek. (lezen)",
+    "antwoord": "lees"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een brief aan mijn opa. (schrijven)",
+    "antwoord": "schrijf"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ naar de wolken. (kijken)",
+    "antwoord": "kijk"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ naar school. (fietsen)",
+    "antwoord": "fietst"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ hard aan mijn opdracht. (werken)",
+    "antwoord": "werk"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "hij-vorm",
+    "zin": "Zij ___ een spelletje op het plein. (spelen)",
+    "antwoord": "speelt"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ de bal met twee handen. (vangen)",
+    "antwoord": "vang"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "hij-vorm",
+    "zin": "Hij ___ de bal naar mijn vriend. (gooien)",
+    "antwoord": "gooit"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ op vrolijke muziek. (dansen)",
+    "antwoord": "dans"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ in de grote boom. (klimmen)",
+    "antwoord": "klim"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ op het schoolplein. (schommelen)",
+    "antwoord": "schommel"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "hij-vorm",
+    "zin": "Zij ___ samen met mijn vader. (koken)",
+    "antwoord": "kookt"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ koekjes voor de klas. (bakken)",
+    "antwoord": "bak"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "hij-vorm",
+    "zin": "Hij ___ van het mooie weer. (genieten)",
+    "antwoord": "geniet"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ mijn tekeningen in een map. (bewaren)",
+    "antwoord": "bewaar"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ voorzichtig de deur. (openen)",
+    "antwoord": "open"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "sterke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ het raam als het koud is. (sluiten)",
+    "antwoord": "sluit"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een liniaal bij rekenen. (gebruiken)",
+    "antwoord": "gebruik"
   }
 ]
