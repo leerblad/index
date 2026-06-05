@@ -290,30 +290,720 @@
     /* ── Loading ── */
     .loading-text { color: #2A7FD4; font-style: italic; font-size: 13px; padding: 1rem 0; }
 
-    /* ── API-sleutel sectie ── */
-    .api-section {
+    /* ── "Binnenkort" placeholder ── */
+    .soon-placeholder {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: #ccc;
+    }
+    .soon-placeholder i { font-size: 36px; display: block; margin-bottom: 1rem; }
+    .soon-placeholder p { font-size: 14px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 1100px) {
+      .topbar-inner { padding: 0 2rem; }
+      .main { padding: 2rem 2rem 4rem; }
+    }
+    @media (max-width: 600px) {
+      .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
+      nav { gap: 2px; }
+      .nav-btn { font-size: 12px; padding: 5px 10px; }
+      .main { padding: 1.5rem 1rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo" href="#" style="display:flex;flex-direction:column;gap:2px;text-decoration:none;">
+      <span style="font-size:32px;font-weight:200;letter-spacing:1.5px;background:linear-gradient(90deg,#2A7FD4,#2DBF8E);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Leerblad</span>
+      <div class="logo-tagline-row">
+        <div class="logo-tagline-line"></div>
+        <div class="logo-tagline">Werkbladen op maat</div>
+        <div class="logo-tagline-line"></div>
+      </div>
+    </a>
+    <nav>
+      <button class="nav-btn active" onclick="toonSectie('spelling', this)">Werkwoordspelling</button>
+      <button class="nav-btn soon" onclick="toonSectie('rekenen', this)">Rekenen<span class="tag">binnenkort</span></button>
+      <button class="nav-btn soon" onclick="toonSectie('lezen', this)">Lezen<span class="tag">binnenkort</span></button>
+      <button class="nav-btn soon" onclick="toonSectie('werkboekjes', this)">Werkboekjes<span class="tag">binnenkort</span></button>
+    </nav>
+  </div>
+</header>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+
+  <!-- SECTIE: WERKWOORDSPELLING -->
+  <section id="sectie-spelling">
+    <h1 class="section-title">Werkwoordspelling</h1>
+    <p class="section-sub">Stel het werkblad in en genereer direct een PDF met nakijkblad — geen account nodig</p>
+
+    <!-- Groepskeuze -->
+    <div class="groep-row">
+      <button class="groep-btn" onclick="setGroep(5, this)">Groep 5</button>
+      <button class="groep-btn" onclick="setGroep(6, this)">Groep 6</button>
+      <button class="groep-btn" onclick="setGroep(7, this)">Groep 7</button>
+      <button class="groep-btn active" onclick="setGroep(8, this)">Groep 8</button>
+    </div>
+
+    <!-- Stap 1: Tijd -->
+    <div class="card">
+      <div class="card-label">Stap 1 — Tijd</div>
+      <div class="option-grid">
+        <button class="opt" id="tt-btn" onclick="setTijd('tegenwoordige tijd', this)">Tegenwoordige tijd</button>
+        <button class="opt" id="vt-btn" onclick="setTijd('verleden tijd', this)">Verleden tijd</button>
+      </div>
+    </div>
+
+    <!-- Stap 2: Werkwoordtype -->
+    <div class="card">
+      <div class="card-label">Stap 2 — Werkwoordtype</div>
+      <div class="step-hint" id="type-hint">Kies eerst een tijd</div>
+      <div class="option-grid">
+        <button class="opt disabled" id="zwak-btn" onclick="setType('zwakke werkwoorden', this)">Zwakke werkwoorden</button>
+        <button class="opt disabled" id="sterk-btn" onclick="setType('sterke werkwoorden', this)">Sterke werkwoorden</button>
+      </div>
+    </div>
+
+    <!-- Stap 3: Vorm (meerdere selecteerbaar) -->
+    <div class="card">
+      <div class="card-label">Stap 3 — Werkwoordsvorm <span style="font-size:10px;font-weight:400;color:#bbb;letter-spacing:0;text-transform:none;">(meerdere keuzes mogelijk)</span></div>
+      <div class="step-hint" id="vorm-hint">Kies eerst een werkwoordtype</div>
+      <div class="option-grid">
+        <button class="opt disabled" id="v-ik"  onclick="toggleVorm('ik-vorm', this)">Ik-vorm</button>
+        <button class="opt disabled" id="v-jij" onclick="toggleVorm('jij-vorm', this)">Jij-vorm</button>
+        <button class="opt disabled" id="v-hij" onclick="toggleVorm('hij-vorm', this)">Hij-vorm</button>
+        <button class="opt disabled" id="v-wij" onclick="toggleVorm('wij-vorm', this)">Wij-vorm</button>
+        <button class="opt disabled" id="v-vd"  onclick="toggleVorm('voltooid deelwoord', this)">Voltooid deelwoord</button>
+        <button class="opt disabled" id="v-td"  onclick="toggleVorm('tegenwoordig deelwoord', this)">Tegenwoordig deelwoord</button>
+        <button class="opt disabled" id="v-bvd" onclick="toggleVorm('bijvoeglijk gebruikt voltooid deelwoord', this)">Bijvoeglijk voltooid deelwoord</button>
+      </div>
+    </div>
+
+    <!-- Aantal zinnen -->
+    <div class="card">
+      <div class="card-label">Aantal zinnen</div>
+      <div class="aantal-row">
+        <span class="aantal-label">Kies aantal:</span>
+        <button class="aantal-btn active" onclick="setAantal(10, this)">10</button>
+        <button class="aantal-btn" onclick="setAantal(15, this)">15</button>
+        <button class="aantal-btn" onclick="setAantal(20, this)">20</button>
+        <button class="aantal-btn" onclick="setAantal(25, this)">25</button>
+      </div>
+    </div>
+
+    <!-- Genereer-knop -->
+    <button class="generate-btn" id="gen-btn" onclick="generateWerkblad()">
+      <i class="ti ti-sparkles" aria-hidden="true"></i> Werkblad genereren
+    </button>
+
+    <!-- Output -->
+    <div class="output-area" id="output"></div>
+  </section>
+
+  <!-- SECTIE: REKENEN (binnenkort) -->
+  <section id="sectie-rekenen" style="display:none;">
+    <h1 class="section-title">Rekenen</h1>
+    <div class="soon-placeholder">
+      <i class="ti ti-calculator" aria-hidden="true"></i>
+      <p>Deze module is binnenkort beschikbaar.</p>
+    </div>
+  </section>
+
+  <!-- SECTIE: LEZEN (binnenkort) -->
+  <section id="sectie-lezen" style="display:none;">
+    <h1 class="section-title">Lezen</h1>
+    <div class="soon-placeholder">
+      <i class="ti ti-book" aria-hidden="true"></i>
+      <p>Deze module is binnenkort beschikbaar.</p>
+    </div>
+  </section>
+
+  <!-- SECTIE: WERKBOEKJES (binnenkort) -->
+  <section id="sectie-werkboekjes" style="display:none;">
+    <h1 class="section-title">Werkboekjes</h1>
+    <div class="soon-placeholder">
+      <i class="ti ti-notebook" aria-hidden="true"></i>
+      <p>Deze module is binnenkort beschikbaar.</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  /* ── Zinnendatabase ── */
+  const DB = [{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ elke ochtend mijn tanden. (poetsen)","antwoord":"poets"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ naar school. (fietsen)","antwoord":"fiets"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn huiswerk. (maken)","antwoord":"maak"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ met mijn vrienden. (spelen)","antwoord":"speel"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn kamer op. (ruimen)","antwoord":"ruim"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een boek. (lezen)","antwoord":"lees"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ elke dag je fiets. (gebruiken)","antwoord":"gebruikt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Emma, jij ___ heel hard. (werken)","antwoord":"werkt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ altijd je tas in. (pakken)","antwoord":"pakt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Liam, jij ___ goed. (tekenen)","antwoord":"tekent"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ de hond elke dag. (voeren)","antwoord":"voert"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ je brood op. (eten)","antwoord":"eet"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Tom ___ elke ochtend vroeg. (opstaan)","antwoord":"staat op"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"De kat ___ op de bank. (slapen)","antwoord":"slaapt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Max ___ zijn fiets. (poetsen)","antwoord":"poetst"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Daan ___ de bal ver weg. (schoppen)","antwoord":"schopt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"De leraar ___ de klas. (helpen)","antwoord":"helpt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Finn ___ zijn jas aan. (trekken)","antwoord":"trekt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ elke dag naar school. (fietsen)","antwoord":"fietsen"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ een liedje. (zingen)","antwoord":"zingen"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ in de tuin. (spelen)","antwoord":"spelen"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze tanden na het eten. (poetsen)","antwoord":"poetsen"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ hard voor de toets. (leren)","antwoord":"leren"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de tafel. (dekken)","antwoord":"dekken"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ gisteren naar school. (fietsen)","antwoord":"fietste"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn huiswerk. (maken)","antwoord":"maakte"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de hond. (voeren)","antwoord":"voerde"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een tekening. (maken)","antwoord":"maakte"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ gisteren hard. (werken)","antwoord":"werkte"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn kamer op. (ruimen)","antwoord":"ruimde"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ gisteren vroeg. (opstaan)","antwoord":"stond op"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Emma, jij ___ de bal. (schoppen)","antwoord":"schopte"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ heel mooi. (tekenen)","antwoord":"tekende"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ je fiets. (poetsen)","antwoord":"poetste"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Liam, jij ___ hard. (werken)","antwoord":"werkte"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Tom ___ zijn fiets. (poetsen)","antwoord":"poetste"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Max ___ zijn huiswerk. (maken)","antwoord":"maakte"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"De hond ___ luid. (blaffen)","antwoord":"blafte"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Daan ___ de tafel. (dekken)","antwoord":"dekte"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Finn ___ hard. (leren)","antwoord":"leerde"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ gisteren in de tuin. (spelen)","antwoord":"speelden"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de tafel. (dekken)","antwoord":"dekten"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze tanden. (poetsen)","antwoord":"poetsten"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ heel hard. (werken)","antwoord":"werkten"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze fietsen. (poetsen)","antwoord":"poetsten"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Ik heb mijn huiswerk ___. (maken)","antwoord":"gemaakt"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Emma heeft haar fiets ___. (poetsen)","antwoord":"gepoetst"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Tom heeft de hond ___. (voeren)","antwoord":"gevoerd"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Wij hebben hard ___. (werken)","antwoord":"gewerkt"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Max heeft een tekening ___. (maken)","antwoord":"gemaakt"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Liam heeft de bal ___. (schoppen)","antwoord":"geschopt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ op mijn fiets. (rijden)","antwoord":"rij"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een brief. (schrijven)","antwoord":"schrijf"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ elke nacht lang. (slapen)","antwoord":"slaap"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ naar school. (lopen)","antwoord":"loop"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een appel. (eten)","antwoord":"eet"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ water. (drinken)","antwoord":"drink"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ elke dag naar school. (rijden)","antwoord":"rijdt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Emma, jij ___ een mooie brief. (schrijven)","antwoord":"schrijft"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ te lang. (slapen)","antwoord":"slaapt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Liam, jij ___ snel. (lopen)","antwoord":"loopt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ jouw boterham op. (eten)","antwoord":"eet"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Tom ___ elke dag naar zijn oma. (rijden)","antwoord":"rijdt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Max ___ een verhaal. (schrijven)","antwoord":"schrijft"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"De baby ___. (slapen)","antwoord":"slaapt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Daan ___ naar het park. (lopen)","antwoord":"loopt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Finn ___ zijn brood op. (eten)","antwoord":"eet"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ morgen naar de stad. (rijden)","antwoord":"rijden"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ een brief aan opa. (schrijven)","antwoord":"schrijven"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ altijd lang op zondag. (slapen)","antwoord":"slapen"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ samen naar school. (lopen)","antwoord":"lopen"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze boterhammen op. (eten)","antwoord":"eten"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ gisteren naar school. (rijden)","antwoord":"reed"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een brief. (schrijven)","antwoord":"schreef"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ gisteren lang. (slapen)","antwoord":"sliep"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ naar het park. (lopen)","antwoord":"liep"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een appel. (eten)","antwoord":"at"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ water. (drinken)","antwoord":"dronk"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Tom ___ snel naar huis. (rijden)","antwoord":"reed"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Max ___ een verhaal. (schrijven)","antwoord":"schreef"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"De hond ___ de hele nacht. (slapen)","antwoord":"sliep"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Daan ___ naar de winkel. (lopen)","antwoord":"liep"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Finn ___ zijn brood op. (eten)","antwoord":"at"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ naar het strand. (rijden)","antwoord":"reden"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ brieven. (schrijven)","antwoord":"schreven"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ lang uit. (slapen)","antwoord":"sliepen"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ samen naar school. (lopen)","antwoord":"liepen"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Ik heb een brief ___. (schrijven)","antwoord":"geschreven"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Tom heeft lang ___. (slapen)","antwoord":"geslapen"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Wij hebben naar school ___. (lopen)","antwoord":"gelopen"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Emma heeft zijn boterham ___. (eten)","antwoord":"gegeten"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Max heeft water ___. (drinken)","antwoord":"gedronken"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Daan heeft naar school ___. (rijden)","antwoord":"gereden"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een portret van mijn moeder. (schilderen)","antwoord":"schilder"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ elke zondag door het bos. (wandelen)","antwoord":"wandel"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ om grappige grappen. (lachen)","antwoord":"lach"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn best voor rekenen. (doen)","antwoord":"doe"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ bloemen in de tuin. (planten)","antwoord":"plant"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn vriendin bij het oefenen. (helpen)","antwoord":"help"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ prachtige schilderijen. (schilderen)","antwoord":"schildert"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Sofia, jij ___ altijd door het park. (wandelen)","antwoord":"wandelt"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ heel hard om dat verhaal. (lachen)","antwoord":"lacht"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Lars, jij ___ goed voor je toetsen. (oefenen)","antwoord":"oefent"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ bloemen in de vaas. (zetten)","antwoord":"zet"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Noah ___ een mooi landschap. (schilderen)","antwoord":"schildert"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"De meester ___ een moeilijke som. (uitleggen)","antwoord":"legt uit"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ elke week door het bos. (wandelen)","antwoord":"wandelt"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Rik ___ heel hard om het grapje. (lachen)","antwoord":"lacht"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Lisa ___ bloemen in de tuin. (planten)","antwoord":"plant"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ samen een groot schilderij. (schilderen)","antwoord":"schilderen"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ in de natuur. (wandelen)","antwoord":"wandelen"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ veel tijdens de les. (lachen)","antwoord":"lachen"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ samen voor de grote toets. (oefenen)","antwoord":"oefenen"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ bloemen in de schooltuin. (planten)","antwoord":"planten"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een portret. (schilderen)","antwoord":"schilderde"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ lang door het bos. (wandelen)","antwoord":"wandelde"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ om de grap. (lachen)","antwoord":"lachte"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de bloemen. (planten)","antwoord":"plantte"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn vriend bij rekenen. (helpen)","antwoord":"hielp"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Noah ___ een mooie tekening. (schilderen)","antwoord":"schilderde"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ door het park. (wandelen)","antwoord":"wandelde"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Rik ___ heel hard. (lachen)","antwoord":"lachte"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"De juf ___ de opdracht. (uitleggen)","antwoord":"legde uit"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ voor zijn toets. (oefenen)","antwoord":"oefende"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ samen een schilderij. (schilderen)","antwoord":"schilderden"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ door het bos. (wandelen)","antwoord":"wandelden"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ heel hard. (lachen)","antwoord":"lachten"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ bloemen. (planten)","antwoord":"plantten"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Lisa heeft een schilderij ___. (schilderen)","antwoord":"geschilderd"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Wij hebben door het bos ___. (wandelen)","antwoord":"gewandeld"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Sofia heeft bloemen ___. (planten)","antwoord":"geplant"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Noah heeft hard ___. (oefenen)","antwoord":"geoefend"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Koen heeft veel ___. (lachen)","antwoord":"gelachen"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"De juf heeft de som ___. (uitleggen)","antwoord":"uitgelegd"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ op mijn fiets door de regen. (rijden)","antwoord":"rij"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een opstel voor school. (schrijven)","antwoord":"schrijf"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een lied in het koor. (zingen)","antwoord":"zing"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ snel naar de winkel. (lopen)","antwoord":"loop"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ het antwoord niet. (weten)","antwoord":"weet"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ van voetbal. (houden)","antwoord":"houd"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Sofia, jij ___ mooi in het koor. (zingen)","antwoord":"zingt"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ altijd mooie verhalen. (schrijven)","antwoord":"schrijft"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Lars, jij ___ hard naar het veld. (lopen)","antwoord":"loopt"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ het antwoord altijd. (weten)","antwoord":"weet"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Noah ___ een mooi lied. (zingen)","antwoord":"zingt"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ een verhaal voor de klas. (schrijven)","antwoord":"schrijft"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Rik ___ snel naar huis. (lopen)","antwoord":"loopt"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ het antwoord altijd. (weten)","antwoord":"weet"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ liederen in het koor. (zingen)","antwoord":"zingen"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ verhalen voor de klas. (schrijven)","antwoord":"schrijven"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ elke dag naar school. (lopen)","antwoord":"lopen"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de antwoorden niet altijd. (weten)","antwoord":"weten"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een lied op het podium. (zingen)","antwoord":"zong"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een opstel voor school. (schrijven)","antwoord":"schreef"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ snel naar de klas. (lopen)","antwoord":"liep"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ het antwoord niet. (weten)","antwoord":"wist"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Noah ___ een lied voor de klas. (zingen)","antwoord":"zong"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ een lang verhaal. (schrijven)","antwoord":"schreef"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ hard naar het voetbalveld. (lopen)","antwoord":"liep"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Rik ___ het antwoord niet. (weten)","antwoord":"wist"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ prachtige liederen. (zingen)","antwoord":"zongen"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ verhalen voor de klas. (schrijven)","antwoord":"schreven"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ samen naar het museum. (lopen)","antwoord":"liepen"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ het antwoord niet. (weten)","antwoord":"wisten"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Sofia heeft een mooi lied ___. (zingen)","antwoord":"gezongen"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Koen heeft een brief ___. (schrijven)","antwoord":"geschreven"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Wij hebben naar school ___. (lopen)","antwoord":"gelopen"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Noah heeft zijn brood ___. (eten)","antwoord":"gegeten"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Lars heeft lang ___. (slapen)","antwoord":"geslapen"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"De kinderen kwamen ___ de klas binnen. (lachen)","antwoord":"lachend"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Hij keek ___ naar de schilderijen. (glimlachen)","antwoord":"glimlachend"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"De vogels vlogen ___ over het park. (zingen)","antwoord":"zingend"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Hij verliet ___ het schoolgebouw. (lopen)","antwoord":"lopend"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ bloemen stonden op tafel. (planten)","antwoord":"geplante"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ brief lag op het bureau. (schrijven)","antwoord":"geschreven"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn gevoelens soms voor mijn vrienden. (verbergen)","antwoord":"verberg"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de regels van het spel. (uitleggen)","antwoord":"leg uit"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ soms mijn schoolboek. (vergeten)","antwoord":"vergeet"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de nieuwe leerling bij het rekenen. (ondersteunen)","antwoord":"ondersteun"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij voor de wedstrijd. (voorbereiden)","antwoord":"bereid voor"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij in bij de sportclub. (aanmelden)","antwoord":"meld aan"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ de moeilijke opdracht goed. (uitleggen)","antwoord":"legt uit"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Sara, jij ___ je spullen altijd. (vergeten)","antwoord":"vergeet"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ je goed voor de toets. (voorbereiden)","antwoord":"bereidt voor"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Finn, jij ___ altijd je broertje bij het lezen. (ondersteunen)","antwoord":"ondersteunt"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ je gevoelens te veel. (verbergen)","antwoord":"verbergt"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Nora ___ de nieuwe opdracht aan de klas. (uitleggen)","antwoord":"legt uit"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Daan ___ zijn pen altijd thuis. (vergeten)","antwoord":"vergeet"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Eva ___ zich goed voor het optreden. (voorbereiden)","antwoord":"bereidt voor"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Bram ___ zijn jongere zusje altijd. (ondersteunen)","antwoord":"ondersteunt"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Lotte ___ haar talenten altijd. (verbergen)","antwoord":"verbergt"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de regels van het spel. (uitleggen)","antwoord":"leggen uit"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze pennen soms. (vergeten)","antwoord":"vergeten"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons voor de wedstrijd. (voorbereiden)","antwoord":"bereiden voor"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ elkaar tijdens het project. (ondersteunen)","antwoord":"ondersteunen"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze gevoelens soms te veel. (verbergen)","antwoord":"verbergen"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de moeilijke som aan mijn klasgenoot. (uitleggen)","antwoord":"legde uit"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn agenda thuis. (vergeten)","antwoord":"vergat"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij goed voor het examen. (voorbereiden)","antwoord":"bereidde voor"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn broertje bij het lezen. (ondersteunen)","antwoord":"ondersteunde"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij in voor de cursus. (aanmelden)","antwoord":"meldde aan"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Nora ___ de opdracht aan de groep. (uitleggen)","antwoord":"legde uit"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Daan ___ zijn tas thuis. (vergeten)","antwoord":"vergat"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Eva ___ zich voor het optreden. (voorbereiden)","antwoord":"bereidde voor"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Bram ___ zijn klasgenoot bij het schrijven. (ondersteunen)","antwoord":"ondersteunde"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de opdracht aan de klas. (uitleggen)","antwoord":"legden uit"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze boeken thuis. (vergeten)","antwoord":"vergaten"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons goed voor de voorstelling. (voorbereiden)","antwoord":"bereidden voor"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de nieuwe leerlingen. (ondersteunen)","antwoord":"ondersteunden"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Sara heeft de som goed ___. (uitleggen)","antwoord":"uitgelegd"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Daan heeft zijn rugzak ___. (vergeten)","antwoord":"vergeten"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Eva heeft zich goed ___. (voorbereiden)","antwoord":"voorbereid"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Wij hebben onze klasgenoten ___. (ondersteunen)","antwoord":"ondersteund"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Bram heeft zich ___ voor het optreden. (voorbereiden)","antwoord":"voorbereid"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de wedstrijd van mijn team. (winnen)","antwoord":"win"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een lied voor de schoolavond. (zingen)","antwoord":"zing"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn fiets naar school. (rijden)","antwoord":"rij"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een artikel voor de schoolkrant. (schrijven)","antwoord":"schrijf"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de waarheid soms. (verbergen)","antwoord":"verberg"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ boeken over geschiedenis. (lezen)","antwoord":"lees"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Sara, jij ___ altijd de wedstrijd. (winnen)","antwoord":"wint"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ een geweldig lied. (zingen)","antwoord":"zingt"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Finn, jij ___ een mooie brief. (schrijven)","antwoord":"schrijft"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ te snel over de weg. (rijden)","antwoord":"rijdt"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Nora ___ de tenniswedstrijd. (winnen)","antwoord":"wint"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Daan ___ een prachtig lied. (zingen)","antwoord":"zingt"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Eva ___ gedichten voor de klas. (schrijven)","antwoord":"schrijft"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Bram ___ elke dag naar het sportpark. (rijden)","antwoord":"rijdt"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de wedstrijd dit jaar. (winnen)","antwoord":"winnen"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ liederen in het koor. (zingen)","antwoord":"zingen"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ verhalen voor het schoolblad. (schrijven)","antwoord":"schrijven"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ op zondag naar onze opa. (rijden)","antwoord":"rijden"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de wedstrijd op het nippertje. (winnen)","antwoord":"won"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een lied voor de schoolshow. (zingen)","antwoord":"zong"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een lang verhaal. (schrijven)","antwoord":"schreef"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ snel naar de sporthal. (rijden)","antwoord":"reed"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Nora ___ de tenniswedstrijd. (winnen)","antwoord":"won"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Daan ___ een lied voor de klas. (zingen)","antwoord":"zong"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Eva ___ een gedicht voor de krant. (schrijven)","antwoord":"schreef"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Bram ___ snel naar de wedstrijd. (rijden)","antwoord":"reed"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de kampioenschapswedstrijd. (winnen)","antwoord":"wonnen"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ liederen in de aula. (zingen)","antwoord":"zongen"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ verhalen voor de schoolkrant. (schrijven)","antwoord":"schreven"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ samen naar de wedstrijd. (rijden)","antwoord":"reden"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Sara heeft de wedstrijd ___. (winnen)","antwoord":"gewonnen"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Daan heeft een prachtig lied ___. (zingen)","antwoord":"gezongen"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Eva heeft een verhaal ___. (schrijven)","antwoord":"geschreven"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Bram heeft naar de sporthal ___. (rijden)","antwoord":"gereden"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Nora heeft lang ___. (slapen)","antwoord":"geslapen"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Hij liep ___ door de gang. (fluisteren)","antwoord":"fluisterend"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"De meester stond ___ voor de klas. (uitleggen)","antwoord":"uitleggend"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Ze verliet ___ het podium. (zingen)","antwoord":"zingend"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Hij fietste ___ naar school. (zingen)","antwoord":"zingend"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ opdracht lag op het bureau. (uitleggen)","antwoord":"uitlegde"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ prijs stond op de schoorsteenmantel. (winnen)","antwoord":"gewonnen"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"Het ___ lied klonk nog in onze oren. (zingen)","antwoord":"gezongen"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ brief lag op de mat. (schrijven)","antwoord":"geschreven"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij altijd extra voor moeilijke presentaties. (uitsloven)","antwoord":"slooft uit"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij goed voor de eindtoets. (voorbereiden)","antwoord":"bereid voor"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn jongere broertje bij zijn schoolwerk. (ondersteunen)","antwoord":"ondersteun"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ het doel van het project niet. (begrijpen)","antwoord":"begrijp"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij aan bij de debatclub. (aansluiten)","antwoord":"sluit aan"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een oplossing voor het probleem. (bedenken)","antwoord":"bedenk"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ je altijd erg voor presentaties. (uitsloven)","antwoord":"slooft uit"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Emma, jij ___ je goed voor het eindexamen. (voorbereiden)","antwoord":"bereidt voor"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ je klasgenoten bij lastige opdrachten. (ondersteunen)","antwoord":"ondersteunt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Liam, jij ___ de stof altijd snel. (begrijpen)","antwoord":"begrijpt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ je bij de leerlingenraad. (aansluiten)","antwoord":"sluit aan"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ zich altijd voor de presentaties. (uitsloven)","antwoord":"slooft uit"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Mila ___ haar leerlingen bij het begrijpen van de stof. (ondersteunen)","antwoord":"ondersteunt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Rosa ___ zich op de eindtoets. (voorbereiden)","antwoord":"bereidt voor"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ de moeilijke tekst snel. (begrijpen)","antwoord":"begrijpt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Sara ___ een nieuwe oplossing. (bedenken)","antwoord":"bedenkt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons voor de jaarlijkse schoolwedstrijd. (uitsloven)","antwoord":"sloven uit"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons goed voor de eindtoets. (voorbereiden)","antwoord":"bereiden voor"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ elkaar bij moeilijke opdrachten. (ondersteunen)","antwoord":"ondersteunen"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de complexe opdracht niet altijd. (begrijpen)","antwoord":"begrijpen"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ oplossingen voor milieuproblemen. (bedenken)","antwoord":"bedenken"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ me altijd voor de schoolpresentaties. (uitsloven)","antwoord":"sloof uit"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ me goed voor de toets. (voorbereiden)","antwoord":"bereidde voor"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn klasgenoot bij het schrijven. (ondersteunen)","antwoord":"ondersteunde"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de ingewikkelde tekst meteen. (begrijpen)","antwoord":"begreep"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een creatieve oplossing. (bedenken)","antwoord":"bedacht"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij bij de debatclub. (aansluiten)","antwoord":"sloot aan"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ zich altijd voor de presentaties. (uitsloven)","antwoord":"sloofde uit"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Mila ___ haar vrienden bij het schrijven. (ondersteunen)","antwoord":"ondersteunde"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Rosa ___ zich op de eindtoets. (voorbereiden)","antwoord":"bereidde voor"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ de tekst direct. (begrijpen)","antwoord":"begreep"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons voor de schoolwedstrijd. (uitsloven)","antwoord":"sloofden uit"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons goed voor de eindtoets. (voorbereiden)","antwoord":"bereidden voor"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ elkaar tijdens het project. (ondersteunen)","antwoord":"ondersteunden"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de ingewikkelde tekst niet. (begrijpen)","antwoord":"begrepen"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Emma heeft zich erg ___. (uitsloven)","antwoord":"uitgeslooft"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Lars heeft zijn klasgenoten ___. (ondersteunen)","antwoord":"ondersteund"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Mila heeft zich goed ___. (voorbereiden)","antwoord":"voorbereid"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Rosa heeft de tekst ___. (begrijpen)","antwoord":"begrepen"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Koen heeft een goede oplossing ___. (bedenken)","antwoord":"bedacht"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ het doel na lange inspanning. (bereiken)","antwoord":"bereik"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een oplossing voor het klimaatprobleem. (bedenken)","antwoord":"bedenk"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij in de discussie. (mengen)","antwoord":"meng"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de beslissing niet altijd. (begrijpen)","antwoord":"begrijp"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mee aan het debat over duurzaamheid. (doen)","antwoord":"doe"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ informatie op voor mijn werkstuk. (zoeken)","antwoord":"zoek op"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Emma, jij ___ het doel snel. (bereiken)","antwoord":"bereikt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ altijd creatieve oplossingen. (bedenken)","antwoord":"bedenkt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Liam, jij ___ de tekst heel snel. (begrijpen)","antwoord":"begrijpt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ altijd een mooi verslag. (schrijven)","antwoord":"schrijft"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ zijn schooldoelen snel. (bereiken)","antwoord":"bereikt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Rosa ___ altijd verrassende ideeën. (bedenken)","antwoord":"bedenkt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ de ingewikkelde theorie snel. (begrijpen)","antwoord":"begrijpt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Mila ___ verslagen over actuele onderwerpen. (schrijven)","antwoord":"schrijft"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Sara ___ een lied voor de eindshow. (zingen)","antwoord":"zingt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze schooldoelen dit jaar. (bereiken)","antwoord":"bereiken"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ oplossingen voor maatschappelijke problemen. (bedenken)","antwoord":"bedenken"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de complexe teksten goed. (begrijpen)","antwoord":"begrijpen"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ verslagen over actuele onderwerpen. (schrijven)","antwoord":"schrijven"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn doel na veel oefenen. (bereiken)","antwoord":"bereikte"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een oplossing voor het vraagstuk. (bedenken)","antwoord":"bedacht"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de ingewikkelde tekst toch. (begrijpen)","antwoord":"begreep"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een artikel over duurzaamheid. (schrijven)","antwoord":"schreef"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mee in het schoolkoor. (zingen)","antwoord":"zong"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ snel naar de vergadering. (rijden)","antwoord":"reed"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ zijn langetermijndoel. (bereiken)","antwoord":"bereikte"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Rosa ___ een innovatieve oplossing. (bedenken)","antwoord":"bedacht"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ de wetenschappelijke tekst. (begrijpen)","antwoord":"begreep"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Mila ___ een uitgebreid verslag. (schrijven)","antwoord":"schreef"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Sara ___ het solo-optreden bij de eindshow. (zingen)","antwoord":"zong"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze doelen voor het schooljaar. (bereiken)","antwoord":"bereikten"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ oplossingen voor actuele problemen. (bedenken)","antwoord":"bedachten"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de moeilijke teksten goed. (begrijpen)","antwoord":"begrepen"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ verslagen over actuele problemen. (schrijven)","antwoord":"schreven"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ samen in het koor. (zingen)","antwoord":"zongen"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Lars heeft zijn doel ___. (bereiken)","antwoord":"bereikt"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Rosa heeft een creatieve oplossing ___. (bedenken)","antwoord":"bedacht"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Koen heeft de tekst ___. (begrijpen)","antwoord":"begrepen"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Mila heeft een uitgebreid verslag ___. (schrijven)","antwoord":"geschreven"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Sara heeft het solo-lied ___. (zingen)","antwoord":"gezongen"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Wij hebben onze doelen ___. (bereiken)","antwoord":"bereikt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Hij verliet ___ de vergadering. (redeneren)","antwoord":"redenerend"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Ze stond ___ voor de klas. (ondersteunen)","antwoord":"ondersteunend"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Hij verliet de zaal ___ zijn betoog. (schrijven)","antwoord":"schrijvend"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Ze fietste ___ door de stad. (zingen)","antwoord":"zingend"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"Het ___ verslag lag op het bureau van de directeur. (voorbereiden)","antwoord":"voorbereide"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ leerling ontving extra hulp. (ondersteunen)","antwoord":"ondersteunde"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"Het ___ doel motiveerde de leerlingen. (bereiken)","antwoord":"bereikte"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ oplossing werd geprezen door de jury. (bedenken)","antwoord":"bedachte"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ tekst bevatte veel fouten. (schrijven)","antwoord":"geschreven"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"De kinderen kwamen ___ de speelplaats op. (rennen)","antwoord":"rennend"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Hij verliet ___ de klas. (lopen)","antwoord":"lopend"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ tekening hing aan de muur. (maken)","antwoord":"gemaakte"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ brief lag op tafel. (schrijven)","antwoord":"geschreven"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn werkstuk op tijd in. (leveren)","antwoord":"lever in"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ elke week nieuwe woorden. (oefenen)","antwoord":"oefen"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ altijd mooie tekeningen. (maken)","antwoord":"maakt"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"De juf ___ de klas een compliment. (geven)","antwoord":"geeft"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ gisteren de tuin. (harken)","antwoord":"harkte"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ gisteren in de sloot. (vallen)","antwoord":"viel"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de trap af. (vallen)","antwoord":"val"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Rik ___ van de schommel. (vallen)","antwoord":"valt"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ van de fiets. (vallen)","antwoord":"viel"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ allemaal van de schommel. (vallen)","antwoord":"vielen"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Lars is van zijn fiets ___. (vallen)","antwoord":"gevallen"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij in op de schoolkrant. (abonneren)","antwoord":"abonneer"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij voor de debatavond. (inschrijven)","antwoord":"schrijf in"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Nora, jij ___ je goed in op de opdracht. (concentreren)","antwoord":"concentreert"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ de tekst helemaal. (analyseren)","antwoord":"analyseert"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"De leraar ___ de leerlingen op de regels. (wijzen)","antwoord":"wijst"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Bram ___ zijn best voor het project. (doen)","antwoord":"doet"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij goed op de opdracht. (concentreren)","antwoord":"concentreerde"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Daan ___ de tekst voor de presentatie. (analyseren)","antwoord":"analyseerde"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons op de afsluitende toets. (concentreren)","antwoord":"concentreerden"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Nora heeft de tekst grondig ___. (analyseren)","antwoord":"geanalyseerd"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mee aan de discussie. (doen)","antwoord":"doe"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de boeken op de plank. (zetten)","antwoord":"zet"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Eva, jij ___ altijd goede ideeën in. (brengen)","antwoord":"brengt"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ altijd mee aan projecten. (doen)","antwoord":"doet"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Bram ___ een nieuw idee in. (brengen)","antwoord":"brengt"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ mee aan het debat. (doen)","antwoord":"doen"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mee aan het debat over milieu. (doen)","antwoord":"deed"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Bram ___ een goed idee in. (brengen)","antwoord":"bracht"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ mee aan het project. (doen)","antwoord":"deden"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Eva heeft goede ideeën ___. (brengen)","antwoord":"gebracht"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de toekomst van het klimaat. (beschrijven)","antwoord":"beschrijf"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ het belang van duurzame energie. (erkennen)","antwoord":"erken"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ je mening duidelijk. (verwoorden)","antwoord":"verwoordt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Emma, jij ___ altijd goede argumenten. (gebruiken)","antwoord":"gebruikt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ zijn mening goed. (verwoorden)","antwoord":"verwoordt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Mila ___ de gevolgen van klimaatverandering. (beschrijven)","antwoord":"beschrijft"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ het belang van burgerschap. (erkennen)","antwoord":"erkennen"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze argumenten helder. (verwoorden)","antwoord":"verwoorden"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de problemen in een verslag. (beschrijven)","antwoord":"beschreef"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn standpunt helder. (verwoorden)","antwoord":"verwoordde"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ zijn mening goed. (verwoorden)","antwoord":"verwoordde"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Mila ___ de gevolgen in detail. (beschrijven)","antwoord":"beschreef"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze conclusies helder. (verwoorden)","antwoord":"verwoordden"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de problemen in ons verslag. (beschrijven)","antwoord":"beschreven"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Lars heeft zijn mening goed ___. (verwoorden)","antwoord":"verwoord"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Mila heeft de gevolgen ___. (beschrijven)","antwoord":"beschreven"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij in bij het debatteam. (inschrijven)","antwoord":"schrijf in"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ goede argumenten aan. (dragen)","antwoord":"draag aan"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ je in bij de leerlingenraad. (inschrijven)","antwoord":"schrijft in"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Emma, jij ___ altijd veel bij. (dragen)","antwoord":"draagt bij"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ zich in bij de verkiezingen. (inschrijven)","antwoord":"schrijft in"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ veel bij aan de discussie. (dragen)","antwoord":"draagt bij"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons in voor het debattoernooi. (inschrijven)","antwoord":"schrijven in"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ bij aan een duurzame wereld. (dragen)","antwoord":"dragen bij"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ me in voor het schooldebat. (inschrijven)","antwoord":"schreef in"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ veel bij aan het project. (dragen)","antwoord":"droeg bij"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ zich in voor het debattoernooi. (inschrijven)","antwoord":"schreef in"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ veel bij aan de oplossing. (dragen)","antwoord":"droeg bij"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons in voor het kampioenschap. (inschrijven)","antwoord":"schreven in"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ bij aan een beter milieu. (dragen)","antwoord":"droegen bij"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Emma heeft zich voor het toernooi ___. (inschrijven)","antwoord":"ingeschreven"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Koen heeft veel ___ aan het debat. (dragen)","antwoord":"bijgedragen"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Lars heeft zijn schooldoel ___. (bereiken)","antwoord":"bereikt"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ wedstrijd werd besproken in de klas. (winnen)","antwoord":"gewonnen"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Ze verliet ___ de vergadering. (rijden)","antwoord":"rijdend"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Hij formuleerde zijn ideeën ___. (schrijven)","antwoord":"schrijvend"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Ze liep ___ door de gang. (telefoneren)","antwoord":"telefonerend"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ gisteren de tafel. (dekken)","antwoord":"dekte"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ gisteren lang. (slapen)","antwoord":"sliep"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"De hond kwam ___ op ons af. (kwispelen)","antwoord":"kwispelend"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ schilderijen hingen aan de muur. (schilderen)","antwoord":"geschilderde"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"tegenwoordig deelwoord","zin":"Hij liep ___ door het park. (schrijven)","antwoord":"schrijvend"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"Het ___ lied klonk mooi. (zingen)","antwoord":"gezongen"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"Het ___ boek lag op de plank. (lezen)","antwoord":"gelezen"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"bijvoeglijk gebruikt voltooid deelwoord","zin":"De ___ tekst werd herlezen door de klas. (beschrijven)","antwoord":"beschreven"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ in de bibliotheek een boek. (kiezen)","antwoord":"kies"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ altijd het moeilijkste boek. (kiezen)","antwoord":"kiest"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Noah ___ een boek over dieren. (kiezen)","antwoord":"kiest"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ samen een onderwerp voor ons werkstuk. (kiezen)","antwoord":"kiezen"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een moeilijk boek. (kiezen)","antwoord":"koos"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Noah ___ een interessant onderwerp. (kiezen)","antwoord":"koos"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ samen een boek voor het werkstuk. (kiezen)","antwoord":"kozen"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Koen heeft een goed boek ___. (kiezen)","antwoord":"gekozen"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ bij de discussie aan. (sluiten)","antwoord":"sluit aan"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Finn, jij ___ aan bij de debatclub. (sluiten)","antwoord":"sluit aan"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Bram ___ aan bij het leesclubje. (sluiten)","antwoord":"sluit aan"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ aan bij de sportclub. (sluiten)","antwoord":"sloot aan"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Bram ___ aan bij het project. (sluiten)","antwoord":"sloot aan"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ aan bij de leerlingenraad. (sluiten)","antwoord":"sloten aan"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Finn heeft zich bij de club ___. (sluiten)","antwoord":"aangesloten"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een artikel over energie voor het schoolblad. (publiceren)","antwoord":"publiceer"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ je werkstuk op tijd. (inleveren)","antwoord":"levert in"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ zijn mening over duurzaamheid. (verdedigen)","antwoord":"verdedigt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons standpunt tijdens het debat. (verdedigen)","antwoord":"verdedigen"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn standpunt tijdens de discussie. (verdedigen)","antwoord":"verdedigde"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ zijn mening goed. (verdedigen)","antwoord":"verdedigde"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze keuze voor het project. (verdedigen)","antwoord":"verdedigden"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Emma heeft haar standpunt ___. (verdedigen)","antwoord":"verdedigd"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de toekomst positief in. (zien)","antwoord":"zie"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ de gevolgen van klimaatverandering. (zien)","antwoord":"ziet"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ kansen waar anderen problemen zien. (zien)","antwoord":"ziet"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ oplossingen voor de grote vraagstukken. (zien)","antwoord":"zien"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ kansen in de nieuwe situatie. (zien)","antwoord":"zag"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ de gevolgen van zijn keuze. (zien)","antwoord":"zag"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ de uitdagingen van de toekomst. (zien)","antwoord":"zagen"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Lars heeft de gevolgen van zijn keuze ___. (zien)","antwoord":"gezien"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Mila heeft de toekomst positief ___. (zien)","antwoord":"gezien"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ elke dag de planten water. (geven)","antwoord":"geef"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ elke ochtend je bed op. (maken)","antwoord":"maakt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Rik ___ zijn jas aan de kapstok. (hangen)","antwoord":"hangt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze fiets in de schuur. (zetten)","antwoord":"zetten"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de planten water. (geven)","antwoord":"gaf"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Finn ___ zijn jas op. (hangen)","antwoord":"hing"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ onze tassen op. (hangen)","antwoord":"hingen"},{"groep":5,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Ik heb de planten water ___. (geven)","antwoord":"gegeven"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ de deur open. (duwen)","antwoord":"duw"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ altijd de deur dicht. (trekken)","antwoord":"trekt"},{"groep":5,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Tom ___ het raam open. (gooien)","antwoord":"gooit"},{"groep":5,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ gisteren de bal ver. (gooien)","antwoord":"gooide"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een nieuw woord in het woordenboek. (opzoeken)","antwoord":"zoek op"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Lisa, jij ___ altijd mooie muziek. (spelen)","antwoord":"speelt"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ piano op de muziekschool. (spelen)","antwoord":"speelt"},{"groep":6,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ woorden op in het woordenboek. (opzoeken)","antwoord":"zoeken op"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een woord op in het woordenboek. (opzoeken)","antwoord":"zocht op"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Koen ___ gitaar op het schoolfeest. (spelen)","antwoord":"speelde"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ woorden op in het woordenboek. (opzoeken)","antwoord":"zochten op"},{"groep":6,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Rik heeft woorden ___ in het woordenboek. (opzoeken)","antwoord":"opgezocht"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een interessant boek. (lezen)","antwoord":"lees"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Lisa, jij ___ altijd dikke boeken. (lezen)","antwoord":"leest"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Noah ___ een spannend verhaal. (lezen)","antwoord":"leest"},{"groep":6,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ elke avond een hoofdstuk. (lezen)","antwoord":"lezen"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een spannend boek. (lezen)","antwoord":"las"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Noah ___ een dik boek. (lezen)","antwoord":"las"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ samen een verhaal voor. (lezen)","antwoord":"lazen"},{"groep":6,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Rik heeft het boek in één dag ___. (lezen)","antwoord":"gelezen"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ me op het debat. (instellen)","antwoord":"stel in"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Nora, jij ___ je goed in op het publiek. (instellen)","antwoord":"stelt in"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Daan ___ zijn verslag op een heldere manier. (presenteren)","antwoord":"presenteert"},{"groep":7,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons voor de grote presentatie. (instellen)","antwoord":"stellen in"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mijn verslag duidelijk. (presenteren)","antwoord":"presenteerde"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Daan ___ zijn werkstuk aan de klas. (presenteren)","antwoord":"presenteerde"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons onderzoek aan de school. (presenteren)","antwoord":"presenteerden"},{"groep":7,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Nora heeft haar bevindingen ___. (presenteren)","antwoord":"gepresenteerd"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ iets nieuws elke dag. (ontdekken)","antwoord":"ontdek"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Finn, jij ___ altijd interessante feiten. (ontdekken)","antwoord":"ontdekt"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Lotte ___ nieuwe planten in het bos. (ontdekken)","antwoord":"ontdekt"},{"groep":7,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ nieuwe dingen tijdens onze excursie. (ontdekken)","antwoord":"ontdekken"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ een interessant insect in de tuin. (ontdekken)","antwoord":"ontdekte"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Lotte ___ een zeldzame plant. (ontdekken)","antwoord":"ontdekte"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ veel tijdens de excursie. (ontdekken)","antwoord":"ontdekten"},{"groep":7,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Finn heeft iets bijzonders ___. (ontdekken)","antwoord":"ontdekt"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij in op maatschappelijke thema's. (verdiepen)","antwoord":"verdiep"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"jij-vorm","zin":"Liam, jij ___ je goed in complexe vraagstukken. (verdiepen)","antwoord":"verdiept"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Rosa ___ zich in actuele politiek. (verdiepen)","antwoord":"verdiept"},{"groep":8,"tijd":"tegenwoordige tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons in milieuvraagstukken. (verdiepen)","antwoord":"verdiepen"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ mij in het onderwerp. (verdiepen)","antwoord":"verdiepte"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"hij-vorm","zin":"Rosa ___ zich in de achtergrond van het probleem. (verdiepen)","antwoord":"verdiepte"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ ons in duurzame oplossingen. (verdiepen)","antwoord":"verdiepten"},{"groep":8,"tijd":"verleden tijd","type":"zwakke werkwoorden","vorm":"voltooid deelwoord","zin":"Liam heeft zich in het thema ___. (verdiepen)","antwoord":"verdiept"},{"groep":8,"tijd":"tegenwoordige tijd","type":"sterke werkwoorden","vorm":"jij-vorm","zin":"Jij ___ altijd sterke argumenten. (inbrengen)","antwoord":"brengt in"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"ik-vorm","zin":"Ik ___ sterke argumenten in het debat. (inbrengen)","antwoord":"bracht in"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"hij-vorm","zin":"Lars ___ nieuwe feiten in de discussie. (inbrengen)","antwoord":"bracht in"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"wij-vorm","zin":"Wij ___ nieuwe ideeën in het gesprek. (inbrengen)","antwoord":"brachten in"},{"groep":8,"tijd":"verleden tijd","type":"sterke werkwoorden","vorm":"voltooid deelwoord","zin":"Mila heeft goede argumenten ___. (inbrengen)","antwoord":"ingebracht"}];
+
+  /* ── State ── */
+  let groep  = 8;
+  let tijd   = '';
+  let wtype  = '';
+  let vormen = [];
+  let aantal = 10;
+  let gegenereerdeZinnen     = [];
+  let gegenereerdeAntwoorden = [];
+  let gegenereerdeWerkmeta   = '';
+
+  /* ── Navigatie ── */
+  function toonSectie(naam, el) {
+    if (el.classList.contains('soon')) return;
+    document.querySelectorAll('section[id^="sectie-"]').forEach(s => s.style.display = 'none');
+    document.getElementById('sectie-' + naam).style.display = 'block';
+    document.querySelectorAll('.nav-btn:not(.soon)').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  /* ── Groep ── */
+  function setGroep(g, el) {
+    groep = g;
+    document.querySelectorAll('.groep-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    clearOutput();
+  }
+
+  /* ── Tijd ── */
+  function setTijd(t, el) {
+    tijd = t; wtype = ''; vormen = [];
+    document.querySelectorAll('#tt-btn, #vt-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    ['zwak-btn', 'sterk-btn'].forEach(id => {
+      document.getElementById(id).classList.remove('active', 'disabled');
+    });
+    document.getElementById('type-hint').textContent = '';
+    vormIds().forEach(id => {
+      const e = document.getElementById(id);
+      e.classList.remove('active');
+      e.classList.add('disabled');
+    });
+    document.getElementById('vorm-hint').textContent = 'Kies eerst een werkwoordtype';
+    clearOutput();
+  }
+
+  /* ── Werkwoordtype ── */
+  function setType(tp, el) {
+    if (!tijd) return;
+    wtype = tp; vormen = [];
+    document.querySelectorAll('#zwak-btn, #sterk-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    vormIds().forEach(id => {
+      const e = document.getElementById(id);
+      e.classList.remove('active', 'disabled');
+    });
+    document.getElementById('vorm-hint').textContent = '';
+    clearOutput();
+  }
+
+  /* ── Vorm (toggle, meerdere mogelijk) ── */
+  function toggleVorm(v, el) {
+    if (!wtype) return;
+    const idx = vormen.indexOf(v);
+    if (idx === -1) {
+      vormen.push(v);
+      el.classList.add('active');
+    } else {
+      vormen.splice(idx, 1);
+      el.classList.remove('active');
+    }
+    clearOutput();
+  }
+
+  /* ── Aantal ── */
+  function setAantal(n, el) {
+    aantal = n;
+    document.querySelectorAll('.aantal-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  function vormIds() {
+    return ['v-ik', 'v-jij', 'v-hij', 'v-wij', 'v-vd', 'v-td', 'v-bvd'];
+  }
+
+  function clearOutput() {
+    const out = document.getElementById('output');
+    out.classList.remove('visible');
+    out.innerHTML = '';
+  }
+
+  /* ── Fisher-Yates shuffle ── */
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  /* ── Werkblad genereren uit database ── */
+  function generateWerkblad() {
+    if (!tijd || !wtype || vormen.length === 0) {
+      alert('Maak eerst een keuze bij alle drie de stappen.');
+      return;
+    }
+
+    const out = document.getElementById('output');
+    out.classList.add('visible');
+
+    /* Filter op groep, tijd en type */
+    const kandidaten = DB.filter(z =>
+      z.groep === groep &&
+      z.tijd  === tijd  &&
+      z.type  === wtype &&
+      vormen.includes(z.vorm)
+    );
+
+    if (kandidaten.length === 0) {
+      out.innerHTML = `<div style="color:#c0392b;font-size:13px;padding:0.5rem 0;">
+        <strong>Geen zinnen gevonden</strong> voor deze combinatie. Kies een andere groep of vorm.
+      </div>`;
+      return;
+    }
+
+    /* Verdeel zo gelijk mogelijk over gekozen vormen, dan shuffle */
+    let geselecteerd = [];
+    if (vormen.length > 1) {
+      const perVorm = Math.ceil(aantal / vormen.length);
+      vormen.forEach(v => {
+        const pool = shuffle(kandidaten.filter(z => z.vorm === v));
+        geselecteerd.push(...pool.slice(0, perVorm));
+      });
+      geselecteerd = shuffle(geselecteerd).slice(0, aantal);
+    } else {
+      geselecteerd = shuffle(kandidaten).slice(0, aantal);
+    }
+
+    /* Vul aan uit bredere pool als database te klein is */
+    if (geselecteerd.length < aantal) {
+      const extra = shuffle(kandidaten).filter(z => !geselecteerd.includes(z));
+      geselecteerd.push(...extra.slice(0, aantal - geselecteerd.length));
+    }
+
+    gegenereerdeZinnen     = geselecteerd.map(z => z.zin);
+    gegenereerdeAntwoorden = geselecteerd.map(z => z.antwoord);
+    gegenereerdeWerkmeta   = `Werkwoordspelling – ${tijd} – ${wtype}`;
+
+    const vormenLabel = vormen.join(', ');
+    let html = `<div class="output-title">${gegenereerdeWerkmeta}</div>`;
+    html += `<div class="output-instr">Vul het juiste werkwoord in. Tussen haakjes staat de infinitief. <span style="color:#2A7FD4;">(${vormenLabel})</span></div>`;
+    html += `<ul class="zinnen-list">`;
+    geselecteerd.forEach((z, i) => {
+      const vormBadge = `<span style="font-size:10px;color:#2A7FD4;background:#e8f4fd;border-radius:4px;padding:1px 7px;margin-left:6px;white-space:nowrap;">${z.vorm}</span>`;
+      html += `<li><span class="nr">${i + 1}.</span><span>${z.zin}${vormBadge}</span></li>`;
+    });
+    html += `</ul>`;
+    html += `
+      <div class="action-row">
+        <button class="action-btn primary" onclick="maakPDF(false)">
+          <i class="ti ti-file-download" aria-hidden="true"></i> Werkblad PDF
+        </button>
+        <button class="action-btn primary" onclick="maakPDF(true)">
+          <i class="ti ti-file-check" aria-hidden="true"></i> Nakijkblad PDF
+        </button>
+        <button class="action-btn" onclick="generateWerkblad()">
+          <i class="ti ti-refresh" aria-hidden="true"></i> Nieuw werkblad
+        </button>
+      </div>
+      <div class="info-box">
+        <i class="ti ti-info-circle" aria-hidden="true"></i>
+        De PDF wordt direct gedownload. Klik op "Nieuw werkblad" voor een andere selectie uit de database.
+      </div>`;
+
+    out.innerHTML = html;
+  }
+
+  /* ── PDF genereren ── */
+  function maakPDF(isNakijk) {
+    if (!gegenereerdeZinnen.length) return;
+    const { jsPDF } = window.jspdf;
+    const doc    = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+    const today  = new Date().toLocaleDateString('nl-NL');
+    const pgW    = 210;
+    const marge  = 20;
+    const tekstB = pgW - marge * 2;
+
+    /* Header gradient */
+    for (let x = 0; x <= 210; x++) {
+      const t = x / 210;
+      const r = Math.round(42  + t * (45  - 42));
+      const g = Math.round(127 + t * (191 - 127));
+      const b = Math.round(212 + t * (142 - 212));
+      doc.setFillColor(r, g, b);
+      doc.rect(x, 0, 1, 22, 'F');
+    }
+
+    /* Titel in header */
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(13);
+    doc.setFont('helvetica', 'bold');
+    doc.text(isNakijk ? 'Nakijkblad – Werkwoordspelling' : 'Werkblad – Werkwoordspelling', marge, 10);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Groep ' + groep, marge, 17);
+
+    /* Naam-veld rechtsboven */
+    if (!isNakijk) {
+      doc.setFontSize(8);
+      doc.setTextColor(255, 255, 255);
+      doc.text('Naam:', pgW - marge - 60, 10);
+      doc.setDrawColor(255, 255, 255);
+      doc.setLineWidth(0.3);
+      doc.line(pgW - marge - 48, 10.5, pgW - marge, 10.5);
+    } else {
+      doc.setFontSize(8);
+      doc.setFont('helvetica', 'italic');
+      doc.setTextColor(255, 255, 255);
+      doc.text('Voor de leerkracht', pgW - marge, 13, { align: 'right' });
+    }
+
+    /* Subtitel */
+    doc.setTextColor(100, 100, 100);
+    doc.setFontSize(8.5);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`${gegenereerdeWerkmeta}   |   ${today}`, marge, 30);
+
+    /* Instructie */
+    let y = 37;
+    doc.setFont('helvetica', 'italic');
+    doc.setTextColor(130, 130, 130);
+    doc.setFontSize(8.5);
+    doc.text('Instructie: Vul het juiste werkwoord in. Tussen haakjes staat de infinitief.', marge, y);
+    doc.setFont('helvetica', 'normal');
+    y += 6;
+
+    /* Scheidingslijn */
+    doc.setDrawColor(220, 220, 220);
+    doc.setLineWidth(0.3);
+    doc.line(marge, y, pgW - marge, y);
+    y += 7;
+
+    /* Zinnen */
+    gegenereerdeZinnen.forEach((zin, i) => {
+      if (y > 272) { doc.addPage(); y = 22; }
+
+      if (i % 2 === 0) {
+        doc.setFillColor(248, 248, 248);
+        doc.rect(marge - 2, y - 4.5, tekstB + 4, 11, 'F');
+      }
+
+      doc.setFontSize(8);
+      doc.setTextColor(190, 190, 190);
+      doc.text(String(i + 1) + '.', marge, y);
+
+      doc.setFontSize(10);
+      doc.setTextColor(26, 26, 26);
+      let zinTekst = isNakijk
+        ? zin.replace('___', '[' + gegenereerdeAntwoorden[i] + ']')
+        : zin;
+
+      const antwoordKolom = isNakijk ? 38 : 0;
+      const regels = doc.splitTextToSize(zinTekst, tekstB - 10 - antwoordKolom);
+      doc.text(regels, marge + 8, y);
+
+      if (isNakijk) {
+        doc.setFont('helvetica', 'bold');
+        doc.setTextColor(42, 127, 212);
+        doc.setFontSize(9);
+        doc.text(gegenereerdeAntwoorden[i], pgW - marge, y, { align: 'right' });
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(26, 26, 26);
+      }
+
+      y += regels.length > 1 ? regels.length * 5 + 4 : 11;
+    });
+
+    /* Footer */
+    doc.setFontSize(7.5);
+    doc.setTextColor(200, 200, 200);
+    doc.text('www.leerblad.nl', pgW / 2, 289, { align: 'center' });
+
+    const naam = (isNakijk ? 'nakijkblad' : 'werkblad') + '_groep' + groep + '_werkwoordspelling.pdf';
+    doc.save(naam);
+  }
+</script>
+
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: #f8f8f8;
+      color: #1a1a1a;
+      min-height: 100vh;
+    }
+
+    /* ── Topbar ── */
+    .topbar {
       background: #fff;
-      border: 0.5px solid #f0d98a;
+      border-bottom: 0.5px solid #e5e5e5;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .topbar-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 160px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+      gap: 1rem;
+    }
+
+    /* ── Logo ── */
+    .logo {
+      font-size: 32px;
+      font-weight: 200;
+      letter-spacing: 1.5px;
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      white-space: nowrap;
+      text-decoration: none;
+      line-height: 1.1;
+    }
+    .logo-tagline-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .logo-tagline-line {
+      height: 1px;
+      width: 36px;
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      opacity: 0.4;
+    }
+    .logo-tagline {
+      font-size: 8.5px;
+      letter-spacing: 3px;
+      color: #2A7FD4;
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    nav { display: flex; gap: 4px; flex-wrap: wrap; }
+    .nav-btn {
+      font-size: 13px;
+      font-weight: 400;
+      color: #888;
+      border: none;
+      background: none;
+      padding: 7px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover { background: #f0f0f0; color: #1a1a1a; }
+    .nav-btn.active {
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      color: #fff;
+      font-weight: 500;
+    }
+    .nav-btn.soon { color: #ccc; cursor: default; }
+    .nav-btn.soon:hover { background: none; color: #ccc; }
+    .tag {
+      font-size: 9px;
+      background: #f0f0f0;
+      color: #bbb;
+      padding: 2px 6px;
+      border-radius: 10px;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+
+    /* ── Main layout ── */
+    .main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 160px 4rem;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 300;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    .section-sub {
+      font-size: 13px;
+      color: #999;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Groep-knoppen ── */
+    .groep-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+    }
+    .groep-btn {
+      font-size: 13px;
+      border: 0.5px solid #e0e0e0;
+      background: #fff;
+      color: #555;
+      padding: 8px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .groep-btn:hover { border-color: #2A7FD4; color: #2A7FD4; }
+    .groep-btn.active {
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      border-color: transparent;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    /* ── Kaarten ── */
+    .card {
+      background: #fff;
+      border: 0.5px solid #e5e5e5;
       border-radius: 12px;
       padding: 1.25rem 1.5rem;
-      margin-bottom: 1.25rem;
+      margin-bottom: 1rem;
     }
-    .api-section .card-label { color: #c9971a; }
-    .api-input-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 8px; }
-    .api-input {
+    .card-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: #2A7FD4;
+      margin-bottom: 12px;
+    }
+    .step-hint {
+      font-size: 12px;
+      color: #bbb;
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+
+    /* ── Optie-knoppen ── */
+    .option-grid { display: flex; gap: 8px; flex-wrap: wrap; }
+    .opt {
       font-size: 13px;
       border: 0.5px solid #e0e0e0;
       background: #f8f8f8;
-      color: #1a1a1a;
-      padding: 9px 14px;
+      color: #555;
+      padding: 8px 16px;
       border-radius: 8px;
-      flex: 1;
-      min-width: 260px;
-      outline: none;
-      transition: border-color 0.15s;
+      cursor: pointer;
+      transition: all 0.15s;
     }
-    .api-input:focus { border-color: #2A7FD4; background: #fff; }
-    .api-hint { font-size: 11.5px; color: #aaa; margin-top: 6px; }
+    .opt:hover { border-color: #2A7FD4; color: #2A7FD4; background: #e8f4fd; }
+    .opt.active { border-color: #2A7FD4; background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
+    .opt.disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+
+    /* ── Aantal-knoppen ── */
+    .aantal-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .aantal-label { font-size: 13px; color: #888; }
+    .aantal-btn {
+      width: 48px; height: 42px;
+      border: 0.5px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #555;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .aantal-btn:hover { border-color: #2A7FD4; color: #2A7FD4; background: #e8f4fd; }
+    .aantal-btn.active { border-color: #2A7FD4; background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
+
+    /* ── Genereer-knop ── */
+    .generate-btn {
+      font-size: 14px;
+      font-weight: 500;
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      color: #fff;
+      border: none;
+      padding: 13px 32px;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .generate-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .generate-btn:active { transform: translateY(0); }
+    .generate-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    /* ── Output ── */
+    .output-area {
+      background: #fff;
+      border: 0.5px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-top: 1.5rem;
+      display: none;
+    }
+    .output-area.visible { display: block; }
+    .output-title {
+      font-size: 17px;
+      font-weight: 400;
+      color: #1a1a1a;
+      margin-bottom: 4px;
+    }
+    .output-instr { font-size: 13px; color: #999; margin-bottom: 1rem; }
+    .zinnen-list { list-style: none; padding: 0; }
+    .zinnen-list li {
+      padding: 10px 0;
+      border-bottom: 0.5px solid #f0f0f0;
+      font-size: 14px;
+      display: flex;
+      gap: 10px;
+      line-height: 1.6;
+    }
+    .zinnen-list li:last-child { border-bottom: none; }
+    .nr { font-size: 11px; color: #ccc; min-width: 22px; padding-top: 3px; }
+
+    /* ── Actie-knoppen ── */
+    .action-row { display: flex; gap: 8px; margin-top: 1.25rem; flex-wrap: wrap; }
+    .action-btn {
+      font-size: 12.5px;
+      border: 0.5px solid #e0e0e0;
+      background: #fff;
+      color: #555;
+      padding: 9px 18px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .action-btn:hover { border-color: #2A7FD4; color: #2A7FD4; }
+    .action-btn.primary {
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      color: #fff;
+      border-color: transparent;
+    }
+    .action-btn.primary:hover { opacity: 0.85; }
+
+    /* ── Info box ── */
+    .info-box {
+      background: #e8f4fd;
+      border: 0.5px solid #b8d9f5;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: #2A7FD4;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ── Loading ── */
+    .loading-text { color: #2A7FD4; font-style: italic; font-size: 13px; padding: 1rem 0; }
 
     /* ── "Binnenkort" placeholder ── */
     .soon-placeholder {
@@ -365,20 +1055,7 @@
   <!-- SECTIE: WERKWOORDSPELLING -->
   <section id="sectie-spelling">
     <h1 class="section-title">Werkwoordspelling</h1>
-    <p class="section-sub">Stel het werkblad stap voor stap in en genereer een PDF met nakijkblad</p>
-
-    <!-- API-sleutel -->
-    <div class="api-section">
-      <div class="card-label">Anthropic API-sleutel</div>
-      <div class="api-input-row">
-        <input class="api-input" type="password" id="api-key" placeholder="sk-ant-..." autocomplete="off" />
-      </div>
-      <p class="api-hint">
-        Vereist voor het genereren van zinnen. Haal je sleutel op via
-        <a href="https://console.anthropic.com" target="_blank" rel="noopener" style="color:#2A7FD4;">console.anthropic.com</a>.
-        De sleutel wordt alleen lokaal gebruikt en nooit opgeslagen.
-      </p>
-    </div>
+    <p class="section-sub">Stel het werkblad in en genereer direct een PDF met nakijkblad — geen account nodig</p>
 
     <!-- Groepskeuze -->
     <div class="groep-row">
@@ -563,112 +1240,6 @@
     out.innerHTML = '';
   }
 
-  /* ── Werkblad genereren ── */
-  async function generateWerkblad() {
-    const apiKey = document.getElementById('api-key').value.trim();
-    if (!apiKey) { alert('Voer eerst je Anthropic API-sleutel in.'); return; }
-    if (!tijd || !wtype || vormen.length === 0) { alert('Maak eerst een keuze bij alle drie de stappen.'); return; }
-
-    const vormenTekst = vormen.join(', ');
-    const btn = document.getElementById('gen-btn');
-    const out = document.getElementById('output');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="ti ti-loader-2" aria-hidden="true"></i> Even geduld...';
-    out.classList.add('visible');
-    out.innerHTML = '<div class="loading-text">Zinnen worden aangemaakt voor groep ' + groep + '…</div>';
-
-    const prompt = `Je bent een Nederlandse taalmethode-auteur voor de basisschool.
-Maak ${aantal} oefenzinnen werkwoordspelling voor groep ${groep}.
-Tijd: ${tijd}. Werkwoordtype: ${wtype}. Gevraagde vorm(en): ${vormenTekst}.
-
-${vormen.length > 1 ? 'Verdeel de zinnen zo goed mogelijk over de gekozen vormen.' : ''}
-
-Elke zin bevat:
-- Een contextzin op niveau groep ${groep}
-- Tussen haakjes het infinitief van het werkwoord als hint
-- Een ___ op de plek van het in te vullen werkwoord
-- Een "vorm"-veld dat aangeeft welke werkwoordsvorm gevraagd wordt
-
-Voorbeeld (groep 8, verleden tijd, sterke werkwoorden, voltooid deelwoord):
-"(uitsloven) De voetballer heeft zich ___ door een omhaal te maken."  antwoord: uitgeslooft
-
-Geef ALLEEN geldige JSON terug, geen uitleg, geen backticks:
-{
-  "titel": "Werkwoordspelling – ${tijd} – ${wtype}",
-  "instructie": "Vul het juiste werkwoord in. Tussen haakjes staat de infinitief.",
-  "zinnen": [
-    {"zin": "...", "antwoord": "...", "vorm": "..."}
-  ]
-}`;
-
-    try {
-      const resp = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-calls': 'true'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 2000,
-          messages: [{ role: 'user', content: prompt }]
-        })
-      });
-
-      if (!resp.ok) {
-        const err = await resp.json();
-        throw new Error(err.error?.message || 'API-fout');
-      }
-
-      const data   = await resp.json();
-      const text   = data.content.map(i => i.text || '').join('');
-      const clean  = text.replace(/```json|```/g, '').trim();
-      const parsed = JSON.parse(clean);
-
-      gegenereerdeZinnen     = parsed.zinnen.map(z => z.zin);
-      gegenereerdeAntwoorden = parsed.zinnen.map(z => z.antwoord);
-      gegenereerdeWerkmeta   = parsed.titel;
-
-      let html = `<div class="output-title">${parsed.titel}</div>`;
-      html += `<div class="output-instr">${parsed.instructie}</div>`;
-      html += `<ul class="zinnen-list">`;
-      parsed.zinnen.forEach((z, i) => {
-        const vormBadge = z.vorm
-          ? `<span style="font-size:10px;color:#2A7FD4;background:#e8f4fd;border-radius:4px;padding:1px 7px;margin-left:6px;white-space:nowrap;">${z.vorm}</span>`
-          : '';
-        html += `<li><span class="nr">${i + 1}.</span><span>${z.zin}${vormBadge}</span></li>`;
-      });
-      html += `</ul>`;
-      html += `
-        <div class="action-row">
-          <button class="action-btn primary" onclick="maakPDF(false)">
-            <i class="ti ti-file-download" aria-hidden="true"></i> Werkblad PDF
-          </button>
-          <button class="action-btn primary" onclick="maakPDF(true)">
-            <i class="ti ti-file-check" aria-hidden="true"></i> Nakijkblad PDF
-          </button>
-          <button class="action-btn" onclick="generateWerkblad()">
-            <i class="ti ti-refresh" aria-hidden="true"></i> Nieuw werkblad
-          </button>
-        </div>
-        <div class="info-box">
-          <i class="ti ti-info-circle" aria-hidden="true"></i>
-          De PDF wordt direct gedownload naar je map 'Downloads'.
-        </div>`;
-
-      out.innerHTML = html;
-
-    } catch (e) {
-      out.innerHTML = `<div style="color:#c0392b;font-size:13px;padding:0.5rem 0;">
-        <strong>Fout:</strong> ${e.message}. Controleer je API-sleutel en probeer opnieuw.
-      </div>`;
-    }
-
-    btn.disabled = false;
-    btn.innerHTML = '<i class="ti ti-sparkles" aria-hidden="true"></i> Werkblad genereren';
-  }
 
   /* ── PDF genereren ── */
   function maakPDF(isNakijk) {
