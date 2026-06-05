@@ -249,7 +249,21 @@
       align-items: center;
       gap: 6px;
     }
-    .som-nr { font-size: 11px; color: #ccc; min-width: 20px; }
+    /* ── Aantal-knoppen ── */
+    .aantal-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .aantal-btn {
+      font-size: 13px;
+      border: 0.5px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #555;
+      padding: 8px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .aantal-btn:hover { border-color: #2A7FD4; color: #2A7FD4; background: #e8f4fd; }
+    .aantal-btn.active { border-color: #2A7FD4; background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
+    .aantal-label { font-size: 13px; color: #888; }
 
     /* ── Actie-knoppen ── */
     .action-row { display: flex; gap: 8px; margin-top: 1.25rem; flex-wrap: wrap; }
@@ -356,20 +370,31 @@
       <button class="alle-btn" id="alleBtn" onclick="toggleAlle()">Alle tafels</button>
     </div>
 
-    <!-- Stap 2: genereer -->
+    <!-- Stap 2: aantal sommen -->
     <div class="card">
-      <div class="card-label">Stap 2 &nbsp;·&nbsp; Werkblad genereren</div>
+      <div class="card-label">Stap 2 &nbsp;·&nbsp; Aantal sommen</div>
+      <div class="aantal-row">
+        <span class="aantal-label">Kies het aantal:</span>
+        <button class="aantal-btn" onclick="setAantal(50, this)">50</button>
+        <button class="aantal-btn active" onclick="setAantal(100, this)">100</button>
+        <button class="aantal-btn" onclick="setAantal(200, this)">200</button>
+      </div>
+    </div>
+
+    <!-- Stap 3: genereer -->
+    <div class="card">
+      <div class="card-label">Stap 3 &nbsp;·&nbsp; Werkblad genereren</div>
       <button class="generate-btn" onclick="genereerTafels()">Werkblad genereren</button>
     </div>
 
     <!-- Output -->
     <div class="output-area" id="outputArea">
       <div class="output-title" id="outputTitle">Tafelsommen</div>
-      <div class="output-instr">100 sommen in willekeurige volgorde. Elke keer opnieuw gegenereerd.</div>
+      <div class="output-instr" id="outputInstr">Sommen in willekeurige volgorde, gegroepeerd per 5. Elke keer opnieuw gegenereerd.</div>
       <div class="sommen-grid" id="sommenGrid"></div>
       <div class="action-row">
         <button class="action-btn" onclick="genereerTafels()">Opnieuw genereren</button>
-        <button class="action-btn primary" onclick="maakPDF()">Download PDF</button>
+        <button class="action-btn primary" onclick="maakPDF()">Download PDF + antwoordblad</button>
       </div>
     </div>
 
@@ -415,8 +440,6 @@
       cb.checked = alleActief;
     });
   }
-
-  /* Sync "Alle tafels" knop bij handmatig aanvinken */
   document.querySelectorAll('#tafelGrid input[type="checkbox"]').forEach(cb => {
     cb.addEventListener('change', () => {
       const alle = document.querySelectorAll('#tafelGrid input[type="checkbox"]');
@@ -424,6 +447,14 @@
       document.getElementById('alleBtn').classList.toggle('active', alleActief);
     });
   });
+
+  /* ── Aantal ── */
+  let gekozenAantal = 100;
+  function setAantal(n, el) {
+    gekozenAantal = n;
+    document.querySelectorAll('.aantal-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+  }
 
   /* ── Fisher-Yates shuffle ── */
   function shuffle(arr) {
@@ -434,122 +465,156 @@
     return arr;
   }
 
-  /* ── Genereer 100 sommen ── */
+  /* ── Genereer sommen ── */
   let huidigeSommen = [];
 
   function genereerTafels() {
     const gekozen = [...document.querySelectorAll('#tafelGrid input:checked')].map(c => +c.value);
-    if (gekozen.length === 0) {
-      alert('Kies minimaal één tafel.');
-      return;
-    }
+    if (gekozen.length === 0) { alert('Kies minimaal één tafel.'); return; }
 
-    /* Maak pool: alle combinaties tafel × 0..10 */
     let pool = [];
-    gekozen.forEach(t => {
-      for (let i = 0; i <= 10; i++) pool.push({ a: t, b: i });
-    });
+    gekozen.forEach(t => { for (let i = 0; i <= 10; i++) pool.push({ a: t, b: i }); });
 
-    /* Shuffle en vul aan tot 100 */
     shuffle(pool);
     huidigeSommen = [];
-    while (huidigeSommen.length < 100) {
-      huidigeSommen.push(...pool);
-    }
-    huidigeSommen = shuffle(huidigeSommen).slice(0, 100);
+    while (huidigeSommen.length < gekozenAantal) huidigeSommen.push(...pool);
+    huidigeSommen = shuffle(huidigeSommen).slice(0, gekozenAantal);
 
-    /* Toon in UI */
+    /* Toon in UI — gegroepeerd per 5 */
     const grid = document.getElementById('sommenGrid');
     grid.innerHTML = '';
     huidigeSommen.forEach((s, i) => {
+      if (i > 0 && i % 5 === 0) {
+        const gap = document.createElement('div');
+        gap.style.cssText = 'grid-column: 1 / -1; height: 6px;';
+        grid.appendChild(gap);
+      }
       const div = document.createElement('div');
       div.className = 'som-item';
-      div.innerHTML = `<span class="som-nr">${i + 1}.</span> ${s.a} &times; ${s.b} = ___`;
+      div.innerHTML = `${s.a} &times; ${s.b} = ___`;
       grid.appendChild(div);
     });
 
-    /* Titel bijwerken */
-    const tafelnamen = gekozen.map(t => `tafel van ${t}`).join(', ');
+    const gekozenTafels = gekozen;
+    const tafelnamen = gekozenTafels.length === 11
+      ? '0 t/m 10'
+      : gekozenTafels.map(t => `tafel van ${t}`).join(', ');
     document.getElementById('outputTitle').textContent = `Tafelsommen (${tafelnamen})`;
+    document.getElementById('outputInstr').textContent =
+      `${gekozenAantal} sommen in willekeurige volgorde, gegroepeerd per 5. Elke keer opnieuw gegenereerd.`;
 
     document.getElementById('outputArea').classList.add('visible');
     document.getElementById('outputArea').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   /* ── PDF genereren ── */
-  function maakPDF() {
-    if (huidigeSommen.length === 0) return;
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-
+  function tekenPagina(doc, sommen, paginaNr, totaalPaginas, titelTekst, isAntwoord) {
     const pw = 210, ph = 297;
     const ml = 14, mr = 14, mt = 14, mb = 14;
     const bw = pw - ml - mr;
 
-    /* Naam veld rechtsboven */
-    doc.setFontSize(9);
-    doc.setTextColor(150);
-    doc.text('Naam:', pw - mr - 52, mt + 4);
-    doc.setDrawColor(180);
-    doc.line(pw - mr - 44, mt + 4.5, pw - mr, mt + 4.5);
+    /* Naam veld rechtsboven (alleen werkblad) */
+    if (!isAntwoord) {
+      doc.setFontSize(9);
+      doc.setTextColor(150);
+      doc.text('Naam:', pw - mr - 52, mt + 4);
+      doc.setDrawColor(180);
+      doc.line(pw - mr - 44, mt + 4.5, pw - mr, mt + 4.5);
+    }
 
     /* Titel */
-    const gekozen = [...document.querySelectorAll('#tafelGrid input:checked')].map(c => +c.value);
-    const titelTekst = gekozen.length === 11
-      ? 'Tafelsommen 0 t/m 10'
-      : 'Tafelsommen — tafel van ' + gekozen.join(', ');
-
     doc.setFontSize(16);
     doc.setTextColor(30);
     doc.setFont('helvetica', 'normal');
-    doc.text(titelTekst, ml, mt + 4);
+    const paginaLabel = isAntwoord ? titelTekst + ' — Antwoordblad' : titelTekst;
+    doc.text(paginaLabel, ml, mt + 4);
 
     /* Subtitel */
     doc.setFontSize(8);
     doc.setTextColor(160);
-    doc.text('100 sommen · www.leerblad.nl', ml, mt + 9.5);
+    const sub = totaalPaginas > 1
+      ? `${sommen.length} sommen · pagina ${paginaNr} van ${totaalPaginas} · www.leerblad.nl`
+      : `${sommen.length} sommen · www.leerblad.nl`;
+    doc.text(sub, ml, mt + 9.5);
 
     /* Scheidingslijn */
     doc.setDrawColor(220);
     doc.line(ml, mt + 12, pw - mr, mt + 12);
 
-    /* Sommen in 4 kolommen */
+    /* Sommen in 4 kolommen, gegroepeerd per 5 */
     const colCount = 4;
     const colW = bw / colCount;
-    const rowCount = 25; /* 4 × 25 = 100 */
-    const startY = mt + 16;
-    const rowH = (ph - mb - startY) / rowCount;
+    const startY = mt + 17;
+    const beschikbaarH = ph - mb - startY;
 
-    doc.setFontSize(10);
-    doc.setTextColor(30);
+    /* Per kolom max 25 rijen + 4 groepsgaten = 25 rijen */
+    const sommenPerKolom = Math.ceil(sommen.length / colCount);
+    const groepen = Math.ceil(sommenPerKolom / 5);
+    const gapH = 3; /* mm extra ruimte na elke groep van 5 */
+    const totaalRijen = sommenPerKolom;
+    const totaalGaten = Math.max(0, groepen - 1);
+    const rowH = (beschikbaarH - totaalGaten * gapH) / totaalRijen;
+
     doc.setFont('helvetica', 'normal');
 
-    huidigeSommen.forEach((s, idx) => {
-      const col = Math.floor(idx / rowCount);
-      const row = idx % rowCount;
+    sommen.forEach((s, idx) => {
+      const col = Math.floor(idx / sommenPerKolom);
+      const rowInKol = idx % sommenPerKolom;
+      const groepInKol = Math.floor(rowInKol / 5);
       const x = ml + col * colW;
-      const y = startY + row * rowH;
+      const y = startY + rowInKol * rowH + groepInKol * gapH;
 
-      /* Nummer */
-      doc.setFontSize(7);
-      doc.setTextColor(180);
-      doc.text(`${idx + 1}.`, x, y);
-
-      /* Som */
-      doc.setFontSize(10);
-      doc.setTextColor(30);
-      doc.text(`${s.a} × ${s.b} = `, x + 5, y);
-
-      /* Antwoordlijn */
-      doc.setDrawColor(180);
-      const lineStart = x + 5 + doc.getTextWidth(`${s.a} × ${s.b} = `);
-      doc.line(lineStart, y + 0.3, lineStart + 14, y + 0.3);
+      if (isAntwoord) {
+        /* Antwoord: som + = antwoord */
+        doc.setFontSize(9);
+        doc.setTextColor(30);
+        doc.text(`${s.a} × ${s.b} = ${s.a * s.b}`, x, y);
+      } else {
+        /* Werkblad: som + antwoordlijn */
+        doc.setFontSize(10);
+        doc.setTextColor(30);
+        const somTekst = `${s.a} × ${s.b} = `;
+        doc.text(somTekst, x, y);
+        doc.setDrawColor(180);
+        const lineStart = x + doc.getTextWidth(somTekst);
+        doc.line(lineStart, y + 0.3, lineStart + 12, y + 0.3);
+      }
     });
 
     /* Footer */
     doc.setFontSize(7);
     doc.setTextColor(180);
     doc.text('www.leerblad.nl', pw / 2, ph - mb + 4, { align: 'center' });
+  }
+
+  function maakPDF() {
+    if (huidigeSommen.length === 0) return;
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+    const gekozen = [...document.querySelectorAll('#tafelGrid input:checked')].map(c => +c.value);
+    const titelTekst = gekozen.length === 11
+      ? 'Tafelsommen 0 t/m 10'
+      : 'Tafelsommen — tafel van ' + gekozen.join(', ');
+
+    const maxPerPagina = 100;
+    const paginas = [];
+    for (let i = 0; i < huidigeSommen.length; i += maxPerPagina) {
+      paginas.push(huidigeSommen.slice(i, i + maxPerPagina));
+    }
+    const totaalPaginas = paginas.length;
+
+    /* Werkblad pagina's */
+    paginas.forEach((sommen, pi) => {
+      if (pi > 0) doc.addPage();
+      tekenPagina(doc, sommen, pi + 1, totaalPaginas, titelTekst, false);
+    });
+
+    /* Antwoordblad pagina's */
+    paginas.forEach((sommen, pi) => {
+      doc.addPage();
+      tekenPagina(doc, sommen, pi + 1, totaalPaginas, titelTekst, true);
+    });
 
     doc.save('tafelsommen-leerblad.pdf');
   }
