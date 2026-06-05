@@ -36,13 +36,13 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 72px;
+      height: 84px;
       gap: 1rem;
     }
 
     /* ── Logo ── */
     .logo {
-      font-size: 32px;
+      font-size: 40px;
       font-weight: 200;
       letter-spacing: 1.5px;
       background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
@@ -74,13 +74,13 @@
 
     nav { display: flex; gap: 4px; flex-wrap: wrap; }
     .nav-btn {
-      font-size: 13px;
+      font-size: 15px;
       font-weight: 400;
       color: #888;
       border: none;
       background: none;
-      padding: 7px 14px;
-      border-radius: 20px;
+      padding: 9px 18px;
+      border-radius: 22px;
       cursor: pointer;
       transition: background 0.15s, color 0.15s;
       white-space: nowrap;
@@ -317,8 +317,8 @@
 <!-- TOPBAR -->
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="logo" href="../index.html" style="display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;border:0.5px solid #e5e5e5;border-radius:10px;padding:8px 18px;">
-      <span style="font-size:32px;font-weight:200;letter-spacing:1.5px;background:linear-gradient(90deg,#2A7FD4,#2DBF8E);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Leerblad</span>
+    <a class="logo" href="../index.html" style="display:flex;flex-direction:column;align-items:center;gap:2px;text-decoration:none;">
+      <span style="font-size:40px;font-weight:200;letter-spacing:1.5px;background:linear-gradient(90deg,#2A7FD4,#2DBF8E);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Leerblad</span>
       <div class="logo-tagline-row">
         <div class="logo-tagline-line"></div>
         <div class="logo-tagline">Werkbladen op maat</div>
@@ -340,7 +340,7 @@
   <!-- SECTIE: WERKWOORDSPELLING -->
   <section id="sectie-spelling">
     <h1 class="section-title">Werkwoordspelling</h1>
-    <p class="section-sub">Stel het werkblad in en genereer direct een PDF met nakijkblad — geen account nodig</p>
+    <p class="section-sub">Stel het werkblad in en genereer direct een PDF met nakijkblad geen account nodig</p>
 
     <!-- Groepskeuze -->
     <div class="groep-row">
@@ -355,7 +355,7 @@
 
     <!-- Stap 1: Tijd -->
     <div class="card">
-      <div class="card-label">Stap 1 — Tijd <span style="font-size:10px;font-weight:400;color:#bbb;letter-spacing:0;text-transform:none;">(meerdere keuzes mogelijk)</span></div>
+      <div class="card-label">Stap 1 Tijd <span style="font-size:10px;font-weight:400;color:#bbb;letter-spacing:0;text-transform:none;">(meerdere keuzes mogelijk)</span></div>
       <div class="option-grid">
         <button class="opt" id="tt-btn" onclick="toggleTijd('tegenwoordige tijd', this)">Tegenwoordige tijd</button>
         <button class="opt" id="vt-btn" onclick="toggleTijd('verleden tijd', this)">Verleden tijd</button>
@@ -364,7 +364,7 @@
 
     <!-- Stap 2: Werkwoordtype -->
     <div class="card">
-      <div class="card-label">Stap 2 — Werkwoordtype <span style="font-size:10px;font-weight:400;color:#bbb;letter-spacing:0;text-transform:none;">(meerdere keuzes mogelijk)</span></div>
+      <div class="card-label">Stap 2 Werkwoordtype <span style="font-size:10px;font-weight:400;color:#bbb;letter-spacing:0;text-transform:none;">(meerdere keuzes mogelijk)</span></div>
       <div class="step-hint" id="type-hint">Kies eerst een tijd</div>
       <div class="option-grid">
         <button class="opt disabled" id="zwak-btn" onclick="toggleType('zwakke werkwoorden', this)">Zwakke werkwoorden</button>
@@ -374,7 +374,7 @@
 
     <!-- Stap 3: Vorm (meerdere selecteerbaar) -->
     <div class="card">
-      <div class="card-label">Stap 3 — Werkwoordsvorm <span style="font-size:10px;font-weight:400;color:#bbb;letter-spacing:0;text-transform:none;">(meerdere keuzes mogelijk)</span></div>
+      <div class="card-label">Stap 3 Werkwoordsvorm <span style="font-size:10px;font-weight:400;color:#bbb;letter-spacing:0;text-transform:none;">(meerdere keuzes mogelijk)</span></div>
       <div class="step-hint" id="vorm-hint">Kies eerst een werkwoordtype</div>
       <div class="option-grid">
         <button class="opt disabled" id="v-ik"  onclick="toggleVorm('ik-vorm', this)">Ik-vorm</button>
