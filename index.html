@@ -350,6 +350,9 @@
       <button class="groep-btn active" onclick="setGroep(8, this)">Groep 8</button>
     </div>
 
+    <!-- Groep-uitleg -->
+    <div id="groep-info" style="font-size:12.5px;color:#888;background:#fff;border:0.5px solid #e5e5e5;border-radius:10px;padding:10px 16px;margin-bottom:1rem;line-height:1.6;"></div>
+
     <!-- Stap 1: Tijd -->
     <div class="card">
       <div class="card-label">Stap 1 — Tijd <span style="font-size:10px;font-weight:400;color:#bbb;letter-spacing:0;text-transform:none;">(meerdere keuzes mogelijk)</span></div>
@@ -449,6 +452,34 @@
     return zin.replace(/___/g, '_______________');
   }
 
+  /* ── Curriculum per groep ── */
+  const GROEP_CONFIG = {
+    5: {
+      info: 'Groep 5 · Tegenwoordige tijd · Zwakke werkwoorden · Ik-, jij- en hij-vorm',
+      tijden: ['tegenwoordige tijd'],
+      types:  ['zwakke werkwoorden'],
+      vormen: ['ik-vorm', 'jij-vorm', 'hij-vorm']
+    },
+    6: {
+      info: 'Groep 6 · Tegenwoordige tijd · Zwakke en sterke werkwoorden · Alle persoonsvormen',
+      tijden: ['tegenwoordige tijd'],
+      types:  ['zwakke werkwoorden', 'sterke werkwoorden'],
+      vormen: ['ik-vorm', 'jij-vorm', 'hij-vorm', 'wij-vorm']
+    },
+    7: {
+      info: 'Groep 7 · Tegenwoordige en verleden tijd · Zwakke werkwoorden · \'t Kofschip · Voltooid deelwoord',
+      tijden: ['tegenwoordige tijd', 'verleden tijd'],
+      types:  ['zwakke werkwoorden'],
+      vormen: ['ik-vorm', 'jij-vorm', 'hij-vorm', 'wij-vorm', 'voltooid deelwoord']
+    },
+    8: {
+      info: 'Groep 8 · Alle tijden · Zwakke en sterke werkwoorden · Alle vormen inclusief deelwoorden',
+      tijden: ['tegenwoordige tijd', 'verleden tijd'],
+      types:  ['zwakke werkwoorden', 'sterke werkwoorden'],
+      vormen: ['ik-vorm', 'jij-vorm', 'hij-vorm', 'wij-vorm', 'voltooid deelwoord', 'tegenwoordig deelwoord', 'bijvoeglijk gebruikt voltooid deelwoord']
+    }
+  };
+
   /* ── State ── */
   let groep  = 8;
   let tijden = [];
@@ -468,16 +499,75 @@
     el.classList.add('active');
   }
 
+  /* ── Pas opties aan op basis van groep-curriculum ── */
+  function applyGroepConfig() {
+    const cfg = GROEP_CONFIG[groep];
+
+    // Groep-info tonen
+    document.getElementById('groep-info').textContent = cfg.info;
+
+    // Reset alle selecties
+    tijden = []; wtypes = []; vormen = [];
+    clearOutput();
+
+    // Tijd-knoppen
+    document.getElementById('tt-btn').classList.remove('active');
+    document.getElementById('vt-btn').classList.remove('active');
+    const vtBtn = document.getElementById('vt-btn');
+    if (cfg.tijden.includes('verleden tijd')) {
+      vtBtn.classList.remove('disabled');
+    } else {
+      vtBtn.classList.add('disabled');
+    }
+
+    // Type-knoppen resetten en blokkeren
+    ['zwak-btn', 'sterk-btn'].forEach(id => {
+      document.getElementById(id).classList.remove('active', 'disabled');
+      document.getElementById(id).classList.add('disabled');
+    });
+    document.getElementById('type-hint').textContent = 'Kies eerst een tijd';
+
+    // Sterk-knop blokkeren als niet in curriculum
+    if (!cfg.types.includes('sterke werkwoorden')) {
+      document.getElementById('sterk-btn').classList.add('disabled');
+    }
+
+    // Vorm-knoppen: alle resetten, dan niet-curriculum vergrendelen
+    const vormMap = {
+      'v-ik':  'ik-vorm',
+      'v-jij': 'jij-vorm',
+      'v-hij': 'hij-vorm',
+      'v-wij': 'wij-vorm',
+      'v-vd':  'voltooid deelwoord',
+      'v-td':  'tegenwoordig deelwoord',
+      'v-bvd': 'bijvoeglijk gebruikt voltooid deelwoord'
+    };
+    Object.entries(vormMap).forEach(([id, v]) => {
+      const el = document.getElementById(id);
+      el.classList.remove('active');
+      el.classList.add('disabled');
+      // Markeer permanent-vergrendeld (buiten curriculum) anders dan tijdelijk-vergrendeld
+      if (!cfg.vormen.includes(v)) {
+        el.setAttribute('data-curriculum-lock', '1');
+      } else {
+        el.removeAttribute('data-curriculum-lock');
+      }
+    });
+    document.getElementById('vorm-hint').textContent = 'Kies eerst een werkwoordtype';
+  }
+
   /* ── Groep ── */
   function setGroep(g, el) {
     groep = g;
     document.querySelectorAll('.groep-btn').forEach(b => b.classList.remove('active'));
     el.classList.add('active');
-    clearOutput();
+    applyGroepConfig();
   }
 
   /* ── Tijd (toggle, meerdere mogelijk) ── */
   function toggleTijd(t, el) {
+    const cfg = GROEP_CONFIG[groep];
+    if (!cfg.tijden.includes(t)) return;
     const idx = tijden.indexOf(t);
     if (idx === -1) {
       tijden.push(t);
@@ -486,10 +576,13 @@
       tijden.splice(idx, 1);
       el.classList.remove('active');
     }
-    // Type-knoppen activeren zodra minstens 1 tijd gekozen is
     if (tijden.length > 0) {
+      // Activeer type-knoppen die in curriculum zitten
       ['zwak-btn', 'sterk-btn'].forEach(id => {
-        document.getElementById(id).classList.remove('disabled');
+        const type = id === 'zwak-btn' ? 'zwakke werkwoorden' : 'sterke werkwoorden';
+        if (cfg.types.includes(type)) {
+          document.getElementById(id).classList.remove('disabled');
+        }
       });
       document.getElementById('type-hint').textContent = '';
     } else {
@@ -510,7 +603,8 @@
 
   /* ── Werkwoordtype (toggle, meerdere mogelijk) ── */
   function toggleType(tp, el) {
-    if (tijden.length === 0) return;
+    const cfg = GROEP_CONFIG[groep];
+    if (tijden.length === 0 || !cfg.types.includes(tp)) return;
     const idx = wtypes.indexOf(tp);
     if (idx === -1) {
       wtypes.push(tp);
@@ -520,8 +614,12 @@
       el.classList.remove('active');
     }
     if (wtypes.length > 0) {
+      // Activeer alleen vormen die in curriculum zitten
       vormIds().forEach(id => {
-        document.getElementById(id).classList.remove('disabled');
+        const el = document.getElementById(id);
+        if (!el.getAttribute('data-curriculum-lock')) {
+          el.classList.remove('disabled');
+        }
       });
       document.getElementById('vorm-hint').textContent = '';
     } else {
@@ -538,6 +636,7 @@
   /* ── Vorm (toggle, meerdere mogelijk) ── */
   function toggleVorm(v, el) {
     if (wtypes.length === 0) return;
+    if (el.getAttribute('data-curriculum-lock')) return;
     const idx = vormen.indexOf(v);
     if (idx === -1) {
       vormen.push(v);
@@ -720,10 +819,7 @@
     gegenereerdeZinnen.forEach((zin, i) => {
       if (y > 272) { doc.addPage(); y = 20; }
 
-      if (i % 2 === 0) {
-        doc.setFillColor(250, 250, 250);
-        doc.rect(marge - 2, y - 4.5, tekstB + 4, 12, 'F');
-      }
+      /* Geen achtergrondkleur: volledig wit voor milieuvriendelijk printen */
 
       /* Nummer */
       doc.setFontSize(8);
@@ -762,6 +858,9 @@
     const naam = (isNakijk ? 'nakijkblad' : 'werkblad') + '_groep' + groep + '_werkwoordspelling.pdf';
     doc.save(naam);
   }
+
+  /* ── Init: pas groep 8 config toe bij laden ── */
+  applyGroepConfig();
 </script>
 </body>
 </html>
