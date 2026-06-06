@@ -10,7 +10,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; overflow: hidden; }
-    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f8f8f8; color: #1a1a1a; display: flex; flex-direction: column; }
+    body { font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f8f8f8; color: #1a1a1a; display: flex; flex-direction: column; }
 
     /* ── Topbar ── */
     .topbar { background: #fff; border-bottom: 0.5px solid #e5e5e5; position: sticky; top: 0; z-index: 100; }
@@ -248,14 +248,13 @@
     /* Kleurpool voor voorkanten (per paar) */
     const kleurPool = [...KLEUREN].sort(() => Math.random() - 0.5);
 
-    /* Bouw paren voor alle gekozen tafels */
+    /* Bouw paren voor alle gekozen tafels (i=1..10, skip 0×t) */
     const paren = [];
     let paarTeller = 0;
     for (const tafel of [...gekozenTafels].sort((a,b)=>a-b)) {
-      for (let i = 0; i <= 10; i++) {
+      for (let i = 1; i <= 10; i++) {
         const voorKleur = kleurPool[paarTeller % kleurPool.length];
         const uid = paarTeller;
-        /* Elke kaart krijgt een eigen achterkantkleur, anders dan de voorkant */
         paren.push({ type: 'som',      tekst: `${i} × ${tafel}`, voorKleur, achterKleur: willekeurigeKleur(voorKleur), paarId: uid });
         paren.push({ type: 'uitkomst', tekst: String(i * tafel),  voorKleur, achterKleur: willekeurigeKleur(voorKleur), paarId: uid });
         paarTeller++;
@@ -280,9 +279,10 @@
     document.getElementById('foundDisplay').textContent = `0 / ${aantalParen}`;
 
     const grid = document.getElementById('memoryGrid');
-    /* Bepaal kolommen op basis van totaal aantal kaarten */
-    const totaal = paren.length;
-    const cols = totaal <= 22 ? 4 : totaal <= 44 ? 6 : 8;
+    /* Kies kolommen zodat het grid altijd volledig gevuld is (deelt de kaartjes exact) */
+    const totaal = paren.length; /* altijd veelvoud van 20 */
+    const voorkeursCols = [4, 5, 10, 8, 20];
+    const cols = voorkeursCols.find(c => totaal % c === 0) ?? 4;
     grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
     grid.classList.add('has-cards');
     grid.innerHTML = '';
