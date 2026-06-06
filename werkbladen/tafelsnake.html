@@ -10,16 +10,8 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      background: #f8f8f8;
-      color: #1a1a1a;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f8f8f8; color: #1a1a1a; min-height: 100vh; display: flex; flex-direction: column; }
 
-    /* ── Topbar (zelfde als rest van leerblad) ── */
     .topbar { background: #fff; border-bottom: 0.5px solid #e5e5e5; position: sticky; top: 0; z-index: 100; }
     .topbar-inner { max-width: 1280px; margin: 0 auto; padding: 0 160px; display: flex; align-items: center; justify-content: space-between; height: 84px; gap: 1rem; }
     .logo-link { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; flex-shrink: 0; }
@@ -44,134 +36,42 @@
     .nav-dropdown-item.soon { color: #ccc; pointer-events: none; }
     .nav-dropdown-item.soon .tag { background: #f5f5f5; color: #ccc; }
 
-    /* ── Pagina-inhoud ── */
     .main { max-width: 1280px; margin: 0 auto; padding: 2rem 160px 3rem; flex: 1; }
     .page-title { font-size: 28px; font-weight: 300; color: #1a1a1a; margin-bottom: 4px; }
     .page-sub { font-size: 13px; color: #999; margin-bottom: 1.75rem; }
 
-    /* ── Score & vraag boven het spelveld ── */
-    .game-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-      max-width: 480px;
-    }
+    .game-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; max-width: 480px; }
     .score-block { display: flex; flex-direction: column; align-items: center; min-width: 70px; }
     .score-label { font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: #bbb; margin-bottom: 2px; }
     .score-val { font-size: 26px; font-weight: 700; color: #1a1a1a; }
     .score-val.hs { background: linear-gradient(90deg, #f7971e, #ffd200); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 
-    .question-box {
-      flex: 1;
-      text-align: center;
-      background: #fff;
-      border: 0.5px solid #e5e5e5;
-      border-radius: 14px;
-      padding: 10px 18px;
-      margin: 0 12px;
-    }
+    .question-box { flex: 1; text-align: center; background: #fff; border: 0.5px solid #e5e5e5; border-radius: 14px; padding: 10px 18px; margin: 0 12px; }
     .question-lbl { font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: #bbb; margin-bottom: 2px; }
-    .question-txt {
-      font-size: 28px;
-      font-weight: 800;
-      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      min-height: 38px;
-      line-height: 1.1;
-    }
+    .question-txt { font-size: 28px; font-weight: 800; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; min-height: 38px; line-height: 1.1; }
 
-    /* ── Spelveld ── */
-    .canvas-wrap {
-      position: relative;
-      border-radius: 16px;
-      overflow: hidden;
-      max-width: 480px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.13);
-    }
-    canvas { display: block; width: 100%; }
+    .canvas-wrap { position: relative; border-radius: 16px; overflow: hidden; max-width: 480px; box-shadow: 0 4px 24px rgba(0,0,0,0.13); }
+    canvas { display: block; width: 100%; height: auto; }
 
-    /* ── Overlay ── */
-    .overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: rgba(14,17,23,0.82);
-      backdrop-filter: blur(5px);
-      border-radius: 16px;
-    }
+    .overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: rgba(14,17,23,0.82); backdrop-filter: blur(5px); border-radius: 16px; }
     .overlay.hidden { display: none; }
     .ov-emoji { font-size: 48px; line-height: 1; }
     .ov-title { font-size: 24px; font-weight: 800; color: #fff; }
     .ov-sub { font-size: 13px; color: rgba(255,255,255,0.5); text-align: center; max-width: 260px; line-height: 1.6; }
     .ov-score { font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.7); }
     .ov-score span { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .start-btn {
-      margin-top: 4px;
-      font-size: 15px;
-      font-weight: 600;
-      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
-      color: #fff;
-      border: none;
-      padding: 12px 34px;
-      border-radius: 30px;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
-    }
+    .start-btn { margin-top: 4px; font-size: 15px; font-weight: 600; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; border: none; padding: 12px 34px; border-radius: 30px; cursor: pointer; transition: opacity 0.2s, transform 0.15s; }
     .start-btn:hover { opacity: 0.88; transform: translateY(-1px); }
     .start-btn:active { transform: translateY(0); }
 
-    /* ── D-pad ── */
-    .dpad {
-      display: grid;
-      grid-template-areas: ". up ." "left . right" ". down .";
-      gap: 6px;
-      margin-top: 14px;
-      max-width: 480px;
-    }
-    .dpad-btn {
-      width: 50px; height: 50px;
-      background: #fff;
-      border: 0.5px solid #e5e5e5;
-      border-radius: 12px;
-      color: #555;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.1s, border-color 0.1s, transform 0.08s;
-      user-select: none;
-    }
-    .dpad-btn:active { background: #e8f4fd; border-color: #2A7FD4; color: #2A7FD4; transform: scale(0.93); }
-    .dpad-up { grid-area: up; }
-    .dpad-left { grid-area: left; }
-    .dpad-right { grid-area: right; }
-    .dpad-down { grid-area: down; }
-
-    /* ── Footer ── */
     footer { border-top: 0.5px solid #e5e5e5; background: #fff; padding: 1.25rem 0; text-align: center; font-size: 12px; color: #bbb; }
 
     @media (max-width: 1100px) { .topbar-inner, .main { padding-left: 2rem; padding-right: 2rem; } }
-    @media (max-width: 600px) {
-      .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
-      nav { gap: 2px; } .nav-btn { font-size: 12px; padding: 5px 10px; }
-      .main { padding: 1.25rem 1rem 2rem; }
-      .game-header { max-width: 100%; }
-      .canvas-wrap { max-width: 100%; }
-      .dpad { max-width: 100%; }
-    }
+    @media (max-width: 600px) { .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; } nav { gap: 2px; } .nav-btn { font-size: 12px; padding: 5px 10px; } .main { padding: 1.25rem 1rem 2rem; } .game-header { max-width: 100%; } .canvas-wrap { max-width: 100%; } }
   </style>
 </head>
 <body>
 
-<!-- TOPBAR -->
 <header class="topbar">
   <div class="topbar-inner">
     <a class="logo-link" href="../index.html">
@@ -195,12 +95,10 @@
   </div>
 </header>
 
-<!-- MAIN -->
 <main class="main">
-  <h1 class="page-title">Tafelsnake 🐍</h1>
-  <p class="page-sub">Stuur de slang naar het juiste antwoord. Gebruik de pijltjestoetsen of de knoppen hieronder.</p>
+  <h1 class="page-title">Tafelsnake</h1>
+  <p class="page-sub">Stuur de slang naar het juiste antwoord. Gebruik de pijltjestoetsen of WASD.</p>
 
-  <!-- Score + vraag -->
   <div class="game-header">
     <div class="score-block">
       <div class="score-label">Score</div>
@@ -216,58 +114,69 @@
     </div>
   </div>
 
-  <!-- Canvas -->
   <div class="canvas-wrap" id="canvasWrap">
     <canvas id="gameCanvas"></canvas>
     <div class="overlay" id="overlay">
       <div class="ov-emoji">🐍</div>
       <div class="ov-title">Tafelsnake</div>
-      <div class="ov-sub" id="ovMsg">Stuur de slang naar het <strong style="color:#fff">juiste antwoord</strong>. Het foute antwoord eten = game over!</div>
+      <div class="ov-sub" id="ovMsg">Stuur de slang naar het <strong style="color:#fff">juiste antwoord</strong>. Het foute getal eten = game over!</div>
       <div class="ov-score" id="ovScore" style="display:none"></div>
       <button class="start-btn" onclick="startGame()">Start</button>
     </div>
-  </div>
-
-  <!-- D-pad -->
-  <div class="dpad">
-    <button class="dpad-btn dpad-up"    onclick="setDir(0,-1)">▲</button>
-    <button class="dpad-btn dpad-left"  onclick="setDir(-1,0)">◀</button>
-    <button class="dpad-btn dpad-right" onclick="setDir(1,0)">▶</button>
-    <button class="dpad-btn dpad-down"  onclick="setDir(0,1)">▼</button>
   </div>
 </main>
 
 <footer>www.leerblad.nl</footer>
 
 <script>
-  /* ── Configuratie ── */
   const COLS     = 20;
   const ROWS     = 20;
-  const MS_START = 220;   /* beginsnelheid (ms per tick) */
-  const MS_MIN   = 75;    /* maximale snelheid bij score 100+ */
+  const MS_START = 220;
+  const MS_MIN   = 75;
 
-  /* ── Canvas ── */
+  /* ── Hoge resolutie canvas ── */
   const canvas = document.getElementById('gameCanvas');
   const ctx    = canvas.getContext('2d');
   const wrap   = document.getElementById('canvasWrap');
+  const DPR    = window.devicePixelRatio || 1;
+
+  let CELL = 1; /* CSS pixels per cel */
 
   function resize() {
-    const w  = Math.min(wrap.clientWidth, 480);
-    const cell = Math.floor(w / COLS);
-    canvas.width  = cell * COLS;
-    canvas.height = cell * ROWS;
-    return cell;
+    const cssW = Math.min(wrap.clientWidth, 480);
+    CELL = Math.floor(cssW / COLS);
+    const cssH = CELL * ROWS;
+    /* Fysieke pixels = CSS pixels × DPR voor scherpe rendering */
+    canvas.width  = CELL * COLS * DPR;
+    canvas.height = CELL * ROWS * DPR;
+    canvas.style.width  = (CELL * COLS) + 'px';
+    canvas.style.height = cssH + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0); /* altijd rescale na resize */
   }
-  let CELL = resize();
-  window.addEventListener('resize', () => { CELL = resize(); if (!running) drawIdle(); });
+  resize();
+  window.addEventListener('resize', () => { resize(); if (!running) drawIdle(); else draw(); });
+
+  /* ── Kleurenpalet voor de voedselbolletjes ── */
+  const FOOD_COLORS = [
+    { bg: '#00e676', fg: '#003d1a' }, /* groen      */
+    { bg: '#ff1744', fg: '#fff'    }, /* rood        */
+    { bg: '#d500f9', fg: '#fff'    }, /* paars       */
+    { bg: '#f50057', fg: '#fff'    }, /* roze        */
+    { bg: '#ff6d00', fg: '#fff'    }, /* oranje      */
+    { bg: '#ffd600', fg: '#1a1200' }, /* geel        */
+    { bg: '#00e5ff', fg: '#002a2e' }, /* cyaan       */
+    { bg: '#76ff03', fg: '#1a2e00' }, /* lime        */
+    { bg: '#2979ff', fg: '#fff'    }, /* blauw       */
+    { bg: '#1de9b6', fg: '#00201a' }, /* teal        */
+  ];
 
   /* ── State ── */
   let snake, dir, nextDir, goodFood, badFood;
+  let goodColor, badColor;
   let score = 0, highScore = +localStorage.getItem('snake_hs') || 0;
   let running = false, timer = null, tickMs = MS_START;
   let question = null;
 
-  /* ── Snelheid op basis van score (lineair 0→100) ── */
   function speedForScore(s) {
     const t = Math.min(s, 100) / 100;
     return Math.round(MS_START - t * (MS_START - MS_MIN));
@@ -282,6 +191,16 @@
     const wrong = correct + offsets[Math.floor(Math.random() * offsets.length)];
     question = { a, b, correct, wrong };
     document.getElementById('questionText').textContent = `${a} × ${b} = ?`;
+
+    /* Kies twee verschillende willekeurige kleuren */
+    const palette = [...FOOD_COLORS];
+    const i1 = Math.floor(Math.random() * palette.length);
+    const col1 = palette.splice(i1, 1)[0];
+    const i2 = Math.floor(Math.random() * palette.length);
+    const col2 = palette[i2];
+    goodColor = col1;
+    badColor  = col2;
+
     placeFood();
   }
 
@@ -300,7 +219,9 @@
 
   function placeFood() {
     goodFood = freeCell();
-    badFood  = freeCell();
+    /* Zorg dat goed en slecht minstens 2 vakjes uit elkaar staan */
+    do { badFood = freeCell(); }
+    while (Math.abs(badFood.x - goodFood.x) + Math.abs(badFood.y - goodFood.y) < 2);
   }
 
   /* ── Start ── */
@@ -312,11 +233,9 @@
     score   = 0;
     tickMs  = MS_START;
     running = true;
-
     document.getElementById('scoreDisplay').textContent = '0';
     document.getElementById('hsDisplay').textContent    = highScore;
     document.getElementById('overlay').classList.add('hidden');
-
     newQuestion();
     clearTimeout(timer);
     timer = setTimeout(tick, tickMs);
@@ -324,14 +243,18 @@
 
   /* ── Richting ── */
   function setDir(dx, dy) {
-    if (dx !== 0 && dir.x !== 0) return;
+    if (dx !== 0 && dir.x !== 0) return; /* geen 180° */
     if (dy !== 0 && dir.y !== 0) return;
     nextDir = { x: dx, y: dy };
   }
 
   document.addEventListener('keydown', e => {
-    const map = { ArrowUp:[0,-1], ArrowDown:[0,1], ArrowLeft:[-1,0], ArrowRight:[1,0] };
-    if (map[e.key]) { e.preventDefault(); setDir(...map[e.key]); }
+    switch (e.key) {
+      case 'ArrowUp':    case 'w': case 'W': e.preventDefault(); setDir(0,-1); break;
+      case 'ArrowDown':  case 's': case 'S': e.preventDefault(); setDir(0, 1); break;
+      case 'ArrowLeft':  case 'a': case 'A': e.preventDefault(); setDir(-1,0); break;
+      case 'ArrowRight': case 'd': case 'D': e.preventDefault(); setDir(1, 0); break;
+    }
   });
 
   /* Swipe */
@@ -345,7 +268,7 @@
     Math.abs(dx) > Math.abs(dy) ? setDir(dx > 0 ? 1 : -1, 0) : setDir(0, dy > 0 ? 1 : -1);
   }, { passive: true });
 
-  /* ── Game loop ── */
+  /* ── Tick ── */
   function tick() {
     dir = { ...nextDir };
     const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
@@ -353,9 +276,13 @@
     if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) { gameOver('muur'); return; }
     if (snake.some(s => s.x === head.x && s.y === head.y))             { gameOver('staart'); return; }
 
+    /* Controleer voedsel VOOR het toevoegen aan snake */
+    const ateGood = head.x === goodFood.x && head.y === goodFood.y;
+    const ateBad  = head.x === badFood.x  && head.y === badFood.y;
+
     snake.unshift(head);
 
-    if (head.x === goodFood.x && head.y === goodFood.y) {
+    if (ateGood) {
       score++;
       document.getElementById('scoreDisplay').textContent = score;
       if (score > highScore) {
@@ -364,14 +291,16 @@
         document.getElementById('hsDisplay').textContent = highScore;
       }
       tickMs = speedForScore(score);
+      draw();
       newQuestion();
-    } else if (head.x === badFood.x && head.y === badFood.y) {
-      snake.pop(); draw(); gameOver('fout'); return;
+    } else if (ateBad) {
+      /* Staart niet verwijderen zodat de slang zichtbaar blijft */
+      draw(); gameOver('fout'); return;
     } else {
       snake.pop();
+      draw();
     }
 
-    draw();
     timer = setTimeout(tick, tickMs);
   }
 
@@ -380,33 +309,26 @@
     running = false;
     clearTimeout(timer);
 
-    /* Rood flash */
-    ctx.fillStyle = 'rgba(255,23,68,0.22)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'rgba(255,23,68,0.2)';
+    ctx.fillRect(0, 0, CELL * COLS, CELL * ROWS);
 
     const overlay = document.getElementById('overlay');
-    const emoji   = overlay.querySelector('.ov-emoji');
-    const title   = overlay.querySelector('.ov-title');
-    const msg     = document.getElementById('ovMsg');
-    const sc      = document.getElementById('ovScore');
-    const btn     = overlay.querySelector('.start-btn');
-
-    emoji.textContent = reden === 'fout' ? '❌' : '💥';
-    title.textContent = 'Game over!';
-    msg.innerHTML = reden === 'fout'
+    overlay.querySelector('.ov-emoji').textContent = reden === 'fout' ? '❌' : '💥';
+    overlay.querySelector('.ov-title').textContent = 'Game over!';
+    document.getElementById('ovMsg').innerHTML = reden === 'fout'
       ? `Je at het foute antwoord op: <strong style="color:#ff6b6b">${question.wrong}</strong><br>Het goede antwoord was <strong style="color:#fff">${question.correct}</strong>.`
       : reden === 'muur' ? 'Je vloog tegen de muur!' : 'Je beet in je eigen staart!';
-    sc.innerHTML  = `Eindstand: <span>${score}</span>`;
+    const sc = document.getElementById('ovScore');
+    sc.innerHTML = `Eindstand: <span>${score}</span>`;
     sc.style.display = 'block';
-    btn.textContent  = 'Opnieuw';
+    overlay.querySelector('.start-btn').textContent = 'Opnieuw';
     overlay.classList.remove('hidden');
   }
 
-  /* ── Tekenen ── */
+  /* ── Teken ── */
   function draw() {
-    /* Achtergrond */
     ctx.fillStyle = '#0e1117';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, CELL * COLS, CELL * ROWS);
 
     /* Grid */
     ctx.strokeStyle = 'rgba(255,255,255,0.04)';
@@ -414,79 +336,93 @@
     for (let c = 0; c <= COLS; c++) { ctx.beginPath(); ctx.moveTo(c*CELL,0); ctx.lineTo(c*CELL,ROWS*CELL); ctx.stroke(); }
     for (let r = 0; r <= ROWS; r++) { ctx.beginPath(); ctx.moveTo(0,r*CELL); ctx.lineTo(COLS*CELL,r*CELL); ctx.stroke(); }
 
-    /* Voedsel */
-    drawFood(goodFood, '#00e676', '#003d1a', question.correct);
-    drawFood(badFood,  '#ff1744', '#fff',    question.wrong);
+    /* Voedsel — glow strikt begrensd tot eigen vakje */
+    drawFood(goodFood, goodColor, question.correct);
+    drawFood(badFood,  badColor,  question.wrong);
 
     /* Slang */
     const len = snake.length;
     snake.forEach((seg, i) => {
-      /* Kleur: gradient van blauw (hoofd) naar groen (staart) */
-      const t  = i / Math.max(len - 1, 1);
-      const r  = Math.round(42  + (26  - 42)  * t);
-      const g  = Math.round(127 + (144 - 127) * t);
-      const b  = Math.round(212 + (104 - 212) * t);
+      const t   = i / Math.max(len - 1, 1);
+      const rv  = Math.round(42  + (26  - 42)  * t);
+      const gv  = Math.round(127 + (144 - 127) * t);
+      const bv  = Math.round(212 + (104 - 212) * t);
       const pad = i === 0 ? 1 : 2;
       const rad = Math.max(3, CELL / (i === 0 ? 4 : 5));
 
-      ctx.fillStyle = `rgb(${r},${g},${b})`;
-      rr(seg.x*CELL+pad, seg.y*CELL+pad, CELL-pad*2, CELL-pad*2, rad);
+      ctx.fillStyle = `rgb(${rv},${gv},${bv})`;
+      rr(seg.x*CELL + pad, seg.y*CELL + pad, CELL - pad*2, CELL - pad*2, rad);
       ctx.fill();
 
-      /* Ogen op hoofd */
+      /* Ogen */
       if (i === 0) {
         ctx.fillStyle = '#fff';
         const er = Math.max(1.5, CELL * 0.1);
         if (dir.x !== 0) {
-          const ex = seg.x*CELL + CELL*(dir.x>0?0.72:0.28);
-          ctx.beginPath(); ctx.arc(ex, seg.y*CELL+CELL*0.3, er, 0, Math.PI*2); ctx.fill();
-          ctx.beginPath(); ctx.arc(ex, seg.y*CELL+CELL*0.7, er, 0, Math.PI*2); ctx.fill();
+          const ex = seg.x*CELL + CELL*(dir.x > 0 ? 0.72 : 0.28);
+          ctx.beginPath(); ctx.arc(ex, seg.y*CELL + CELL*0.3, er, 0, Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.arc(ex, seg.y*CELL + CELL*0.7, er, 0, Math.PI*2); ctx.fill();
         } else {
-          const ey = seg.y*CELL + CELL*(dir.y>0?0.72:0.28);
-          ctx.beginPath(); ctx.arc(seg.x*CELL+CELL*0.3, ey, er, 0, Math.PI*2); ctx.fill();
-          ctx.beginPath(); ctx.arc(seg.x*CELL+CELL*0.7, ey, er, 0, Math.PI*2); ctx.fill();
+          const ey = seg.y*CELL + CELL*(dir.y > 0 ? 0.72 : 0.28);
+          ctx.beginPath(); ctx.arc(seg.x*CELL + CELL*0.3, ey, er, 0, Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.arc(seg.x*CELL + CELL*0.7, ey, er, 0, Math.PI*2); ctx.fill();
         }
       }
     });
   }
 
-  function drawFood(food, bg, fg, val) {
+  function drawFood(food, color, val) {
     if (!food) return;
-    const cx = food.x*CELL + CELL/2, cy = food.y*CELL + CELL/2, rad = CELL/2 - 2;
-    /* Glow */
-    const grd = ctx.createRadialGradient(cx,cy,0,cx,cy,rad*2.2);
-    grd.addColorStop(0, bg+'44'); grd.addColorStop(1, bg+'00');
+    const cx  = food.x * CELL + CELL / 2;
+    const cy  = food.y * CELL + CELL / 2;
+    const rad = CELL / 2 - 2;
+
+    /* Glow begrensd tot het vakje zodat naastliggende vakjes niet misleidend oplichten */
+    ctx.save();
+    rr(food.x * CELL + 1, food.y * CELL + 1, CELL - 2, CELL - 2, 3);
+    ctx.clip();
+
+    const grd = ctx.createRadialGradient(cx, cy, rad * 0.3, cx, cy, rad * 1.4);
+    grd.addColorStop(0, color.bg + 'cc');
+    grd.addColorStop(1, color.bg + '00');
     ctx.fillStyle = grd;
-    ctx.beginPath(); ctx.arc(cx,cy,rad*2.2,0,Math.PI*2); ctx.fill();
+    ctx.fillRect(food.x * CELL, food.y * CELL, CELL, CELL);
+
+    ctx.restore();
+
     /* Cirkel */
-    ctx.fillStyle = bg;
-    ctx.beginPath(); ctx.arc(cx,cy,rad,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle = color.bg;
+    ctx.beginPath();
+    ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+    ctx.fill();
+
     /* Getal */
     const lbl = String(val);
-    const fs  = lbl.length > 2 ? Math.max(9, CELL*0.38) : Math.max(10, CELL*0.44);
-    ctx.fillStyle = fg;
-    ctx.font = `700 ${fs}px Inter,sans-serif`;
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(lbl, cx, cy+0.5);
+    const fs  = lbl.length > 2 ? Math.max(9, CELL * 0.38) : Math.max(10, CELL * 0.44);
+    ctx.fillStyle    = color.fg;
+    ctx.font         = `800 ${fs}px Inter,sans-serif`;
+    ctx.textAlign    = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(lbl, cx, cy + 0.5);
   }
 
-  function rr(x,y,w,h,r) {
+  function rr(x, y, w, h, r) {
     ctx.beginPath();
-    ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.quadraticCurveTo(x+w,y,x+w,y+r);
-    ctx.lineTo(x+w,y+h-r); ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
-    ctx.lineTo(x+r,y+h); ctx.quadraticCurveTo(x,y+h,x,y+h-r);
-    ctx.lineTo(x,y+r); ctx.quadraticCurveTo(x,y,x+r,y); ctx.closePath();
+    ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y); ctx.quadraticCurveTo(x+w,y, x+w,y+r);
+    ctx.lineTo(x+w, y+h-r); ctx.quadraticCurveTo(x+w,y+h, x+w-r,y+h);
+    ctx.lineTo(x+r, y+h); ctx.quadraticCurveTo(x,y+h, x,y+h-r);
+    ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x,y, x+r,y);
+    ctx.closePath();
   }
 
   function drawIdle() {
     ctx.fillStyle = '#0e1117';
-    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillRect(0, 0, CELL*COLS, CELL*ROWS);
     ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 0.5;
     for (let c=0;c<=COLS;c++){ctx.beginPath();ctx.moveTo(c*CELL,0);ctx.lineTo(c*CELL,ROWS*CELL);ctx.stroke();}
     for (let r=0;r<=ROWS;r++){ctx.beginPath();ctx.moveTo(0,r*CELL);ctx.lineTo(COLS*CELL,r*CELL);ctx.stroke();}
   }
 
-  /* ── Init ── */
   document.getElementById('hsDisplay').textContent = highScore;
   drawIdle();
 </script>
