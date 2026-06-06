@@ -423,11 +423,11 @@
       <button class="groep-btn" onclick="setGroep(5, this)">Groep 5</button>
       <button class="groep-btn" onclick="setGroep(6, this)">Groep 6</button>
       <button class="groep-btn" onclick="setGroep(7, this)">Groep 7</button>
-      <button class="groep-btn active" onclick="setGroep(8, this)">Groep 8</button>
+      <button class="groep-btn" onclick="setGroep(8, this)">Groep 8</button>
     </div>
 
     <!-- Groep-uitleg -->
-    <div id="groep-info" style="font-size:12.5px;color:#888;background:#fff;border:0.5px solid #e5e5e5;border-radius:10px;padding:10px 16px;margin-bottom:1rem;line-height:1.6;"></div>
+    <div id="groep-info" style="font-size:12.5px;color:#bbb;background:#fff;border:0.5px solid #e5e5e5;border-radius:10px;padding:10px 16px;margin-bottom:1rem;line-height:1.6;">Kies een groep om te beginnen.</div>
 
     <!-- Stap 1: Tijd -->
     <div class="card">
@@ -558,7 +558,7 @@
   };
 
   /* ── State ── */
-  let groep  = 8;
+  let groep  = null;
   let tijden = [];
   let wtypes = [];
   let vormen = [];
@@ -793,7 +793,7 @@
 
   /* ── Werkblad genereren uit database ── */
   function generateWerkblad() {
-    if (tijden.length === 0 || wtypes.length === 0 || vormen.length === 0) {
+    if (!groep || tijden.length === 0 || wtypes.length === 0 || vormen.length === 0) {
       alert('Maak bij elke stap minstens één keuze.');
       return;
     }
