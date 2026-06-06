@@ -889,7 +889,7 @@
     doc.setFontSize(8.5);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(130, 130, 130);
-    const subLabel = (isNakijk ? 'Nakijkblad' : 'Werkblad') + '   |   ' + today;
+    const subLabel = isNakijk ? 'Nakijkblad' : 'Werkblad';
     doc.text(subLabel, marge, 24);
 
     /* Naam-veld rechtsboven */
@@ -967,8 +967,7 @@
     doc.save(naam);
   }
 
-  /* ── Init: pas groep 8 config toe bij laden ── */
-  applyGroepConfig();
+  /* ── Init: geen groep voorgeselecteerd ── */
 </script>
 </body>
 </html>
