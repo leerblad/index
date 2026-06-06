@@ -587,80 +587,116 @@
   /* ── PDF genereren ── */
   function tekenPagina(doc, sommen, paginaNr, totaalPaginas, titelTekst, isAntwoord) {
     const pw = 210, ph = 297;
-    const ml = 14, mr = 14, mt = 14, mb = 14;
+    const ml = 14, mr = 14, mt = 12, mb = 12;
     const bw = pw - ml - mr;
 
-    /* Naam veld rechtsboven (alleen werkblad) */
+    /* ── Header: Naam / Begintijd / Eindtijd ── */
     if (!isAntwoord) {
+      doc.setFont('helvetica', 'normal');
       doc.setFontSize(9);
-      doc.setTextColor(150);
-      doc.text('Naam:', pw - mr - 52, mt + 4);
-      doc.setDrawColor(180);
-      doc.line(pw - mr - 44, mt + 4.5, pw - mr, mt + 4.5);
+      doc.setTextColor(60);
+
+      const labelY = mt + 4;
+      const lineY  = labelY + 1;
+      const lineLen = 42;
+
+      /* Naam (links) */
+      doc.text('Naam:', ml, labelY);
+      doc.setDrawColor(160);
+      doc.line(ml + 11, lineY, ml + 11 + lineLen, lineY);
+
+      /* Begintijd (midden) */
+      const midX = pw / 2 - 15;
+      doc.text('Begintijd:', midX, labelY);
+      doc.line(midX + 18, lineY, midX + 18 + lineLen, lineY);
+
+      /* Eindtijd (rechts) */
+      const rX = pw - mr - 18 - lineLen;
+      doc.text('Eindtijd:', rX, labelY);
+      doc.line(rX + 16, lineY, rX + 16 + lineLen, lineY);
+
+      /* Scheidingslijn onder header */
+      doc.setDrawColor(200);
+      doc.line(ml, mt + 8, pw - mr, mt + 8);
+    } else {
+      /* Antwoordblad: alleen titelbalk */
+      doc.setFontSize(11);
+      doc.setTextColor(30);
+      doc.setFont('helvetica', 'bold');
+      doc.text(titelTekst + ' — Antwoordblad', ml, mt + 5);
+      doc.setDrawColor(200);
+      doc.line(ml, mt + 8, pw - mr, mt + 8);
     }
 
-    /* Titel */
-    doc.setFontSize(16);
-    doc.setTextColor(30);
-    doc.setFont('helvetica', 'normal');
-    const paginaLabel = isAntwoord ? titelTekst + ' — Antwoordblad' : titelTekst;
-    doc.text(paginaLabel, ml, mt + 4);
+    /* ── Sommen: 4 kolommen, gegroepeerd per 5 rijen ── */
+    const colCount  = 4;
+    const colW      = bw / colCount;
+    const startY    = mt + 13;
+    const footerH   = 12;
+    const beschikH  = ph - mb - footerH - startY;
 
-    /* Subtitel */
-    doc.setFontSize(8);
-    doc.setTextColor(160);
-    const sub = totaalPaginas > 1
-      ? `${sommen.length} sommen · pagina ${paginaNr} van ${totaalPaginas} · www.leerblad.nl`
-      : `${sommen.length} sommen · www.leerblad.nl`;
-    doc.text(sub, ml, mt + 9.5);
-
-    /* Scheidingslijn */
-    doc.setDrawColor(220);
-    doc.line(ml, mt + 12, pw - mr, mt + 12);
-
-    /* Layout: 4 kolommen, per kolom gegroepeerd per 5 rijen */
-    const colCount = 4;
-    const colW = bw / colCount;
-    const startY = mt + 17;
-    const beschikbaarH = ph - mb - startY;
     const sommenPerKolom = Math.ceil(sommen.length / colCount);
-    const aantalGroepen = Math.ceil(sommenPerKolom / 5);
-    const gapH = 2;
-    const rowH = (beschikbaarH - (aantalGroepen - 1) * gapH) / sommenPerKolom;
+    const aantalGroepen  = Math.ceil(sommenPerKolom / 5);
+    const gapH  = 3.5;   /* ruimte tussen groepen */
+    const rowH  = (beschikH - (aantalGroepen - 1) * gapH) / sommenPerKolom;
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
+    doc.setFontSize(9.5);
 
-    /* Kolom voor kolom, rij voor rij — zelfde volgorde als preview */
     for (let col = 0; col < colCount; col++) {
       for (let rij = 0; rij < sommenPerKolom; rij++) {
         const idx = col * sommenPerKolom + rij;
         if (idx >= sommen.length) break;
         const s = sommen[idx];
-        const groepInKol = Math.floor(rij / 5);
+        const groep = Math.floor(rij / 5);
         const x = ml + col * colW;
-        const y = startY + rij * rowH + groepInKol * gapH;
+        const y = startY + rij * rowH + groep * gapH;
 
-        const somTekst = `${s.a} × ${s.b} = `;
+        /* Lijn de getallen op: max 2 cijfers per getal */
+        const a2 = String(s.a).padStart(2, ' '); /* figure space */
+        const b2 = String(s.b).padStart(2, ' ');
+        const somTekst = `${a2} × ${b2} = `;
+
         doc.setTextColor(30);
         doc.text(somTekst, x, y);
 
         const lineX = x + doc.getTextWidth(somTekst);
         if (isAntwoord) {
-          /* Antwoord op de lijn, zelfde positie als werkblad */
-          doc.setTextColor(30);
           doc.text(String(s.a * s.b), lineX + 1, y);
         } else {
           doc.setDrawColor(180);
-          doc.line(lineX, y + 0.3, lineX + 12, y + 0.3);
+          doc.line(lineX, y + 0.3, lineX + 10, y + 0.3);
         }
       }
     }
 
-    /* Footer */
+    /* ── Footer ── */
+    const footerY = ph - mb - 2;
+
+    /* Paginanummer in cirkel (links) */
+    doc.setFillColor(50, 50, 50);
+    doc.circle(ml + 3.5, footerY - 1.5, 3.5, 'F');
     doc.setFontSize(7);
-    doc.setTextColor(180);
-    doc.text('www.leerblad.nl', pw / 2, ph - mb + 4, { align: 'center' });
+    doc.setTextColor(255);
+    doc.setFont('helvetica', 'bold');
+    doc.text(String(paginaNr), ml + 3.5, footerY - 0.5, { align: 'center' });
+
+    /* Midden tekst */
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(7);
+    doc.setTextColor(160);
+    const midTekst = totaalPaginas > 1
+      ? `Print een werkblad of oefen online op leerblad.nl  ·  pagina ${paginaNr} van ${totaalPaginas}`
+      : 'Print een werkblad of oefen online op leerblad.nl';
+    doc.text(midTekst, pw / 2, footerY - 0.5, { align: 'center' });
+
+    /* leerblad.nl rechts, gestileerd */
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(42, 127, 212);
+    doc.text('leerblad', pw - mr - doc.getTextWidth('leerblad.nl') + doc.getTextWidth('leerblad'), footerY - 0.5, { align: 'right' });
+    doc.setTextColor(45, 191, 142);
+    doc.text('.nl', pw - mr, footerY - 0.5, { align: 'right' });
   }
 
   function maakPDF() {
