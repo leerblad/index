@@ -218,17 +218,16 @@
   <div class="score-bar">
     <div class="score-item">
       <div class="score-label">Zetten</div>
-      <div class="score-val moves" id="movesDisplay">0</div>
+      <div class="score-val moves" id="movesDisplay">—</div>
     </div>
     <div class="score-item">
       <div class="score-label">Gevonden</div>
-      <div class="score-val" id="foundDisplay">0 / 0</div>
-    </div>
-    <div class="score-item">
-      <div class="score-label">Beste</div>
-      <div class="score-val" id="bestDisplay">—</div>
+      <div class="score-val" id="foundDisplay">—</div>
     </div>
   </div>
+
+  <!-- Geen tafel gekozen melding -->
+  <div id="kiesMsg" style="font-size:14px;color:#aaa;margin-bottom:1rem;">Kies eerst een tafel om te beginnen.</div>
 
   <!-- Grid -->
   <div class="memory-grid" id="memoryGrid"></div>
@@ -244,32 +243,25 @@
 <footer>www.leerblad.nl</footer>
 
 <script>
-  /* ── Kleurenpalet voor kaartparen ── */
+  /* ── Kleurenpalet: egale kleuren per kaartpaar ── */
   const KLEUREN = [
-    'linear-gradient(135deg,#2A7FD4,#5b4aeb)',  /* blauw-paars   */
-    'linear-gradient(135deg,#f50057,#d500f9)',   /* roze-paars    */
-    'linear-gradient(135deg,#ff6d00,#ffd600)',   /* oranje-geel   */
-    'linear-gradient(135deg,#00bfa5,#2A7FD4)',   /* teal-blauw    */
-    'linear-gradient(135deg,#00e676,#2A7FD4)',   /* groen-blauw   */
-    'linear-gradient(135deg,#d500f9,#f50057)',   /* paars-roze    */
-    'linear-gradient(135deg,#ff1744,#ff6d00)',   /* rood-oranje   */
-    'linear-gradient(135deg,#00e5ff,#00bfa5)',   /* cyaan-teal    */
-    'linear-gradient(135deg,#76ff03,#00bfa5)',   /* lime-teal     */
-    'linear-gradient(135deg,#ffd600,#ff6d00)',   /* geel-oranje   */
-    'linear-gradient(135deg,#2979ff,#00e5ff)',   /* blauw-cyaan   */
+    '#E53935','#D81B60','#8E24AA','#5E35B1','#3949AB',
+    '#1E88E5','#00ACC1','#00897B','#43A047','#F4511E',
+    '#6D4C41','#F9A825','#039BE5','#7CB342','#C0CA33',
+    '#FB8C00','#546E7A','#EC407A','#AB47BC','#26C6DA',
   ];
 
-  /* ── Tafelkeuze ── */
-  let gekozenTafel = 5;
+  /* ── Tafelkeuze (meerdere) ── */
+  const gekozenTafels = new Set();
   const chips = document.getElementById('tafelChips');
   for (let t = 1; t <= 10; t++) {
     const c = document.createElement('span');
-    c.className = 'chip' + (t === gekozenTafel ? ' active' : '');
+    c.className = 'chip';
     c.textContent = t;
     c.onclick = () => {
-      document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
-      c.classList.add('active');
-      gekozenTafel = t;
+      if (gekozenTafels.has(t)) { gekozenTafels.delete(t); c.classList.remove('active'); }
+      else { gekozenTafels.add(t); c.classList.add('active'); }
+      document.getElementById('kiesMsg').style.display = gekozenTafels.size ? 'none' : 'block';
     };
     chips.appendChild(c);
   }
@@ -277,21 +269,33 @@
   /* ── State ── */
   let kaarten = [], omgedraaid = [], gevonden = 0, zetten = 0, bezig = false;
   let aantalParen = 0;
-  let bestScore = {};
 
   /* ── Spel starten ── */
   function startSpel() {
-    document.getElementById('resultBox').classList.remove('visible');
-    const tafel = gekozenTafel;
-    aantalParen = 11; /* 0×t t/m 10×t = 11 paren */
-
-    /* Bouw paren: [som-kaart, uitkomst-kaart] per i */
-    const paren = [];
-    for (let i = 0; i <= 10; i++) {
-      const kleur = KLEUREN[i % KLEUREN.length];
-      paren.push({ id: i, type: 'som',      tekst: `${i} × ${tafel}`, kleur, paarId: i });
-      paren.push({ id: i + 11, type: 'uitkomst', tekst: String(i * tafel),  kleur, paarId: i });
+    if (!gekozenTafels.size) {
+      document.getElementById('kiesMsg').style.display = 'block';
+      return;
     }
+    document.getElementById('resultBox').classList.remove('visible');
+    document.getElementById('kiesMsg').style.display = 'none';
+
+    /* Maak een geschikte kleurpool (shuffle zodat kleuren willekeurig verdeeld zijn) */
+    const kleurPool = [...KLEUREN].sort(() => Math.random() - 0.5);
+
+    /* Bouw paren voor alle gekozen tafels */
+    const paren = [];
+    let paarTeller = 0;
+    for (const tafel of [...gekozenTafels].sort((a,b)=>a-b)) {
+      for (let i = 0; i <= 10; i++) {
+        const kleur = kleurPool[paarTeller % kleurPool.length];
+        const uid = paarTeller;
+        paren.push({ type: 'som',      tekst: `${i} × ${tafel}`, kleur, paarId: uid });
+        paren.push({ type: 'uitkomst', tekst: String(i * tafel),  kleur, paarId: uid });
+        paarTeller++;
+      }
+    }
+
+    aantalParen = paarTeller;
 
     /* Schudden */
     for (let i = paren.length - 1; i > 0; i--) {
@@ -307,9 +311,7 @@
 
     document.getElementById('movesDisplay').textContent = '0';
     document.getElementById('foundDisplay').textContent = `0 / ${aantalParen}`;
-    updateBest(tafel);
 
-    /* Grid: 4 kolommen voor 22 kaarten (5 rijen + 2 extra) → pas voor 22: 6 rijen × 4 = 24, dus 4 cols */
     const grid = document.getElementById('memoryGrid');
     const cols = window.innerWidth < 500 ? 4 : 4;
     grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
@@ -327,12 +329,6 @@
       wrap.addEventListener('click', () => klik(idx));
       grid.appendChild(wrap);
     });
-  }
-
-  function updateBest(tafel) {
-    const key = 'geheugen_best_' + tafel;
-    const best = localStorage.getItem(key);
-    document.getElementById('bestDisplay').textContent = best ? best + ' zetten' : '—';
   }
 
   /* ── Kaart klikken ── */
@@ -358,17 +354,12 @@
     const k1 = kaarten[i1], k2 = kaarten[i2];
 
     if (k1.paarId === k2.paarId && k1.type !== k2.type) {
-      /* Match */
       document.querySelector(`.card-wrap[data-idx="${i1}"]`).classList.add('matched');
       document.querySelector(`.card-wrap[data-idx="${i2}"]`).classList.add('matched');
       gevonden++;
       document.getElementById('foundDisplay').textContent = `${gevonden} / ${aantalParen}`;
-
-      if (gevonden === aantalParen) {
-        setTimeout(() => gewonnen(), 300);
-      }
+      if (gevonden === aantalParen) setTimeout(() => gewonnen(), 300);
     } else {
-      /* Geen match: terugdraaien */
       document.querySelector(`.card-wrap[data-idx="${i1}"]`).classList.remove('flipped');
       document.querySelector(`.card-wrap[data-idx="${i2}"]`).classList.remove('flipped');
     }
@@ -378,12 +369,11 @@
   }
 
   function gewonnen() {
-    const key = 'geheugen_best_' + gekozenTafel;
+    const tafelsSleutel = [...gekozenTafels].sort((a,b)=>a-b).join('-');
+    const key = 'geheugen_best_' + tafelsSleutel;
     const huidig = localStorage.getItem(key);
     const isRecord = !huidig || zetten < +huidig;
     if (isRecord) localStorage.setItem(key, zetten);
-
-    document.getElementById('bestDisplay').textContent = (isRecord ? zetten : huidig) + ' zetten';
 
     const sub = isRecord && huidig
       ? `Gelukt in ${zetten} zetten — nieuw record! (was ${huidig})`
@@ -395,9 +385,6 @@
     document.getElementById('resultBox').classList.add('visible');
     document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
-
-  /* ── Init ── */
-  updateBest(gekozenTafel);
 </script>
 </body>
 </html>
