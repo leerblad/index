@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leerblad – Tafelgeheugen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f8f8f8; color: #1a1a1a; min-height: 100vh; display: flex; flex-direction: column; }
+
+    /* ── Topbar ── */
+    .topbar { background: #fff; border-bottom: 0.5px solid #e5e5e5; position: sticky; top: 0; z-index: 100; }
+    .topbar-inner { max-width: 1280px; margin: 0 auto; padding: 0 160px; display: flex; align-items: center; justify-content: space-between; height: 84px; gap: 1rem; }
+    .logo-link { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; flex-shrink: 0; }
+    .logo-text { font-size: 40px; font-weight: 200; letter-spacing: 1.5px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.1; }
+    .logo-tagline-row { display: flex; align-items: center; gap: 7px; }
+    .logo-tagline-line { height: 1px; width: 36px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); opacity: 0.4; }
+    .logo-tagline { font-size: 8.5px; letter-spacing: 3px; color: #2A7FD4; font-weight: 400; text-transform: uppercase; }
+    nav { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+    .nav-btn { font-size: 16px; font-weight: 400; color: #888; border: none; background: none; padding: 10px 20px; border-radius: 24px; cursor: pointer; transition: background 0.18s, color 0.18s; white-space: nowrap; text-decoration: none; display: inline-flex; align-items: center; }
+    .nav-btn:hover, .nav-dropdown:hover > .nav-btn { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
+    .nav-btn.active { background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
+    .nav-btn.active:hover { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
+    .nav-btn.soon { color: #ccc; cursor: default; pointer-events: none; }
+    .tag { font-size: 9px; background: rgba(255,255,255,0.25); color: inherit; padding: 2px 6px; border-radius: 10px; margin-left: 4px; }
+    .nav-btn:not(:hover) .tag { background: #f0f0f0; color: #bbb; }
+    .nav-dropdown { position: relative; display: inline-flex; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; padding-top: 8px; min-width: 200px; z-index: 200; flex-direction: column; }
+    .nav-dropdown-menu-inner { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 12px; padding: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 2px; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: flex; }
+    .nav-dropdown-item { font-size: 14px; color: #555; padding: 9px 14px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: background 0.12s, color 0.12s; white-space: nowrap; }
+    .nav-dropdown-item:hover { background: #e8f4fd; color: #2A7FD4; }
+    .nav-dropdown-item.soon { color: #ccc; pointer-events: none; }
+    .nav-dropdown-item.soon .tag { background: #f5f5f5; color: #ccc; }
+
+    /* ── Pagina ── */
+    .main { max-width: 1280px; margin: 0 auto; padding: 2rem 160px 3rem; flex: 1; }
+    .page-title { font-size: 28px; font-weight: 300; color: #1a1a1a; margin-bottom: 4px; }
+    .page-sub { font-size: 13px; color: #999; margin-bottom: 1.5rem; }
+
+    /* ── Instellingen balk ── */
+    .settings-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+      background: #fff;
+      border: 0.5px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 14px 20px;
+    }
+    .settings-label { font-size: 12px; color: #999; white-space: nowrap; }
+    .tafel-chips { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+    .chip {
+      font-size: 12px;
+      border: 0.5px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #555;
+      padding: 5px 13px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.13s;
+      user-select: none;
+    }
+    .chip:hover { border-color: #2A7FD4; color: #2A7FD4; background: #e8f4fd; }
+    .chip.active { border-color: #2A7FD4; background: #e8f4fd; color: #2A7FD4; font-weight: 600; }
+    .start-btn {
+      font-size: 14px; font-weight: 600;
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      color: #fff; border: none; padding: 10px 28px;
+      border-radius: 24px; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .start-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .start-btn:active { transform: translateY(0); }
+
+    /* ── Score balk ── */
+    .score-bar {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 1rem;
+      align-items: center;
+    }
+    .score-item { display: flex; flex-direction: column; align-items: center; }
+    .score-label { font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: #bbb; margin-bottom: 1px; }
+    .score-val { font-size: 22px; font-weight: 700; color: #1a1a1a; }
+    .score-val.moves { color: #2A7FD4; }
+
+    /* ── Memory grid ── */
+    .memory-grid {
+      display: grid;
+      gap: 10px;
+      max-width: 600px;
+    }
+
+    /* ── Kaart ── */
+    .card-wrap {
+      perspective: 600px;
+      cursor: pointer;
+      aspect-ratio: 1;
+    }
+    .card-inner {
+      width: 100%; height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      border-radius: 12px;
+    }
+    .card-wrap.flipped .card-inner { transform: rotateY(180deg); }
+    .card-wrap.matched .card-inner { transform: rotateY(180deg); }
+
+    .card-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      font-family: 'Inter', sans-serif;
+    }
+    .card-back {
+      background: linear-gradient(135deg, #2A7FD4 0%, #2DBF8E 100%);
+      box-shadow: 0 2px 8px rgba(42,127,212,0.18);
+    }
+    /* Subtiel patroon op de achterkant */
+    .card-back::after {
+      content: '×';
+      font-size: 28px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.25);
+    }
+    .card-front {
+      transform: rotateY(180deg);
+      font-size: clamp(13px, 3vw, 20px);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+      text-align: center;
+      padding: 4px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+      line-height: 1.2;
+    }
+    .card-wrap.matched .card-front {
+      box-shadow: 0 0 0 3px #fff, 0 4px 16px rgba(0,0,0,0.18);
+    }
+
+    /* ── Overlay (gewonnen) ── */
+    .result-box {
+      display: none;
+      margin-top: 1.5rem;
+      background: #fff;
+      border: 0.5px solid #e5e5e5;
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      max-width: 600px;
+    }
+    .result-box.visible { display: block; }
+    .result-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .result-sub { font-size: 14px; color: #888; margin-bottom: 1.25rem; }
+
+    footer { border-top: 0.5px solid #e5e5e5; background: #fff; padding: 1.25rem 0; text-align: center; font-size: 12px; color: #bbb; }
+
+    @media (max-width: 1100px) { .topbar-inner, .main { padding-left: 2rem; padding-right: 2rem; } }
+    @media (max-width: 600px) {
+      .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
+      nav { gap: 2px; } .nav-btn { font-size: 12px; padding: 5px 10px; }
+      .main { padding: 1.25rem 1rem 2rem; }
+      .memory-grid { max-width: 100%; gap: 7px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-link" href="../index.html">
+      <span class="logo-text">Leerblad</span>
+      <div class="logo-tagline-row"><div class="logo-tagline-line"></div><div class="logo-tagline">Werkbladen op maat</div><div class="logo-tagline-line"></div></div>
+    </a>
+    <nav>
+      <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
+      <div class="nav-dropdown">
+        <a class="nav-btn active" href="rekenindex.html">Rekenen</a>
+        <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
+          <a class="nav-dropdown-item" href="tafelsommen.html">Tafelsommen</a>
+          <a class="nav-dropdown-item" href="deeltafels.html">Deeltafels</a>
+          <a class="nav-dropdown-item" href="tafelspellen.html">Tafelspellen</a>
+          <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+        </div></div>
+      </div>
+      <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
+      <span class="nav-btn soon">Werkboekjes<span class="tag">binnenkort</span></span>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+  <h1 class="page-title">Tafelgeheugen</h1>
+  <p class="page-sub">Zoek de bijpassende paren: een som en de bijbehorende uitkomst. Kies een tafel en start het spel.</p>
+
+  <!-- Instellingen -->
+  <div class="settings-bar">
+    <span class="settings-label">Tafel:</span>
+    <div class="tafel-chips" id="tafelChips"></div>
+    <button class="start-btn" onclick="startSpel()">Spelen</button>
+  </div>
+
+  <!-- Scores -->
+  <div class="score-bar">
+    <div class="score-item">
+      <div class="score-label">Zetten</div>
+      <div class="score-val moves" id="movesDisplay">0</div>
+    </div>
+    <div class="score-item">
+      <div class="score-label">Gevonden</div>
+      <div class="score-val" id="foundDisplay">0 / 0</div>
+    </div>
+    <div class="score-item">
+      <div class="score-label">Beste</div>
+      <div class="score-val" id="bestDisplay">—</div>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="memory-grid" id="memoryGrid"></div>
+
+  <!-- Resultaat -->
+  <div class="result-box" id="resultBox">
+    <div class="result-title">Alle paren gevonden!</div>
+    <div class="result-sub" id="resultSub"></div>
+    <button class="start-btn" onclick="startSpel()">Nog een keer</button>
+  </div>
+</main>
+
+<footer>www.leerblad.nl</footer>
+
+<script>
+  /* ── Kleurenpalet voor kaartparen ── */
+  const KLEUREN = [
+    'linear-gradient(135deg,#2A7FD4,#5b4aeb)',  /* blauw-paars   */
+    'linear-gradient(135deg,#f50057,#d500f9)',   /* roze-paars    */
+    'linear-gradient(135deg,#ff6d00,#ffd600)',   /* oranje-geel   */
+    'linear-gradient(135deg,#00bfa5,#2A7FD4)',   /* teal-blauw    */
+    'linear-gradient(135deg,#00e676,#2A7FD4)',   /* groen-blauw   */
+    'linear-gradient(135deg,#d500f9,#f50057)',   /* paars-roze    */
+    'linear-gradient(135deg,#ff1744,#ff6d00)',   /* rood-oranje   */
+    'linear-gradient(135deg,#00e5ff,#00bfa5)',   /* cyaan-teal    */
+    'linear-gradient(135deg,#76ff03,#00bfa5)',   /* lime-teal     */
+    'linear-gradient(135deg,#ffd600,#ff6d00)',   /* geel-oranje   */
+    'linear-gradient(135deg,#2979ff,#00e5ff)',   /* blauw-cyaan   */
+  ];
+
+  /* ── Tafelkeuze ── */
+  let gekozenTafel = 5;
+  const chips = document.getElementById('tafelChips');
+  for (let t = 1; t <= 10; t++) {
+    const c = document.createElement('span');
+    c.className = 'chip' + (t === gekozenTafel ? ' active' : '');
+    c.textContent = t;
+    c.onclick = () => {
+      document.querySelectorAll('.chip').forEach(x => x.classList.remove('active'));
+      c.classList.add('active');
+      gekozenTafel = t;
+    };
+    chips.appendChild(c);
+  }
+
+  /* ── State ── */
+  let kaarten = [], omgedraaid = [], gevonden = 0, zetten = 0, bezig = false;
+  let aantalParen = 0;
+  let bestScore = {};
+
+  /* ── Spel starten ── */
+  function startSpel() {
+    document.getElementById('resultBox').classList.remove('visible');
+    const tafel = gekozenTafel;
+    aantalParen = 11; /* 0×t t/m 10×t = 11 paren */
+
+    /* Bouw paren: [som-kaart, uitkomst-kaart] per i */
+    const paren = [];
+    for (let i = 0; i <= 10; i++) {
+      const kleur = KLEUREN[i % KLEUREN.length];
+      paren.push({ id: i, type: 'som',      tekst: `${i} × ${tafel}`, kleur, paarId: i });
+      paren.push({ id: i + 11, type: 'uitkomst', tekst: String(i * tafel),  kleur, paarId: i });
+    }
+
+    /* Schudden */
+    for (let i = paren.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [paren[i], paren[j]] = [paren[j], paren[i]];
+    }
+
+    kaarten    = paren;
+    omgedraaid = [];
+    gevonden   = 0;
+    zetten     = 0;
+    bezig      = false;
+
+    document.getElementById('movesDisplay').textContent = '0';
+    document.getElementById('foundDisplay').textContent = `0 / ${aantalParen}`;
+    updateBest(tafel);
+
+    /* Grid: 4 kolommen voor 22 kaarten (5 rijen + 2 extra) → pas voor 22: 6 rijen × 4 = 24, dus 4 cols */
+    const grid = document.getElementById('memoryGrid');
+    const cols = window.innerWidth < 500 ? 4 : 4;
+    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    grid.innerHTML = '';
+
+    kaarten.forEach((k, idx) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'card-wrap';
+      wrap.dataset.idx = idx;
+      wrap.innerHTML = `
+        <div class="card-inner">
+          <div class="card-face card-back"></div>
+          <div class="card-face card-front" style="background:${k.kleur}">${k.tekst}</div>
+        </div>`;
+      wrap.addEventListener('click', () => klik(idx));
+      grid.appendChild(wrap);
+    });
+  }
+
+  function updateBest(tafel) {
+    const key = 'geheugen_best_' + tafel;
+    const best = localStorage.getItem(key);
+    document.getElementById('bestDisplay').textContent = best ? best + ' zetten' : '—';
+  }
+
+  /* ── Kaart klikken ── */
+  function klik(idx) {
+    if (bezig) return;
+    const wrap = document.querySelector(`.card-wrap[data-idx="${idx}"]`);
+    if (!wrap || wrap.classList.contains('flipped') || wrap.classList.contains('matched')) return;
+    if (omgedraaid.length === 2) return;
+
+    wrap.classList.add('flipped');
+    omgedraaid.push(idx);
+
+    if (omgedraaid.length === 2) {
+      zetten++;
+      document.getElementById('movesDisplay').textContent = zetten;
+      bezig = true;
+      setTimeout(controleer, 700);
+    }
+  }
+
+  function controleer() {
+    const [i1, i2] = omgedraaid;
+    const k1 = kaarten[i1], k2 = kaarten[i2];
+
+    if (k1.paarId === k2.paarId && k1.type !== k2.type) {
+      /* Match */
+      document.querySelector(`.card-wrap[data-idx="${i1}"]`).classList.add('matched');
+      document.querySelector(`.card-wrap[data-idx="${i2}"]`).classList.add('matched');
+      gevonden++;
+      document.getElementById('foundDisplay').textContent = `${gevonden} / ${aantalParen}`;
+
+      if (gevonden === aantalParen) {
+        setTimeout(() => gewonnen(), 300);
+      }
+    } else {
+      /* Geen match: terugdraaien */
+      document.querySelector(`.card-wrap[data-idx="${i1}"]`).classList.remove('flipped');
+      document.querySelector(`.card-wrap[data-idx="${i2}"]`).classList.remove('flipped');
+    }
+
+    omgedraaid = [];
+    bezig = false;
+  }
+
+  function gewonnen() {
+    const key = 'geheugen_best_' + gekozenTafel;
+    const huidig = localStorage.getItem(key);
+    const isRecord = !huidig || zetten < +huidig;
+    if (isRecord) localStorage.setItem(key, zetten);
+
+    document.getElementById('bestDisplay').textContent = (isRecord ? zetten : huidig) + ' zetten';
+
+    const sub = isRecord && huidig
+      ? `Gelukt in ${zetten} zetten — nieuw record! (was ${huidig})`
+      : isRecord
+      ? `Gelukt in ${zetten} zetten — eerste keer gespeeld!`
+      : `Gelukt in ${zetten} zetten. Beste: ${huidig} zetten.`;
+
+    document.getElementById('resultSub').textContent = sub;
+    document.getElementById('resultBox').classList.add('visible');
+    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  /* ── Init ── */
+  updateBest(gekozenTafel);
+</script>
+</body>
+</html>
