@@ -9,8 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f8f8f8; color: #1a1a1a; min-height: 100vh; display: flex; flex-direction: column; }
+    html, body { height: 100%; overflow: hidden; }
+    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f8f8f8; color: #1a1a1a; display: flex; flex-direction: column; }
 
     /* ── Topbar ── */
     .topbar { background: #fff; border-bottom: 0.5px solid #e5e5e5; position: sticky; top: 0; z-index: 100; }
@@ -38,143 +38,102 @@
     .nav-dropdown-item.soon .tag { background: #f5f5f5; color: #ccc; }
 
     /* ── Pagina ── */
-    .main { max-width: 1280px; margin: 0 auto; padding: 2rem 160px 3rem; flex: 1; }
-    .page-title { font-size: 28px; font-weight: 300; color: #1a1a1a; margin-bottom: 4px; }
-    .page-sub { font-size: 13px; color: #999; margin-bottom: 1.5rem; }
+    .main { max-width: 1280px; width: 100%; margin: 0 auto; padding: 0.75rem 160px 0; flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .page-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 0.5rem; flex-shrink: 0; }
+    .page-title { font-size: 22px; font-weight: 300; color: #1a1a1a; }
+    .page-sub { font-size: 12px; color: #bbb; }
 
     /* ── Instellingen balk ── */
     .settings-bar {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 1.25rem;
-      background: #fff;
-      border: 0.5px solid #e5e5e5;
-      border-radius: 12px;
-      padding: 14px 20px;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap; flex-shrink: 0;
+      margin-bottom: 0.5rem;
+      background: #fff; border: 0.5px solid #e5e5e5; border-radius: 12px; padding: 10px 16px;
     }
-    .settings-label { font-size: 12px; color: #999; white-space: nowrap; }
-    .tafel-chips { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+    .settings-label { font-size: 11px; color: #999; white-space: nowrap; }
+    .tafel-chips { display: flex; gap: 5px; flex-wrap: wrap; flex: 1; }
     .chip {
-      font-size: 12px;
-      border: 0.5px solid #e0e0e0;
-      background: #f8f8f8;
-      color: #555;
-      padding: 5px 13px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.13s;
-      user-select: none;
+      font-size: 11px; border: 0.5px solid #e0e0e0; background: #f8f8f8; color: #555;
+      padding: 4px 11px; border-radius: 20px; cursor: pointer; transition: all 0.13s; user-select: none;
     }
     .chip:hover { border-color: #2A7FD4; color: #2A7FD4; background: #e8f4fd; }
     .chip.active { border-color: #2A7FD4; background: #e8f4fd; color: #2A7FD4; font-weight: 600; }
     .start-btn {
-      font-size: 14px; font-weight: 600;
+      font-size: 13px; font-weight: 600;
       background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
-      color: #fff; border: none; padding: 10px 28px;
-      border-radius: 24px; cursor: pointer;
-      transition: opacity 0.2s, transform 0.15s;
-      white-space: nowrap;
+      color: #fff; border: none; padding: 8px 22px; border-radius: 24px; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s; white-space: nowrap;
     }
     .start-btn:hover { opacity: 0.88; transform: translateY(-1px); }
     .start-btn:active { transform: translateY(0); }
 
     /* ── Score balk ── */
-    .score-bar {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 1rem;
-      align-items: center;
-    }
+    .score-bar { display: flex; gap: 16px; margin-bottom: 0.5rem; align-items: center; flex-shrink: 0; }
     .score-item { display: flex; flex-direction: column; align-items: center; }
-    .score-label { font-size: 9px; text-transform: uppercase; letter-spacing: 2px; color: #bbb; margin-bottom: 1px; }
-    .score-val { font-size: 22px; font-weight: 700; color: #1a1a1a; }
+    .score-label { font-size: 8px; text-transform: uppercase; letter-spacing: 2px; color: #bbb; margin-bottom: 1px; }
+    .score-val { font-size: 18px; font-weight: 700; color: #1a1a1a; }
     .score-val.moves { color: #2A7FD4; }
 
     /* ── Memory grid ── */
     .memory-grid {
+      flex: 1; min-height: 0;
       display: grid;
-      gap: 10px;
-      max-width: 600px;
+      gap: 7px;
+      align-content: stretch;
     }
+    .memory-grid.has-cards { grid-auto-rows: 1fr; }
 
     /* ── Kaart ── */
-    .card-wrap {
-      perspective: 600px;
-      cursor: pointer;
-      aspect-ratio: 1;
-    }
+    .card-wrap { perspective: 600px; cursor: pointer; }
     .card-inner {
       width: 100%; height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
+      position: relative; transform-style: preserve-3d;
       transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
-      border-radius: 12px;
+      border-radius: 10px;
     }
     .card-wrap.flipped .card-inner { transform: rotateY(180deg); }
     .card-wrap.matched .card-inner { transform: rotateY(180deg); }
 
     .card-face {
-      position: absolute;
-      inset: 0;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
+      position: absolute; inset: 0; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
       font-family: 'Inter', sans-serif;
     }
-    .card-back {
-      background: linear-gradient(135deg, #2A7FD4 0%, #2DBF8E 100%);
-      box-shadow: 0 2px 8px rgba(42,127,212,0.18);
-    }
-    /* Subtiel patroon op de achterkant */
+    .card-back { box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
     .card-back::after {
-      content: '×';
-      font-size: 28px;
-      font-weight: 300;
-      color: rgba(255,255,255,0.25);
+      content: '×'; font-size: 20px; font-weight: 300; color: rgba(255,255,255,0.3);
     }
     .card-front {
       transform: rotateY(180deg);
-      font-size: clamp(13px, 3vw, 20px);
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.5px;
-      text-align: center;
-      padding: 4px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-      line-height: 1.2;
+      font-size: clamp(10px, 1.4vw, 17px);
+      font-weight: 800; color: #fff; letter-spacing: -0.3px;
+      text-align: center; padding: 3px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.15); line-height: 1.2;
     }
-    .card-wrap.matched .card-front {
-      box-shadow: 0 0 0 3px #fff, 0 4px 16px rgba(0,0,0,0.18);
-    }
+    .card-wrap.matched .card-front { box-shadow: 0 0 0 2px #fff, 0 3px 12px rgba(0,0,0,0.18); }
 
-    /* ── Overlay (gewonnen) ── */
+    /* ── Resultaat overlay ── */
+    .result-overlay {
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: rgba(248,248,248,0.88); backdrop-filter: blur(6px);
+      align-items: center; justify-content: center;
+    }
+    .result-overlay.visible { display: flex; }
     .result-box {
-      display: none;
-      margin-top: 1.5rem;
-      background: #fff;
-      border: 0.5px solid #e5e5e5;
-      border-radius: 16px;
-      padding: 2rem;
-      text-align: center;
-      max-width: 600px;
+      background: #fff; border: 0.5px solid #e5e5e5; border-radius: 20px;
+      padding: 2.5rem 3rem; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.12);
     }
-    .result-box.visible { display: block; }
-    .result-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .result-sub { font-size: 14px; color: #888; margin-bottom: 1.25rem; }
+    .result-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .result-sub { font-size: 14px; color: #888; margin-bottom: 1.5rem; }
 
-    footer { border-top: 0.5px solid #e5e5e5; background: #fff; padding: 1.25rem 0; text-align: center; font-size: 12px; color: #bbb; }
+    footer { border-top: 0.5px solid #e5e5e5; background: #fff; padding: 0.6rem 0; text-align: center; font-size: 11px; color: #bbb; flex-shrink: 0; }
 
     @media (max-width: 1100px) { .topbar-inner, .main { padding-left: 2rem; padding-right: 2rem; } }
     @media (max-width: 600px) {
       .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
       nav { gap: 2px; } .nav-btn { font-size: 12px; padding: 5px 10px; }
-      .main { padding: 1.25rem 1rem 2rem; }
-      .memory-grid { max-width: 100%; gap: 7px; }
+      .main { padding: 0.5rem 1rem 0; }
+      .memory-grid { gap: 5px; }
     }
   </style>
 </head>
@@ -204,8 +163,10 @@
 </header>
 
 <main class="main">
-  <h1 class="page-title">Tafelgeheugen</h1>
-  <p class="page-sub">Zoek de bijpassende paren: een som en de bijbehorende uitkomst. Kies een tafel en start het spel.</p>
+  <div class="page-header">
+    <h1 class="page-title">Tafelgeheugen</h1>
+    <span class="page-sub">Zoek de bijpassende paren.</span>
+  </div>
 
   <!-- Instellingen -->
   <div class="settings-bar">
@@ -224,32 +185,37 @@
       <div class="score-label">Gevonden</div>
       <div class="score-val" id="foundDisplay">—</div>
     </div>
+    <div id="kiesMsg" style="font-size:13px;color:#bbb;margin-left:4px;">Kies een tafel om te beginnen.</div>
   </div>
-
-  <!-- Geen tafel gekozen melding -->
-  <div id="kiesMsg" style="font-size:14px;color:#aaa;margin-bottom:1rem;">Kies eerst een tafel om te beginnen.</div>
 
   <!-- Grid -->
   <div class="memory-grid" id="memoryGrid"></div>
-
-  <!-- Resultaat -->
-  <div class="result-box" id="resultBox">
-    <div class="result-title">Alle paren gevonden!</div>
-    <div class="result-sub" id="resultSub"></div>
-    <button class="start-btn" onclick="startSpel()">Nog een keer</button>
-  </div>
 </main>
 
 <footer>www.leerblad.nl</footer>
 
+<!-- Resultaat overlay -->
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-box">
+    <div class="result-title">Alle paren gevonden!</div>
+    <div class="result-sub" id="resultSub"></div>
+    <button class="start-btn" onclick="document.getElementById('resultOverlay').classList.remove('visible'); startSpel()">Nog een keer</button>
+  </div>
+</div>
+
 <script>
-  /* ── Kleurenpalet: egale kleuren per kaartpaar ── */
+  /* ── Kleurenpalet: egale kleuren ── */
   const KLEUREN = [
     '#E53935','#D81B60','#8E24AA','#5E35B1','#3949AB',
     '#1E88E5','#00ACC1','#00897B','#43A047','#F4511E',
     '#6D4C41','#F9A825','#039BE5','#7CB342','#C0CA33',
     '#FB8C00','#546E7A','#EC407A','#AB47BC','#26C6DA',
   ];
+
+  function willekeurigeKleur(uitgesloten) {
+    const opties = KLEUREN.filter(k => k !== uitgesloten);
+    return opties[Math.floor(Math.random() * opties.length)];
+  }
 
   /* ── Tafelkeuze (meerdere) ── */
   const gekozenTafels = new Set();
@@ -261,7 +227,7 @@
     c.onclick = () => {
       if (gekozenTafels.has(t)) { gekozenTafels.delete(t); c.classList.remove('active'); }
       else { gekozenTafels.add(t); c.classList.add('active'); }
-      document.getElementById('kiesMsg').style.display = gekozenTafels.size ? 'none' : 'block';
+      document.getElementById('kiesMsg').style.display = gekozenTafels.size ? 'none' : '';
     };
     chips.appendChild(c);
   }
@@ -273,13 +239,13 @@
   /* ── Spel starten ── */
   function startSpel() {
     if (!gekozenTafels.size) {
-      document.getElementById('kiesMsg').style.display = 'block';
+      document.getElementById('kiesMsg').style.display = '';
       return;
     }
-    document.getElementById('resultBox').classList.remove('visible');
+    document.getElementById('resultOverlay').classList.remove('visible');
     document.getElementById('kiesMsg').style.display = 'none';
 
-    /* Maak een geschikte kleurpool (shuffle zodat kleuren willekeurig verdeeld zijn) */
+    /* Kleurpool voor voorkanten (per paar) */
     const kleurPool = [...KLEUREN].sort(() => Math.random() - 0.5);
 
     /* Bouw paren voor alle gekozen tafels */
@@ -287,10 +253,11 @@
     let paarTeller = 0;
     for (const tafel of [...gekozenTafels].sort((a,b)=>a-b)) {
       for (let i = 0; i <= 10; i++) {
-        const kleur = kleurPool[paarTeller % kleurPool.length];
+        const voorKleur = kleurPool[paarTeller % kleurPool.length];
         const uid = paarTeller;
-        paren.push({ type: 'som',      tekst: `${i} × ${tafel}`, kleur, paarId: uid });
-        paren.push({ type: 'uitkomst', tekst: String(i * tafel),  kleur, paarId: uid });
+        /* Elke kaart krijgt een eigen achterkantkleur, anders dan de voorkant */
+        paren.push({ type: 'som',      tekst: `${i} × ${tafel}`, voorKleur, achterKleur: willekeurigeKleur(voorKleur), paarId: uid });
+        paren.push({ type: 'uitkomst', tekst: String(i * tafel),  voorKleur, achterKleur: willekeurigeKleur(voorKleur), paarId: uid });
         paarTeller++;
       }
     }
@@ -313,8 +280,11 @@
     document.getElementById('foundDisplay').textContent = `0 / ${aantalParen}`;
 
     const grid = document.getElementById('memoryGrid');
-    const cols = window.innerWidth < 500 ? 4 : 4;
+    /* Bepaal kolommen op basis van totaal aantal kaarten */
+    const totaal = paren.length;
+    const cols = totaal <= 22 ? 4 : totaal <= 44 ? 6 : 8;
     grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    grid.classList.add('has-cards');
     grid.innerHTML = '';
 
     kaarten.forEach((k, idx) => {
@@ -323,8 +293,8 @@
       wrap.dataset.idx = idx;
       wrap.innerHTML = `
         <div class="card-inner">
-          <div class="card-face card-back"></div>
-          <div class="card-face card-front" style="background:${k.kleur}">${k.tekst}</div>
+          <div class="card-face card-back" style="background:${k.achterKleur}"></div>
+          <div class="card-face card-front" style="background:${k.voorKleur}">${k.tekst}</div>
         </div>`;
       wrap.addEventListener('click', () => klik(idx));
       grid.appendChild(wrap);
@@ -382,8 +352,7 @@
       : `Gelukt in ${zetten} zetten. Beste: ${huidig} zetten.`;
 
     document.getElementById('resultSub').textContent = sub;
-    document.getElementById('resultBox').classList.add('visible');
-    document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    document.getElementById('resultOverlay').classList.add('visible');
   }
 </script>
 </body>
