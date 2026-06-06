@@ -237,6 +237,20 @@
     .opt:hover { border-color: #2A7FD4; color: #2A7FD4; background: #e8f4fd; }
     .opt.active { border-color: #2A7FD4; background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
     .opt.disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
+    .alle-btn {
+      font-size: 13px;
+      border: 0.5px solid #e0e0e0;
+      background: #f8f8f8;
+      color: #555;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-top: 8px;
+    }
+    .alle-btn:hover { border-color: #2A7FD4; color: #2A7FD4; background: #e8f4fd; }
+    .alle-btn.active { border-color: #2A7FD4; background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
+    .alle-btn.disabled { opacity: 0.3; cursor: not-allowed; pointer-events: none; }
 
     /* ── Aantal-knoppen ── */
     .aantal-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -446,6 +460,7 @@
         <button class="opt disabled" id="v-td"  onclick="toggleVorm('tegenwoordig deelwoord', this)">Tegenwoordig deelwoord</button>
         <button class="opt disabled" id="v-bvd" onclick="toggleVorm('bijvoeglijk gebruikt voltooid deelwoord', this)">Bijvoeglijk voltooid deelwoord</button>
       </div>
+      <button class="alle-btn" id="alleVormenBtn" onclick="toggleAlleVormen()">Alle vormen</button>
     </div>
 
     <!-- Aantal zinnen -->
@@ -585,16 +600,7 @@
     }
 
     // Vorm-knoppen: alle resetten, dan niet-curriculum vergrendelen
-    const vormMap = {
-      'v-ik':  'ik-vorm',
-      'v-jij': 'jij-vorm',
-      'v-hij': 'hij-vorm',
-      'v-wij': 'wij-vorm',
-      'v-vd':  'voltooid deelwoord',
-      'v-td':  'tegenwoordig deelwoord',
-      'v-bvd': 'bijvoeglijk gebruikt voltooid deelwoord'
-    };
-    Object.entries(vormMap).forEach(([id, v]) => {
+    Object.entries(VORM_MAP).forEach(([id, v]) => {
       const el = document.getElementById(id);
       el.classList.remove('active');
       el.classList.add('disabled');
@@ -606,6 +612,7 @@
       }
     });
     document.getElementById('vorm-hint').textContent = 'Kies eerst een werkwoordtype';
+    syncAlleVormenBtn();
   }
 
   /* ── Groep ── */
@@ -650,6 +657,7 @@
       document.getElementById('type-hint').textContent = 'Kies eerst een tijd';
       document.getElementById('vorm-hint').textContent = 'Kies eerst een werkwoordtype';
     }
+    syncAlleVormenBtn();
     clearOutput();
   }
 
@@ -682,6 +690,7 @@
       vormen = [];
       document.getElementById('vorm-hint').textContent = 'Kies eerst een werkwoordtype';
     }
+    syncAlleVormenBtn();
     clearOutput();
   }
 
@@ -697,6 +706,7 @@
       vormen.splice(idx, 1);
       el.classList.remove('active');
     }
+    syncAlleVormenBtn();
     clearOutput();
   }
 
@@ -707,8 +717,51 @@
     el.classList.add('active');
   }
 
+  const VORM_MAP = {
+    'v-ik':  'ik-vorm',
+    'v-jij': 'jij-vorm',
+    'v-hij': 'hij-vorm',
+    'v-wij': 'wij-vorm',
+    'v-vd':  'voltooid deelwoord',
+    'v-td':  'tegenwoordig deelwoord',
+    'v-bvd': 'bijvoeglijk gebruikt voltooid deelwoord'
+  };
+
   function vormIds() {
-    return ['v-ik', 'v-jij', 'v-hij', 'v-wij', 'v-vd', 'v-td', 'v-bvd'];
+    return Object.keys(VORM_MAP);
+  }
+
+  function syncAlleVormenBtn() {
+    const beschikbaar = vormIds().filter(id => {
+      const el = document.getElementById(id);
+      return !el.getAttribute('data-curriculum-lock') && !el.classList.contains('disabled');
+    });
+    const isAlle = beschikbaar.length > 0 && beschikbaar.every(id => vormen.includes(VORM_MAP[id]));
+    const btn = document.getElementById('alleVormenBtn');
+    btn.classList.toggle('active', isAlle);
+    const geenType = wtypes.length === 0;
+    btn.classList.toggle('disabled', geenType);
+  }
+
+  function toggleAlleVormen() {
+    if (wtypes.length === 0) return;
+    const beschikbaar = vormIds().filter(id => {
+      const el = document.getElementById(id);
+      return !el.getAttribute('data-curriculum-lock') && !el.classList.contains('disabled');
+    });
+    const isAlle = beschikbaar.every(id => vormen.includes(VORM_MAP[id]));
+    if (isAlle) {
+      vormen = [];
+      beschikbaar.forEach(id => document.getElementById(id).classList.remove('active'));
+    } else {
+      beschikbaar.forEach(id => {
+        const v = VORM_MAP[id];
+        if (!vormen.includes(v)) vormen.push(v);
+        document.getElementById(id).classList.add('active');
+      });
+    }
+    syncAlleVormenBtn();
+    clearOutput();
   }
 
   function clearOutput() {

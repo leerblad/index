@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Leerblad – Rekenen</title>
+  <title>Leerblad – Deeltafels</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -142,7 +142,6 @@
       margin: 0 auto;
       padding: 2.5rem 160px 4rem;
     }
-
     .section-title {
       font-size: 28px;
       font-weight: 300;
@@ -154,35 +153,6 @@
       color: #999;
       margin-bottom: 2rem;
     }
-
-    /* ── Submenu ── */
-    .submenu {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-    }
-    .sub-btn {
-      font-size: 13px;
-      border: 0.5px solid #e0e0e0;
-      background: #fff;
-      color: #555;
-      padding: 9px 20px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.15s;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .sub-btn:hover { border-color: #2A7FD4; color: #2A7FD4; }
-    .sub-btn.active {
-      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
-      border-color: transparent;
-      color: #fff;
-      font-weight: 500;
-    }
-    .sub-btn.soon { opacity: 0.45; cursor: default; pointer-events: none; }
 
     /* ── Kaarten ── */
     .card {
@@ -208,11 +178,7 @@
       flex-wrap: wrap;
       margin-bottom: 8px;
     }
-    .tafel-item {
-      display: flex;
-      align-items: center;
-      gap: 0;
-    }
+    .tafel-item { display: flex; align-items: center; gap: 0; }
     .tafel-item input[type="checkbox"] { display: none; }
     .tafel-item label {
       font-size: 13px;
@@ -262,7 +228,6 @@
     }
     .generate-btn:hover { opacity: 0.88; transform: translateY(-1px); }
     .generate-btn:active { transform: translateY(0); }
-    .generate-btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 
     /* ── Output ── */
     .output-area {
@@ -274,20 +239,12 @@
       display: none;
     }
     .output-area.visible { display: block; }
-    .output-title {
-      font-size: 17px;
-      font-weight: 400;
-      color: #1a1a1a;
-      margin-bottom: 4px;
-    }
+    .output-title { font-size: 17px; font-weight: 400; color: #1a1a1a; margin-bottom: 4px; }
     .output-instr { font-size: 13px; color: #999; margin-bottom: 1rem; }
     .sommen-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 0 16px;
-    }
-    .sommen-groep {
-      display: contents;
     }
     .som-item {
       font-size: 14px;
@@ -297,10 +254,8 @@
       align-items: center;
       font-variant-numeric: tabular-nums;
     }
-    .som-gap {
-      grid-column: 1 / -1;
-      height: 10px;
-    }
+    .som-gap { grid-column: 1 / -1; height: 10px; }
+
     /* ── Aantal-knoppen ── */
     .aantal-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
     .aantal-btn {
@@ -340,15 +295,6 @@
     }
     .action-btn.primary:hover { opacity: 0.85; }
 
-    /* ── Binnenkort placeholder ── */
-    .soon-placeholder {
-      text-align: center;
-      padding: 4rem 2rem;
-      color: #ccc;
-    }
-    .soon-placeholder .soon-icon { font-size: 40px; margin-bottom: 1rem; }
-    .soon-placeholder p { font-size: 14px; }
-
     /* ── Responsive ── */
     @media (max-width: 1100px) {
       .topbar-inner, .main { padding-left: 2rem; padding-right: 2rem; }
@@ -360,10 +306,6 @@
       .main { padding: 1.5rem 1rem 3rem; }
       .sommen-grid { grid-template-columns: repeat(2, 1fr); }
     }
-
-    /* ── Sectie-panelen ── */
-    .sectie-panel { display: none; }
-    .sectie-panel.active { display: block; }
   </style>
 </head>
 <body>
@@ -400,81 +342,52 @@
 
 <!-- MAIN -->
 <main class="main">
-  <h1 class="section-title">Rekenen</h1>
-  <p class="section-sub">Kies een onderdeel om een werkblad te maken.</p>
+  <h1 class="section-title">Deeltafels</h1>
+  <p class="section-sub">Kies de deeltafels en het aantal sommen om een werkblad te maken.</p>
 
-  <!-- Submenu -->
-  <div class="submenu">
-    <button class="sub-btn active" onclick="toonSectie('tafels', this)">Tafelsommen</button>
-    <button class="sub-btn soon" disabled>Tafelspellen<span class="tag">binnenkort</span></button>
-    <button class="sub-btn soon" disabled>Redactiesommen<span class="tag">binnenkort</span></button>
+  <!-- Stap 1: kies deeltafels -->
+  <div class="card">
+    <div class="card-label">Stap 1 &nbsp;·&nbsp; Kies de deeltafels</div>
+    <div class="tafel-grid" id="tafelGrid">
+      <div class="tafel-item"><input type="checkbox" id="t1" value="1"><label for="t1">Deeltafel van 1</label></div>
+      <div class="tafel-item"><input type="checkbox" id="t2" value="2"><label for="t2">Deeltafel van 2</label></div>
+      <div class="tafel-item"><input type="checkbox" id="t3" value="3"><label for="t3">Deeltafel van 3</label></div>
+      <div class="tafel-item"><input type="checkbox" id="t4" value="4"><label for="t4">Deeltafel van 4</label></div>
+      <div class="tafel-item"><input type="checkbox" id="t5" value="5"><label for="t5">Deeltafel van 5</label></div>
+      <div class="tafel-item"><input type="checkbox" id="t6" value="6"><label for="t6">Deeltafel van 6</label></div>
+      <div class="tafel-item"><input type="checkbox" id="t7" value="7"><label for="t7">Deeltafel van 7</label></div>
+      <div class="tafel-item"><input type="checkbox" id="t8" value="8"><label for="t8">Deeltafel van 8</label></div>
+      <div class="tafel-item"><input type="checkbox" id="t9" value="9"><label for="t9">Deeltafel van 9</label></div>
+      <div class="tafel-item"><input type="checkbox" id="t10" value="10"><label for="t10">Deeltafel van 10</label></div>
+    </div>
+    <button class="alle-btn" id="alleBtn" onclick="toggleAlle()">Alle deeltafels</button>
   </div>
 
-  <!-- ══ TAFELSOMMEN ══ -->
-  <div id="sectie-tafels" class="sectie-panel active">
-
-    <!-- Stap 1: kies tafels -->
-    <div class="card">
-      <div class="card-label">Stap 1 &nbsp;·&nbsp; Kies de tafels</div>
-      <div class="tafel-grid" id="tafelGrid">
-        <div class="tafel-item"><input type="checkbox" id="t0" value="0"><label for="t0">Tafel van 0</label></div>
-        <div class="tafel-item"><input type="checkbox" id="t1" value="1"><label for="t1">Tafel van 1</label></div>
-        <div class="tafel-item"><input type="checkbox" id="t2" value="2"><label for="t2">Tafel van 2</label></div>
-        <div class="tafel-item"><input type="checkbox" id="t3" value="3"><label for="t3">Tafel van 3</label></div>
-        <div class="tafel-item"><input type="checkbox" id="t4" value="4"><label for="t4">Tafel van 4</label></div>
-        <div class="tafel-item"><input type="checkbox" id="t5" value="5"><label for="t5">Tafel van 5</label></div>
-        <div class="tafel-item"><input type="checkbox" id="t6" value="6"><label for="t6">Tafel van 6</label></div>
-        <div class="tafel-item"><input type="checkbox" id="t7" value="7"><label for="t7">Tafel van 7</label></div>
-        <div class="tafel-item"><input type="checkbox" id="t8" value="8"><label for="t8">Tafel van 8</label></div>
-        <div class="tafel-item"><input type="checkbox" id="t9" value="9"><label for="t9">Tafel van 9</label></div>
-        <div class="tafel-item"><input type="checkbox" id="t10" value="10"><label for="t10">Tafel van 10</label></div>
-      </div>
-      <button class="alle-btn" id="alleBtn" onclick="toggleAlle()">Alle tafels</button>
-    </div>
-
-    <!-- Stap 2: aantal sommen -->
-    <div class="card">
-      <div class="card-label">Stap 2 &nbsp;·&nbsp; Aantal sommen</div>
-      <div class="aantal-row">
-        <span class="aantal-label">Kies het aantal:</span>
-        <button class="aantal-btn" onclick="setAantal(50, this)">50</button>
-        <button class="aantal-btn active" onclick="setAantal(100, this)">100</button>
-        <button class="aantal-btn" onclick="setAantal(200, this)">200</button>
-      </div>
-    </div>
-
-    <!-- Stap 3: genereer -->
-    <div class="card">
-      <div class="card-label">Stap 3 &nbsp;·&nbsp; Werkblad genereren</div>
-      <button class="generate-btn" onclick="genereerTafels()">Werkblad genereren</button>
-    </div>
-
-    <!-- Output -->
-    <div class="output-area" id="outputArea">
-      <div class="output-title" id="outputTitle">Tafelsommen</div>
-      <div class="output-instr" id="outputInstr">Sommen in willekeurige volgorde, gegroepeerd per 5. Elke keer opnieuw gegenereerd.</div>
-      <div class="sommen-grid" id="sommenGrid"></div>
-      <div class="action-row">
-        <button class="action-btn" onclick="genereerTafels()">Opnieuw genereren</button>
-        <button class="action-btn primary" onclick="maakPDF()">Download PDF + antwoordblad</button>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ══ TAFELSPELLEN (binnenkort) ══ -->
-  <div id="sectie-tafelspellen" class="sectie-panel">
-    <div class="soon-placeholder">
-      <div class="soon-icon">&#127922;</div>
-      <p>Tafelspellen komen binnenkort beschikbaar.</p>
+  <!-- Stap 2: aantal sommen -->
+  <div class="card">
+    <div class="card-label">Stap 2 &nbsp;·&nbsp; Aantal sommen</div>
+    <div class="aantal-row">
+      <span class="aantal-label">Kies het aantal:</span>
+      <button class="aantal-btn" onclick="setAantal(50, this)">50</button>
+      <button class="aantal-btn active" onclick="setAantal(100, this)">100</button>
+      <button class="aantal-btn" onclick="setAantal(200, this)">200</button>
     </div>
   </div>
 
-  <!-- ══ REDACTIESOMMEN (binnenkort) ══ -->
-  <div id="sectie-redactie" class="sectie-panel">
-    <div class="soon-placeholder">
-      <div class="soon-icon">&#128221;</div>
-      <p>Redactiesommen komen binnenkort beschikbaar.</p>
+  <!-- Stap 3: genereer -->
+  <div class="card">
+    <div class="card-label">Stap 3 &nbsp;·&nbsp; Werkblad genereren</div>
+    <button class="generate-btn" onclick="genereerDeeltafels()">Werkblad genereren</button>
+  </div>
+
+  <!-- Output -->
+  <div class="output-area" id="outputArea">
+    <div class="output-title" id="outputTitle">Deeltafels</div>
+    <div class="output-instr" id="outputInstr">Sommen in willekeurige volgorde, gegroepeerd per 5. Elke keer opnieuw gegenereerd.</div>
+    <div class="sommen-grid" id="sommenGrid"></div>
+    <div class="action-row">
+      <button class="action-btn" onclick="genereerDeeltafels()">Opnieuw genereren</button>
+      <button class="action-btn primary" onclick="maakPDF()">Download PDF + antwoordblad</button>
     </div>
   </div>
 
@@ -485,27 +398,16 @@
 </footer>
 
 <script>
-  /* Reset checkboxes bij laden (browser kan vorige staat onthouden) */
   window.addEventListener('load', () => {
     document.querySelectorAll('#tafelGrid input[type="checkbox"]').forEach(cb => cb.checked = false);
   });
 
-  /* ── Submenu navigatie ── */
-  function toonSectie(naam, el) {
-    document.querySelectorAll('.sectie-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.sub-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('sectie-' + naam).classList.add('active');
-    el.classList.add('active');
-  }
-
-  /* ── Alle tafels toggle ── */
+  /* ── Alle deeltafels toggle ── */
   let alleActief = false;
   function toggleAlle() {
     alleActief = !alleActief;
     document.getElementById('alleBtn').classList.toggle('active', alleActief);
-    document.querySelectorAll('#tafelGrid input[type="checkbox"]').forEach(cb => {
-      cb.checked = alleActief;
-    });
+    document.querySelectorAll('#tafelGrid input[type="checkbox"]').forEach(cb => { cb.checked = alleActief; });
   }
   document.querySelectorAll('#tafelGrid input[type="checkbox"]').forEach(cb => {
     cb.addEventListener('change', () => {
@@ -532,30 +434,31 @@
     return arr;
   }
 
-  /* ── Genereer sommen ── */
+  /* ── Genereer deelsommen ── */
   let huidigeSommen = [];
 
-  function genereerTafels() {
+  function genereerDeeltafels() {
     const gekozen = [...document.querySelectorAll('#tafelGrid input:checked')].map(c => +c.value);
-    if (gekozen.length === 0) { alert('Kies minimaal één tafel.'); return; }
+    if (gekozen.length === 0) { alert('Kies minimaal één deeltafel.'); return; }
 
+    /* Pool: voor deeltafel t zijn de sommen (i*t) ÷ t = i, voor i = 0..10 */
     let pool = [];
-    gekozen.forEach(t => { for (let i = 0; i <= 10; i++) pool.push({ a: i, b: t }); });
+    gekozen.forEach(t => {
+      for (let i = 0; i <= 10; i++) pool.push({ deeltal: i * t, deler: t, antwoord: i });
+    });
 
     shuffle(pool);
     huidigeSommen = [];
     while (huidigeSommen.length < gekozenAantal) huidigeSommen.push(...pool);
     huidigeSommen = shuffle(huidigeSommen).slice(0, gekozenAantal);
 
-    /* Toon in UI — 4 kolommen, gegroepeerd per 5 rijen per kolom */
+    /* Toon in UI — 4 kolommen, gegroepeerd per 5 rijen */
     const grid = document.getElementById('sommenGrid');
     grid.innerHTML = '';
     const colCount = 4;
     const perKolom = Math.ceil(huidigeSommen.length / colCount);
 
-    /* Bouw rij voor rij zodat CSS grid ze netjes naast elkaar zet */
     for (let rij = 0; rij < perKolom; rij++) {
-      /* Groepsafstand na elke 5e rij */
       if (rij > 0 && rij % 5 === 0) {
         const gap = document.createElement('div');
         gap.className = 'som-gap';
@@ -567,17 +470,16 @@
         div.className = 'som-item';
         if (idx < huidigeSommen.length) {
           const s = huidigeSommen[idx];
-          div.innerHTML = `${s.a} &times; ${s.b} = <span style="display:inline-block;width:32px;border-bottom:1px solid #ccc;margin-left:4px;">&nbsp;</span>`;
+          div.innerHTML = `${s.deeltal} &divide; ${s.deler} = <span style="display:inline-block;width:32px;border-bottom:1px solid #ccc;margin-left:4px;">&nbsp;</span>`;
         }
         grid.appendChild(div);
       }
     }
 
-    const gekozenTafels = gekozen;
-    const tafelnamen = gekozenTafels.length === 11
-      ? '0 t/m 10'
-      : gekozenTafels.map(t => `tafel van ${t}`).join(', ');
-    document.getElementById('outputTitle').textContent = `Tafelsommen (${tafelnamen})`;
+    const tafelnamen = gekozen.length === 10
+      ? '1 t/m 10'
+      : gekozen.map(t => `deeltafel van ${t}`).join(', ');
+    document.getElementById('outputTitle').textContent = `Deeltafels (${tafelnamen})`;
     document.getElementById('outputInstr').textContent =
       `${gekozenAantal} sommen in willekeurige volgorde, gegroepeerd per 5. Elke keer opnieuw gegenereerd.`;
 
@@ -597,30 +499,25 @@
       doc.setFontSize(9);
       doc.setTextColor(60);
 
-      const labelY = mt + 4;
-      const lineY  = labelY + 1;
+      const labelY  = mt + 4;
+      const lineY   = labelY + 1;
       const lineLen = 42;
 
-      /* Naam (links) */
       doc.text('Naam:', ml, labelY);
       doc.setDrawColor(160);
       doc.line(ml + 11, lineY, ml + 11 + lineLen, lineY);
 
-      /* Begintijd (midden) */
       const midX = pw / 2 - 15;
       doc.text('Begintijd:', midX, labelY);
       doc.line(midX + 18, lineY, midX + 18 + lineLen, lineY);
 
-      /* Eindtijd (rechts) */
       const rX = pw - mr - 18 - lineLen;
       doc.text('Eindtijd:', rX, labelY);
       doc.line(rX + 16, lineY, rX + 16 + lineLen, lineY);
 
-      /* Scheidingslijn onder header */
       doc.setDrawColor(200);
       doc.line(ml, mt + 8, pw - mr, mt + 8);
     } else {
-      /* Antwoordblad: alleen titelbalk */
       doc.setFontSize(11);
       doc.setTextColor(30);
       doc.setFont('helvetica', 'bold');
@@ -630,43 +527,40 @@
     }
 
     /* ── Sommen: 4 kolommen, gegroepeerd per 5 rijen ── */
-    const colCount  = 4;
-    const colW      = bw / colCount;
-    const startY    = mt + 13;
-    const footerH   = 12;
-    const beschikH  = ph - mb - footerH - startY;
-
+    const colCount       = 4;
+    const colW           = bw / colCount;
+    const startY         = mt + 13;
+    const footerH        = 12;
     const sommenPerKolom = Math.ceil(sommen.length / colCount);
-    const aantalGroepen  = Math.ceil(sommenPerKolom / 5);
-    const gapH  = 3.5;   /* ruimte tussen groepen */
-    const rowH  = (beschikH - (aantalGroepen - 1) * gapH) / sommenPerKolom;
+    const gapH           = 4;
+    const rowH           = 8.2;
 
     doc.setFont('helvetica', 'normal');
-    doc.setFontSize(9.5);
+    doc.setFontSize(11);
 
     for (let col = 0; col < colCount; col++) {
       for (let rij = 0; rij < sommenPerKolom; rij++) {
         const idx = col * sommenPerKolom + rij;
         if (idx >= sommen.length) break;
-        const s = sommen[idx];
+        const s     = sommen[idx];
         const groep = Math.floor(rij / 5);
-        const x = ml + col * colW;
-        const y = startY + rij * rowH + groep * gapH;
+        const x     = ml + col * colW;
+        const y     = startY + rij * rowH + groep * gapH;
 
-        /* Lijn de getallen op: max 2 cijfers per getal */
-        const a2 = String(s.a).padStart(2, ' '); /* figure space */
-        const b2 = String(s.b).padStart(2, ' ');
-        const somTekst = `${a2} × ${b2} = `;
+        /* Uitlijning: deeltal rechtuit (max 3 cijfers voor 10*10=100), deler 2 cijfers */
+        const dt  = String(s.deeltal).padStart(3, ' ');
+        const dl  = String(s.deler).padStart(2, ' ');
+        const somTekst = `${dt} ÷ ${dl} = `;
 
         doc.setTextColor(30);
         doc.text(somTekst, x, y);
 
         const lineX = x + doc.getTextWidth(somTekst);
         if (isAntwoord) {
-          doc.text(String(s.a * s.b), lineX + 1, y);
+          doc.text(String(s.antwoord), lineX + 1, y);
         } else {
           doc.setDrawColor(180);
-          doc.line(lineX, y + 0.3, lineX + 10, y + 0.3);
+          doc.line(lineX, y + 0.3, lineX + 13, y + 0.3);
         }
       }
     }
@@ -674,7 +568,6 @@
     /* ── Footer ── */
     const footerY = ph - mb - 2;
 
-    /* Paginanummer in cirkel (links) */
     doc.setFillColor(50, 50, 50);
     doc.circle(ml + 3.5, footerY - 1.5, 3.5, 'F');
     doc.setFontSize(7);
@@ -682,7 +575,6 @@
     doc.setFont('helvetica', 'bold');
     doc.text(String(paginaNr), ml + 3.5, footerY - 0.5, { align: 'center' });
 
-    /* Midden tekst */
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7);
     doc.setTextColor(160);
@@ -691,7 +583,6 @@
       : 'Print een werkblad of oefen online op leerblad.nl';
     doc.text(midTekst, pw / 2, footerY - 0.5, { align: 'center' });
 
-    /* leerblad.nl rechts, gestileerd */
     doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(42, 127, 212);
@@ -706,9 +597,9 @@
     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
 
     const gekozen = [...document.querySelectorAll('#tafelGrid input:checked')].map(c => +c.value);
-    const titelTekst = gekozen.length === 11
-      ? 'Tafelsommen 0 t/m 10'
-      : 'Tafelsommen — tafel van ' + gekozen.join(', ');
+    const titelTekst = gekozen.length === 10
+      ? 'Deeltafels 1 t/m 10'
+      : 'Deeltafels — deeltafel van ' + gekozen.join(', ');
 
     const maxPerPagina = 100;
     const paginas = [];
@@ -717,19 +608,17 @@
     }
     const totaalPaginas = paginas.length;
 
-    /* Werkblad pagina's */
     paginas.forEach((sommen, pi) => {
       if (pi > 0) doc.addPage();
       tekenPagina(doc, sommen, pi + 1, totaalPaginas, titelTekst, false);
     });
 
-    /* Antwoordblad pagina's */
     paginas.forEach((sommen, pi) => {
       doc.addPage();
       tekenPagina(doc, sommen, pi + 1, totaalPaginas, titelTekst, true);
     });
 
-    doc.save('tafelsommen-leerblad.pdf');
+    doc.save('deeltafels-leerblad.pdf');
   }
 </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Leerblad – Werkbladen op maat</title>
+  <title>Leerblad – Rekenen</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -135,82 +135,53 @@
     .nav-dropdown-item.soon { color: #ccc; pointer-events: none; }
     .nav-dropdown-item.soon .tag { background: #f5f5f5; color: #ccc; }
 
-    /* ── Hero ── */
-    .hero {
+    /* ── Main ── */
+    .main {
       max-width: 1280px;
       margin: 0 auto;
-      padding: 4rem 160px 3rem;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
+      padding: 2.5rem 160px 4rem;
     }
-    .hero-text h1 {
-      font-size: 36px;
+    .section-title {
+      font-size: 28px;
       font-weight: 300;
       color: #1a1a1a;
-      line-height: 1.3;
-      margin-bottom: 1.25rem;
+      margin-bottom: 4px;
     }
-    .hero-text h1 span {
-      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-text p {
-      font-size: 14.5px;
-      color: #666;
-      line-height: 1.8;
-      margin-bottom: 0.75rem;
-    }
-    .hero-img {
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    }
-    .hero-img img {
-      width: 100%;
-      height: 340px;
-      object-fit: cover;
-      display: block;
+    .section-sub {
+      font-size: 13px;
+      color: #999;
+      margin-bottom: 2.5rem;
     }
 
-    /* ── Modules ── */
-    .modules-section {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 1rem 160px 5rem;
-    }
+    /* ── Module kaarten ── */
     .modules-label {
-      font-size: 15px;
-      font-weight: 400;
-      color: #1a1a1a;
-      margin-bottom: 1.25rem;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      color: #bbb;
+      font-weight: 500;
+      margin-bottom: 1rem;
     }
     .modules-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
     }
     .module-card {
       background: #fff;
       border: 0.5px solid #e5e5e5;
-      border-radius: 14px;
-      padding: 1.5rem 1.25rem 1.25rem;
+      border-radius: 16px;
+      padding: 1.5rem 1.5rem 1.25rem;
       text-decoration: none;
       color: inherit;
-      transition: all 0.18s;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      position: relative;
-    }
-    .module-card.active {
-      border-color: #2A7FD4;
+      transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s;
     }
     .module-card.active:hover {
-      box-shadow: 0 4px 20px rgba(42,127,212,0.12);
+      box-shadow: 0 8px 28px rgba(42,127,212,0.10);
+      border-color: #2A7FD4;
       transform: translateY(-2px);
     }
     .module-card.soon {
@@ -218,43 +189,42 @@
       cursor: default;
       pointer-events: none;
     }
-    .module-icon { font-size: 26px; line-height: 1; margin-bottom: 2px; }
-    .module-title { font-size: 14.5px; font-weight: 500; color: #1a1a1a; }
-    .module-desc { font-size: 12.5px; color: #888; line-height: 1.6; flex: 1; }
-    .module-tag {
-      display: inline-block;
-      font-size: 12px;
+    .module-title {
+      font-size: 17px;
       font-weight: 400;
+      color: #1a1a1a;
+    }
+    .module-desc {
+      font-size: 13px;
+      color: #888;
+      line-height: 1.55;
+      flex: 1;
+    }
+    .module-tag {
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
       padding: 3px 9px;
       border-radius: 20px;
-      width: fit-content;
-      margin-top: 4px;
+      background: #e8f4fd;
+      color: #2A7FD4;
+      align-self: flex-start;
     }
-    .module-card.active .module-tag { background: #e8f4fd; color: #2A7FD4; }
-    .module-card.soon .module-tag { background: #f0f0f0; color: #bbb; }
-
-    /* ── Footer ── */
-    footer {
-      border-top: 0.5px solid #e5e5e5;
-      background: #fff;
-      padding: 1.25rem 0;
-      text-align: center;
-      font-size: 12px;
+    .module-card.soon .module-tag {
+      background: #f5f5f5;
       color: #bbb;
     }
 
     /* ── Responsive ── */
     @media (max-width: 1100px) {
-      .topbar-inner, .hero, .modules-section { padding-left: 2rem; padding-right: 2rem; }
+      .topbar-inner, .main { padding-left: 2rem; padding-right: 2rem; }
     }
-    @media (max-width: 768px) {
-      .topbar-inner { height: auto; padding: 0.75rem 1rem; flex-wrap: wrap; gap: 0.5rem; }
+    @media (max-width: 600px) {
+      .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
       nav { gap: 2px; }
       .nav-btn { font-size: 12px; padding: 5px 10px; }
-      .hero { grid-template-columns: 1fr; gap: 2rem; padding: 2rem 1rem; }
-      .hero-img img { height: 220px; }
-      .modules-section { padding: 2rem 1rem 3rem; }
-      .modules-grid { grid-template-columns: 1fr 1fr; }
+      .main { padding: 1.5rem 1rem 3rem; }
     }
   </style>
 </head>
@@ -263,7 +233,7 @@
 <!-- TOPBAR -->
 <header class="topbar">
   <div class="topbar-inner">
-    <a class="logo-link" href="index.html">
+    <a class="logo-link" href="../index.html">
       <span class="logo-text">Leerblad</span>
       <div class="logo-tagline-row">
         <div class="logo-tagline-line"></div>
@@ -272,13 +242,13 @@
       </div>
     </a>
     <nav>
-      <a class="nav-btn" href="werkbladen/werkwoordspelling.html">Werkwoordspelling</a>
+      <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
       <div class="nav-dropdown">
-        <a class="nav-btn" href="werkbladen/rekenindex.html">Rekenen</a>
+        <a class="nav-btn active" href="rekenindex.html">Rekenen</a>
         <div class="nav-dropdown-menu">
           <div class="nav-dropdown-menu-inner">
-            <a class="nav-dropdown-item" href="werkbladen/tafelsommen.html">Tafelsommen</a>
-            <a class="nav-dropdown-item" href="werkbladen/deeltafels.html">Deeltafels</a>
+            <a class="nav-dropdown-item" href="tafelsommen.html">Tafelsommen</a>
+            <a class="nav-dropdown-item" href="deeltafels.html">Deeltafels</a>
             <span class="nav-dropdown-item soon">Tafelspellen<span class="tag">binnenkort</span></span>
             <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
           </div>
@@ -290,54 +260,42 @@
   </div>
 </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-text">
-    <h1>Werkbladen voor het <span>basisonderwijs</span>, direct klaar voor de klas</h1>
-    <p>Leerblad maakt het eenvoudig om gerichte oefenwerkbladen te maken voor je leerlingen. Kies het onderwerp, de groep en de leerstof en download in één klik een kant-en-klare PDF met nakijkblad.</p>
-    <p>Geen account nodig. Geen abonnement. Gewoon printen en aan de slag.</p>
-  </div>
-  <div class="hero-img">
-    <img
-      src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80"
-      alt="Kinderen in de klas op de basisschool"
-    />
-  </div>
-</section>
+<!-- MAIN -->
+<main class="main">
+  <h1 class="section-title">Rekenen</h1>
+  <p class="section-sub">Kies een onderdeel om een werkblad te maken.</p>
 
-<!-- MODULES -->
-<section class="modules-section">
-  <div class="modules-label">We gaan je helpen met het maken van een werkblad voor:</div>
+  <div class="modules-label">Beschikbare werkbladen</div>
   <div class="modules-grid">
 
-    <a class="module-card active" href="werkbladen/werkwoordspelling.html">
-      <div class="module-title">Werkwoordspelling</div>
-      <div class="module-desc">Oefenzinnen voor groep 5 t/m 8. Tegenwoordige en verleden tijd, zwakke en sterke werkwoorden, alle vormen.</div>
+    <a class="module-card active" href="tafelsommen.html">
+      <div class="module-title">Tafelsommen</div>
+      <div class="module-desc">Vermenigvuldigingssommen voor de tafels van 0 t/m 10. Kies tafels, stel het aantal in en download een PDF met antwoordblad.</div>
       <span class="module-tag">Beschikbaar</span>
     </a>
 
-    <a class="module-card active" href="werkbladen/rekenindex.html">
-      <div class="module-title">Rekenen</div>
-      <div class="module-desc">Tafelsommen, tafelspellen en redactiesommen afgestemd op het niveau van de klas.</div>
+    <a class="module-card active" href="deeltafels.html">
+      <div class="module-title">Deeltafels</div>
+      <div class="module-desc">Deelsommen voor de deeltafels van 1 t/m 10. Bijv. 24 ÷ 6 = ___. Kies deeltafels en download een PDF met antwoordblad.</div>
       <span class="module-tag">Beschikbaar</span>
     </a>
 
     <div class="module-card soon">
-      <div class="module-title">Lezen</div>
-      <div class="module-desc">Begrijpend lezen en woordenschatoefeningen op maat van de leesgroep.</div>
+      <div class="module-title">Tafelspellen</div>
+      <div class="module-desc">Speelse oefenvormen voor de tafels, afgestemd op tempo en niveau.</div>
       <span class="module-tag">Binnenkort</span>
     </div>
 
     <div class="module-card soon">
-      <div class="module-title">Werkboekjes</div>
-      <div class="module-desc">Volledige oefenwerkboekjes voor een week of thema, in één PDF samengebonden.</div>
+      <div class="module-title">Redactiesommen</div>
+      <div class="module-desc">Sommen in verhaalvorm voor groep 4 t/m 8, afgestemd op het rekenniveau.</div>
       <span class="module-tag">Binnenkort</span>
     </div>
 
   </div>
-</section>
+</main>
 
-<footer>
+<footer style="border-top:0.5px solid #e5e5e5;background:#fff;padding:1.25rem 0;text-align:center;font-size:12px;color:#bbb;">
   www.leerblad.nl
 </footer>
 
