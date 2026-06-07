@@ -2,149 +2,207 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8" />
-  <title>Monster preview</title>
+  <title>Monster preview – animaties</title>
   <style>
-    body { background: #f8f8f8; display: flex; flex-wrap: wrap; gap: 40px; padding: 40px; font-family: sans-serif; }
-    figure { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-    figcaption { font-size: 12px; color: #888; }
+    body { background: #f8f8f8; min-height: 100vh; font-family: sans-serif; overflow-x: hidden; }
+    h2 { text-align: center; font-weight: 300; color: #888; margin: 2rem 0 1rem; font-size: 14px; letter-spacing: 2px; text-transform: uppercase; }
+
+    /* ── Animaties ── */
+    @keyframes bob        { 0%,100%{transform:translateY(0)}  50%{transform:translateY(-8px)} }
+    @keyframes bob-slow   { 0%,100%{transform:translateY(0)}  50%{transform:translateY(-5px)} }
+    @keyframes peek-bottom{ 0%,100%{transform:translateY(0)}  40%{transform:translateY(-18px)} 60%{transform:translateY(-18px)} }
+    @keyframes peek-left  { 0%,100%{transform:translateX(0)}  40%{transform:translateX(22px)}  60%{transform:translateX(22px)} }
+    @keyframes peek-right { 0%,100%{transform:translateX(0)}  40%{transform:translateX(-22px)} 60%{transform:translateX(-22px)} }
+    @keyframes sway       { 0%,100%{transform:rotate(-6deg)} 50%{transform:rotate(6deg)} }
+    @keyframes blink      { 0%,92%,100%{scaleY(1)} 95%{transform:scaleY(0.05)} }
+    @keyframes eye-blink  { 0%,90%,100%{transform:scaleY(1)} 94%{transform:scaleY(0.08)} }
+    @keyframes wiggle     { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(-8deg)} 75%{transform:rotate(8deg)} }
+
+    /* ── Demo posities ── */
+    .demo { position: relative; height: 260px; border: 1px dashed #ddd; border-radius: 16px; margin: 1rem 2rem; background: white; display: flex; align-items: center; justify-content: center; color: #ccc; font-size: 13px; }
+
+    /* Over onderkant */
+    .monster-bottom { position: absolute; bottom: -2px; animation: peek-bottom 3.5s ease-in-out infinite; }
+    /* Over linkerkant */
+    .monster-left   { position: absolute; left: -2px;   animation: peek-left  4s   ease-in-out infinite; }
+    /* Over rechterkant */
+    .monster-right  { position: absolute; right: -2px;  animation: peek-right 4.5s ease-in-out infinite; }
+    /* Vrij zwevend */
+    .monster-float  { animation: bob 2.4s ease-in-out infinite; }
+    .monster-sway   { animation: sway 2s ease-in-out infinite; transform-origin: bottom center; }
   </style>
 </head>
 <body>
 
-<!-- Monster 1: geel, 1 oog, 2 hoorntjes -->
-<figure>
-<svg width="100" height="120" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- hoorntjes -->
-  <ellipse cx="35" cy="14" rx="6" ry="10" fill="#e6a800" transform="rotate(-15 35 14)"/>
-  <ellipse cx="65" cy="14" rx="6" ry="10" fill="#e6a800" transform="rotate(15 65 14)"/>
-  <!-- lichaam -->
-  <ellipse cx="50" cy="72" rx="38" ry="44" fill="#FFD000"/>
-  <!-- oog wit -->
-  <circle cx="50" cy="62" r="18" fill="white"/>
-  <!-- iris -->
-  <circle cx="50" cy="64" r="11" fill="#3a2a00"/>
-  <!-- glinstering -->
-  <circle cx="55" cy="59" r="4" fill="white"/>
-  <!-- mond -->
-  <path d="M 34 87 Q 50 102 66 87" stroke="#3a2a00" stroke-width="3" fill="none" stroke-linecap="round"/>
-  <!-- tandjes -->
-  <rect x="41" y="87" width="7" height="6" rx="1.5" fill="white"/>
-  <rect x="52" y="87" width="7" height="6" rx="1.5" fill="white"/>
-  <!-- armpjes -->
-  <ellipse cx="12" cy="78" rx="8" ry="13" fill="#FFD000" transform="rotate(20 12 78)"/>
-  <ellipse cx="88" cy="78" rx="8" ry="13" fill="#FFD000" transform="rotate(-20 88 78)"/>
-  <!-- voetjes -->
-  <ellipse cx="36" cy="114" rx="12" ry="7" fill="#e6a800"/>
-  <ellipse cx="64" cy="114" rx="12" ry="7" fill="#e6a800"/>
-</svg>
-<figcaption>Monster 1 – Geel</figcaption>
-</figure>
+<h2>Monsters – over de rand (geanimeerd)</h2>
 
-<!-- Monster 2: paars, 2 ogen, antennes -->
-<figure>
-<svg width="100" height="125" viewBox="0 0 100 125" xmlns="http://www.w3.org/2000/svg">
-  <!-- antennes -->
-  <line x1="38" y1="22" x2="30" y2="4" stroke="#6a0dad" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="30" cy="4" r="5" fill="#9b30ff"/>
-  <line x1="62" y1="22" x2="70" y2="4" stroke="#6a0dad" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="70" cy="4" r="5" fill="#9b30ff"/>
-  <!-- lichaam -->
-  <ellipse cx="50" cy="74" rx="36" ry="46" fill="#9b30ff"/>
-  <!-- ogen wit -->
-  <circle cx="36" cy="65" r="13" fill="white"/>
-  <circle cx="64" cy="65" r="13" fill="white"/>
-  <!-- irissen -->
-  <circle cx="37" cy="67" r="8" fill="#2a0050"/>
-  <circle cx="65" cy="67" r="8" fill="#2a0050"/>
-  <!-- glinstering -->
-  <circle cx="40" cy="63" r="3" fill="white"/>
-  <circle cx="68" cy="63" r="3" fill="white"/>
-  <!-- mond blij -->
-  <path d="M 34 88 Q 50 104 66 88" stroke="#2a0050" stroke-width="3" fill="#ff6b9d" stroke-linecap="round"/>
-  <!-- tandjes -->
-  <rect x="40" y="88" width="6" height="5" rx="1.5" fill="white"/>
-  <rect x="54" y="88" width="6" height="5" rx="1.5" fill="white"/>
-  <!-- voetjes -->
-  <ellipse cx="36" cy="118" rx="12" ry="7" fill="#6a0dad"/>
-  <ellipse cx="64" cy="118" rx="12" ry="7" fill="#6a0dad"/>
-</svg>
-<figcaption>Monster 2 – Paars</figcaption>
-</figure>
+<!-- DEMO 1: over onderkant -->
+<div class="demo">
+  Pagina-inhoud hier
+  <div class="monster-bottom" style="left:80px">
+    <!-- Geel, kijkt over onderkant omhoog -->
+    <svg width="90" height="72" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
+      <!-- hoorntjes -->
+      <ellipse cx="30" cy="10" rx="6" ry="11" fill="#d4a000" transform="rotate(-15 30 10)"/>
+      <ellipse cx="60" cy="10" rx="6" ry="11" fill="#d4a000" transform="rotate(15 60 10)"/>
+      <!-- lichaam (onderste helft buiten beeld) -->
+      <ellipse cx="45" cy="75" rx="38" ry="46" fill="#FFD000"/>
+      <!-- ogen wit -->
+      <circle cx="31" cy="58" r="14" fill="white"/>
+      <circle cx="59" cy="58" r="14" fill="white"/>
+      <!-- irissen met blink animatie -->
+      <g style="transform-origin:31px 60px;animation:eye-blink 4s ease-in-out infinite">
+        <circle cx="32" cy="60" r="9" fill="#3a2a00"/>
+        <circle cx="36" cy="56" r="3.5" fill="white"/>
+      </g>
+      <g style="transform-origin:59px 60px;animation:eye-blink 4s ease-in-out infinite 0.1s">
+        <circle cx="60" cy="60" r="9" fill="#3a2a00"/>
+        <circle cx="64" cy="56" r="3.5" fill="white"/>
+      </g>
+      <!-- wenkbrauwen: nieuwsgierig omhoog -->
+      <path d="M 20 44 Q 31 38 42 44" stroke="#3a2a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M 48 44 Q 59 38 70 44" stroke="#3a2a00" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- mond grijnzend -->
+      <path d="M 28 78 Q 45 91 62 78" stroke="#3a2a00" stroke-width="2.5" fill="#FF6B6B" stroke-linecap="round"/>
+      <rect x="35" y="78" width="8" height="6" rx="2" fill="white"/>
+      <rect x="47" y="78" width="8" height="6" rx="2" fill="white"/>
+      <!-- handjes die over rand kijken -->
+      <ellipse cx="7"  cy="74" rx="7" ry="10" fill="#FFD000" transform="rotate(20 7 74)"/>
+      <ellipse cx="83" cy="74" rx="7" ry="10" fill="#FFD000" transform="rotate(-20 83 74)"/>
+    </svg>
+  </div>
 
-<!-- Monster 3: teal/blauwgroen, 1 groot oog, bolletjes boven -->
-<figure>
-<svg width="95" height="120" viewBox="0 0 95 120" xmlns="http://www.w3.org/2000/svg">
-  <!-- hoorntje midden -->
-  <ellipse cx="47" cy="10" rx="7" ry="12" fill="#007a7a"/>
-  <!-- lichaam eirond -->
-  <ellipse cx="47" cy="72" rx="34" ry="44" fill="#00BFBF"/>
-  <!-- groot oog -->
-  <circle cx="47" cy="62" r="20" fill="white"/>
-  <circle cx="47" cy="65" r="12" fill="#003f3f"/>
-  <circle cx="53" cy="59" r="5" fill="white"/>
-  <!-- mond tanden tonen -->
-  <path d="M 30 86 Q 47 103 64 86" fill="#003f3f"/>
-  <rect x="36" y="86" width="7" height="7" rx="2" fill="white"/>
-  <rect x="47" y="86" width="7" height="7" rx="2" fill="white"/>
-  <!-- armpjes -->
-  <ellipse cx="13" cy="76" rx="7" ry="12" fill="#00BFBF" transform="rotate(25 13 76)"/>
-  <ellipse cx="81" cy="76" rx="7" ry="12" fill="#00BFBF" transform="rotate(-25 81 76)"/>
-  <!-- voetjes -->
-  <ellipse cx="34" cy="114" rx="11" ry="7" fill="#007a7a"/>
-  <ellipse cx="60" cy="114" rx="11" ry="7" fill="#007a7a"/>
-</svg>
-<figcaption>Monster 3 – Teal</figcaption>
-</figure>
+  <!-- Roze, kijkt over onderkant, rechts -->
+  <div class="monster-bottom" style="right:100px;animation-delay:0.8s;animation-duration:4s">
+    <svg width="75" height="62" viewBox="0 0 80 82" xmlns="http://www.w3.org/2000/svg">
+      <!-- 1 hoorntje midden -->
+      <ellipse cx="40" cy="8" rx="7" ry="13" fill="#d45c90"/>
+      <ellipse cx="40" cy="75" rx="34" ry="44" fill="#FF7EB3"/>
+      <!-- 1 groot oog -->
+      <circle cx="40" cy="55" r="18" fill="white"/>
+      <g style="transform-origin:40px 57px;animation:eye-blink 3.5s ease-in-out infinite 0.5s">
+        <circle cx="40" cy="57" r="11" fill="#5a0030"/>
+        <circle cx="45" cy="52" r="4" fill="white"/>
+      </g>
+      <!-- wenkbrauw -->
+      <path d="M 27 38 Q 40 31 53 38" stroke="#5a0030" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- mond -->
+      <path d="M 27 70 Q 40 80 53 70" stroke="#5a0030" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <!-- handjes -->
+      <ellipse cx="6"  cy="66" rx="6" ry="9" fill="#FF7EB3" transform="rotate(20 6 66)"/>
+      <ellipse cx="74" cy="66" rx="6" ry="9" fill="#FF7EB3" transform="rotate(-20 74 66)"/>
+    </svg>
+  </div>
+</div>
 
-<!-- Monster 4: oranje, 2 ogen, hoorntjes schuin -->
-<figure>
-<svg width="100" height="118" viewBox="0 0 100 118" xmlns="http://www.w3.org/2000/svg">
-  <!-- hoorntjes schuin -->
-  <ellipse cx="33" cy="13" rx="5" ry="11" fill="#c95000" transform="rotate(-20 33 13)"/>
-  <ellipse cx="67" cy="13" rx="5" ry="11" fill="#c95000" transform="rotate(20 67 13)"/>
-  <!-- lichaam -->
-  <ellipse cx="50" cy="70" rx="37" ry="44" fill="#FF6B1A"/>
-  <!-- ogen -->
-  <circle cx="35" cy="62" r="12" fill="white"/>
-  <circle cx="65" cy="62" r="12" fill="white"/>
-  <circle cx="36" cy="64" r="7" fill="#3a1500"/>
-  <circle cx="66" cy="64" r="7" fill="#3a1500"/>
-  <circle cx="39" cy="61" r="3" fill="white"/>
-  <circle cx="69" cy="61" r="3" fill="white"/>
-  <!-- brede glimlach -->
-  <path d="M 30 84 Q 50 106 70 84" fill="#c95000"/>
-  <path d="M 30 84 Q 50 106 70 84" stroke="#3a1500" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-  <!-- tand midden -->
-  <rect x="44" y="84" width="12" height="7" rx="2" fill="white"/>
-  <!-- voetjes -->
-  <ellipse cx="35" cy="112" rx="12" ry="7" fill="#c95000"/>
-  <ellipse cx="65" cy="112" rx="12" ry="7" fill="#c95000"/>
-</svg>
-<figcaption>Monster 4 – Oranje</figcaption>
-</figure>
+<!-- DEMO 2: over zijkant -->
+<div class="demo">
+  Pagina-inhoud hier
 
-<!-- Monster 5: roze/koraal, klein, kijkt over rand -->
-<figure>
-<svg width="100" height="80" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
-  <!-- "rand" -->
-  <rect x="0" y="58" width="100" height="22" rx="4" fill="#e5e5e5"/>
-  <!-- lichaam half zichtbaar -->
-  <ellipse cx="50" cy="72" rx="36" ry="44" fill="#FF7EB3"/>
-  <!-- hoorntjes -->
-  <ellipse cx="34" cy="24" rx="5" ry="9" fill="#d45c90" transform="rotate(-10 34 24)"/>
-  <ellipse cx="66" cy="24" rx="5" ry="9" fill="#d45c90" transform="rotate(10 66 24)"/>
-  <!-- ogen -->
-  <circle cx="36" cy="46" r="11" fill="white"/>
-  <circle cx="64" cy="46" r="11" fill="white"/>
-  <circle cx="37" cy="48" r="7" fill="#5a0030"/>
-  <circle cx="65" cy="48" r="7" fill="#5a0030"/>
-  <circle cx="40" cy="44" r="3" fill="white"/>
-  <circle cx="68" cy="44" r="3" fill="white"/>
-  <!-- glimlach klein -->
-  <path d="M 36 60 Q 50 70 64 60" stroke="#5a0030" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-</svg>
-<figcaption>Monster 5 – Over de rand</figcaption>
-</figure>
+  <!-- Teal, kijkt over linkerkant -->
+  <div class="monster-left" style="top:40px">
+    <svg width="68" height="95" viewBox="0 0 90 120" xmlns="http://www.w3.org/2000/svg">
+      <!-- hoorntje -->
+      <ellipse cx="55" cy="10" rx="7" ry="13" fill="#007a7a"/>
+      <ellipse cx="20" cy="68" rx="50" ry="42" fill="#00BFBF"/>
+      <!-- oog -->
+      <circle cx="36" cy="60" r="17" fill="white"/>
+      <g style="transform-origin:36px 62px;animation:eye-blink 3.8s ease-in-out infinite 0.3s">
+        <circle cx="36" cy="62" r="10" fill="#003f3f"/>
+        <circle cx="41" cy="57" r="4" fill="white"/>
+      </g>
+      <!-- wenkbrauw nieuwsgierig -->
+      <path d="M 22 42 Q 36 34 50 40" stroke="#003f3f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- mond -->
+      <path d="M 20 78 Q 36 92 52 78" fill="#003f3f"/>
+      <rect x="26" y="78" width="8" height="7" rx="2" fill="white"/>
+      <rect x="38" y="78" width="8" height="7" rx="2" fill="white"/>
+    </svg>
+  </div>
+
+  <!-- Paars, kijkt over rechterkant -->
+  <div class="monster-right" style="bottom:30px;animation-delay:1s">
+    <svg width="68" height="90" viewBox="0 0 90 115" xmlns="http://www.w3.org/2000/svg">
+      <!-- antenne -->
+      <line x1="55" y1="20" x2="62" y2="4" stroke="#6a0dad" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="62" cy="4" r="5" fill="#9b30ff"/>
+      <ellipse cx="70" cy="68" rx="50" ry="42" fill="#9b30ff"/>
+      <!-- 2 ogen -->
+      <circle cx="44" cy="56" r="13" fill="white"/>
+      <circle cx="70" cy="54" r="11" fill="white"/>
+      <g style="transform-origin:45px 58px;animation:eye-blink 4.2s ease-in-out infinite">
+        <circle cx="45" cy="58" r="8" fill="#2a0050"/>
+        <circle cx="49" cy="54" r="3" fill="white"/>
+      </g>
+      <g style="transform-origin:70px 56px;animation:eye-blink 4.2s ease-in-out infinite 0.15s">
+        <circle cx="70" cy="56" r="7" fill="#2a0050"/>
+        <circle cx="74" cy="52" r="2.5" fill="white"/>
+      </g>
+      <!-- wenkbrauwen -->
+      <path d="M 35 42 Q 45 35 55 40" stroke="#2a0050" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M 61 40 Q 70 33 80 38" stroke="#2a0050" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- mond -->
+      <path d="M 38 72 Q 56 86 74 72" stroke="#2a0050" stroke-width="2.5" fill="#ff6b9d" stroke-linecap="round"/>
+      <rect x="45" y="72" width="7" height="5" rx="1.5" fill="white"/>
+      <rect x="56" y="72" width="7" height="5" rx="1.5" fill="white"/>
+    </svg>
+  </div>
+</div>
+
+<!-- DEMO 3: zwevend (voor hoeken of naast knoppen) -->
+<div class="demo" style="height:200px">
+  Pagina-inhoud hier
+  <!-- Oranje, zwevend, wiebelt -->
+  <div style="position:absolute;right:60px;top:30px;animation:bob 2.2s ease-in-out infinite">
+    <svg width="80" height="95" viewBox="0 0 100 118" xmlns="http://www.w3.org/2000/svg" style="animation:wiggle 3s ease-in-out infinite;transform-origin:50% 100%">
+      <ellipse cx="33" cy="13" rx="5" ry="11" fill="#c95000" transform="rotate(-20 33 13)"/>
+      <ellipse cx="67" cy="13" rx="5" ry="11" fill="#c95000" transform="rotate(20 67 13)"/>
+      <ellipse cx="50" cy="68" rx="37" ry="44" fill="#FF6B1A"/>
+      <circle cx="35" cy="60" r="12" fill="white"/>
+      <circle cx="65" cy="60" r="12" fill="white"/>
+      <g style="transform-origin:35px 62px;animation:eye-blink 3.6s ease-in-out infinite 0.2s">
+        <circle cx="36" cy="62" r="7" fill="#3a1500"/>
+        <circle cx="39" cy="59" r="2.5" fill="white"/>
+      </g>
+      <g style="transform-origin:65px 62px;animation:eye-blink 3.6s ease-in-out infinite 0.3s">
+        <circle cx="66" cy="62" r="7" fill="#3a1500"/>
+        <circle cx="69" cy="59" r="2.5" fill="white"/>
+      </g>
+      <path d="M 30 82 Q 50 100 70 82" fill="#c95000"/>
+      <path d="M 30 82 Q 50 100 70 82" stroke="#3a1500" stroke-width="2" fill="none"/>
+      <rect x="44" y="82" width="12" height="7" rx="2" fill="white"/>
+      <ellipse cx="13" cy="74" rx="7" ry="12" fill="#FF6B1A" transform="rotate(20 13 74)"/>
+      <ellipse cx="87" cy="74" rx="7" ry="12" fill="#FF6B1A" transform="rotate(-20 87 74)"/>
+      <ellipse cx="35" cy="110" rx="12" ry="7" fill="#c95000"/>
+      <ellipse cx="65" cy="110" rx="12" ry="7" fill="#c95000"/>
+    </svg>
+  </div>
+
+  <!-- Groen, zwevend links -->
+  <div style="position:absolute;left:50px;bottom:20px;animation:bob 2.8s ease-in-out infinite 0.6s">
+    <svg width="70" height="85" viewBox="0 0 90 108" xmlns="http://www.w3.org/2000/svg" style="animation:wiggle 3.5s ease-in-out infinite 1s;transform-origin:50% 100%">
+      <ellipse cx="45" cy="10" rx="6" ry="12" fill="#2d8a2d"/>
+      <ellipse cx="30" cy="12" rx="5" ry="9" fill="#2d8a2d" transform="rotate(-15 30 12)"/>
+      <ellipse cx="60" cy="12" rx="5" ry="9" fill="#2d8a2d" transform="rotate(15 60 12)"/>
+      <ellipse cx="45" cy="66" rx="36" ry="42" fill="#4CAF50"/>
+      <circle cx="32" cy="56" r="12" fill="white"/>
+      <circle cx="58" cy="56" r="12" fill="white"/>
+      <g style="transform-origin:32px 58px;animation:eye-blink 4s ease-in-out infinite 0.7s">
+        <circle cx="32" cy="58" r="7" fill="#1a3a1a"/>
+        <circle cx="36" cy="54" r="2.5" fill="white"/>
+      </g>
+      <g style="transform-origin:58px 58px;animation:eye-blink 4s ease-in-out infinite 0.8s">
+        <circle cx="58" cy="58" r="7" fill="#1a3a1a"/>
+        <circle cx="62" cy="54" r="2.5" fill="white"/>
+      </g>
+      <path d="M 28 76 Q 45 92 62 76" stroke="#1a3a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <rect x="34" y="76" width="7" height="6" rx="2" fill="white"/>
+      <rect x="49" y="76" width="7" height="6" rx="2" fill="white"/>
+      <ellipse cx="33" cy="106" rx="12" ry="6" fill="#2d8a2d"/>
+      <ellipse cx="57" cy="106" rx="12" ry="6" fill="#2d8a2d"/>
+    </svg>
+  </div>
+</div>
 
 </body>
 </html>
