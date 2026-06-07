@@ -1,6 +1,6 @@
 (function () {
 
-  /* ── CSS ── */
+  /* ── CSS: knipperoog ── */
   var style = document.createElement('style');
   style.textContent = `
     .lm-eye, .lm-eye2 {
@@ -14,10 +14,9 @@
   `;
   document.head.appendChild(style);
 
-  /* ── Monsters (klein formaat via SVG width/height) ── */
+  /* ── Monster SVG's ── */
   var M = [
-    /* Geel – breed rechthoek */
-    { id:'geel', type:'bottom', w:58, h:71, hideY:51, peekY:8, dur:3.8,
+    { id:'geel',
       svg:`<svg width="58" height="71" viewBox="0 0 96 118" xmlns="http://www.w3.org/2000/svg">
         <rect x="10" y="2"  width="14" height="22" rx="7"  fill="#d4a000"/>
         <rect x="72" y="2"  width="14" height="22" rx="7"  fill="#d4a000"/>
@@ -37,10 +36,9 @@
         <rect x="58" y="100" width="24" height="16" rx="12" fill="#d4a000"/>
       </svg>`
     },
-    /* Roze – peervorm */
-    { id:'roze', type:'bottom', w:50, h:66, hideY:47, peekY:8, dur:4.2,
+    { id:'roze',
       svg:`<svg width="50" height="66" viewBox="0 0 80 106" xmlns="http://www.w3.org/2000/svg">
-        <rect x="33" y="0"  width="14" height="22" rx="7" fill="#d45c90"/>
+        <rect x="33" y="0" width="14" height="22" rx="7" fill="#d45c90"/>
         <path d="M40 14 C18 14 4 32 4 54 C4 78 18 98 40 100 C62 98 76 78 76 54 C76 32 62 14 40 14Z" fill="#FF7EB3"/>
         <circle cx="40" cy="50" r="16" fill="white"/>
         <g class="lm-eye"><circle cx="40" cy="52" r="10" fill="#5a0030"/><circle cx="45" cy="47" r="3.5" fill="white"/></g>
@@ -52,8 +50,7 @@
         <rect x="44" y="92" width="20" height="12" rx="10" fill="#d45c90"/>
       </svg>`
     },
-    /* Rood – blobvorm */
-    { id:'rood', type:'bottom', w:62, h:73, hideY:52, peekY:8, dur:3.5,
+    { id:'rood',
       svg:`<svg width="62" height="73" viewBox="0 0 100 118" xmlns="http://www.w3.org/2000/svg">
         <circle cx="28" cy="18" r="11" fill="#b71c1c"/>
         <circle cx="50" cy="10" r="11" fill="#b71c1c"/>
@@ -71,8 +68,7 @@
         <rect x="58" y="102" width="22" height="14" rx="11" fill="#b71c1c"/>
       </svg>`
     },
-    /* Oranje – vierkant */
-    { id:'oranje', type:'side', w:54, h:68, hideX:42, dur:4.0,
+    { id:'oranje',
       svg:`<svg width="54" height="68" viewBox="0 0 88 110" xmlns="http://www.w3.org/2000/svg">
         <rect x="18" y="0"  width="13" height="20" rx="6.5" fill="#c95000"/>
         <rect x="57" y="0"  width="13" height="20" rx="6.5" fill="#c95000"/>
@@ -89,8 +85,7 @@
         <rect x="52" y="90" width="22" height="16" rx="11" fill="#c95000"/>
       </svg>`
     },
-    /* Groen – druppel */
-    { id:'groen', type:'side', w:54, h:69, hideX:42, dur:4.5,
+    { id:'groen',
       svg:`<svg width="54" height="69" viewBox="0 0 88 112" xmlns="http://www.w3.org/2000/svg">
         <circle cx="22" cy="14" r="10" fill="#2d8a2d"/>
         <circle cx="44" cy="8"  r="10" fill="#2d8a2d"/>
@@ -109,8 +104,7 @@
         <rect x="48" y="98" width="22" height="12" rx="11" fill="#2d8a2d"/>
       </svg>`
     },
-    /* Lila – antennes */
-    { id:'lila', type:'side', w:59, h:68, hideX:46, dur:4.8,
+    { id:'lila',
       svg:`<svg width="59" height="68" viewBox="0 0 96 110" xmlns="http://www.w3.org/2000/svg">
         <rect x="31" y="0" width="10" height="20" rx="5" fill="#6a0dad"/>
         <circle cx="36" cy="4" r="7" fill="#9b30ff"/>
@@ -131,115 +125,76 @@
   ];
 
   /* ── Hulp ── */
-  function shuffle(a) {
-    for (var i = a.length-1; i > 0; i--) {
-      var j = Math.floor(Math.random()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t;
-    }
-    return a;
-  }
-  function kf(name, frames) {
-    var s = document.createElement('style');
-    s.textContent = '@keyframes '+name+'{'+frames+'}';
-    document.head.appendChild(s);
-  }
-  function rnd(min, max) { return Math.round(Math.random()*(max-min)+min); }
+  function rnd(a,b){ return Math.round(Math.random()*(b-a)+a); }
+  function shuffle(a){ for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t;} return a; }
 
   var vw = window.innerWidth;
   var vh = window.innerHeight;
-  var navH = 84; /* topbar hoogte */
 
-  /* ── Positie-slots ──
-     Elke slot beschrijft waar een monster vandaan komt.
-     type: 'nav'    = achter de navigatiebalk (hangt er onder uit)
-           'bottom' = van de onderkant
-           'left'   = van de linkerkant
-           'right'  = van de rechterkant
-  */
-  var allSlots = shuffle([
-    { type:'nav',    x: rnd(80, Math.min(320, vw*0.3)) },
-    { type:'nav',    x: rnd(vw*0.4, vw*0.7) },
-    { type:'bottom', x: rnd(40, Math.min(220, vw*0.25)) },
-    { type:'bottom', x: rnd(vw*0.3, vw*0.55) },
-    { type:'bottom', x: rnd(vw*0.6, vw-80) },
-    { type:'left',   y: rnd(navH+60, vh*0.4) },
-    { type:'left',   y: rnd(vh*0.45, vh*0.75) },
-    { type:'right',  y: rnd(navH+60, vh*0.4) },
-    { type:'right',  y: rnd(vh*0.45, vh*0.75) },
+  /* ── Bouw een golvend pad van (x0,y0) naar (x1,y1) ── */
+  function buildPath(id, x0, y0, x1, y1, dur, delay) {
+    var dx = x1 - x0, dy = y1 - y0;
+    var len = Math.sqrt(dx*dx + dy*dy) || 1;
+    /* Loodrechte richting voor de golfbeweging */
+    var px = -dy/len, py = dx/len;
+    var wobble = 28;
+    var steps = [0, 0.2, 0.4, 0.6, 0.8, 1.0];
+
+    /* Bepaal of monster gespiegeld moet (beweegt naar links) */
+    var flipX = dx < 0;
+
+    var frames = steps.map(function(t) {
+      var wave  = Math.sin(t * Math.PI * 2) * wobble;
+      var x     = x0 + dx*t + px*wave;
+      var y     = y0 + dy*t + py*wave;
+      var rot   = Math.sin(t * Math.PI * 4) * 6; /* wiebel */
+      var scale = flipX ? 'scaleX(-1) ' : '';
+      return Math.round(t*100)+'%{transform:'+scale+'translate('+Math.round(x)+'px,'+Math.round(y)+'px) rotate('+rot.toFixed(1)+'deg)}';
+    });
+
+    var s = document.createElement('style');
+    s.textContent = '@keyframes '+id+'{'+frames.join('')+'}';
+    document.head.appendChild(s);
+
+    return id+' '+dur+'s cubic-bezier(0.4,0,0.6,1) '+delay+'s 1 forwards';
+  }
+
+  /* ── Definieer mogelijke routes (van-rand naar ander-rand) ── */
+  var routes = shuffle([
+    /* links → rechts */
+    { x0:-70, y0:rnd(100,vh*0.7), x1:vw+70, y1:rnd(100,vh*0.7) },
+    /* rechts → links */
+    { x0:vw+70, y0:rnd(100,vh*0.7), x1:-70, y1:rnd(100,vh*0.7) },
+    /* linksboven → rechtsonder */
+    { x0:-70, y0:rnd(80,vh*0.3), x1:vw+70, y1:rnd(vh*0.6,vh-80) },
+    /* rechtsboven → linksonder */
+    { x0:vw+70, y0:rnd(80,vh*0.3), x1:-70, y1:rnd(vh*0.6,vh-80) },
+    /* linksonder → rechtsboven */
+    { x0:-70, y0:rnd(vh*0.6,vh-80), x1:vw+70, y1:rnd(80,vh*0.3) },
+    /* boven → onder */
+    { x0:rnd(vw*0.2,vw*0.8), y0:-70, x1:rnd(vw*0.1,vw*0.9), y1:vh+70 },
   ]);
 
-  /* Pak 2 slots: probeer 1 nav/bottom + 1 side */
-  var topSlots  = allSlots.filter(function(s){ return s.type==='nav'||s.type==='bottom'; });
-  var sideSlots = allSlots.filter(function(s){ return s.type==='left'||s.type==='right'; });
-  var chosen = [ topSlots[0], sideSlots[0] ];
+  /* ── Plaats 2 monsters ── */
+  var monsters = shuffle(M).slice(0, 2);
 
-  var bottomPool = shuffle(M.filter(function(m){ return m.type==='bottom'; }));
-  var sidePool   = shuffle(M.filter(function(m){ return m.type==='side';   }));
+  monsters.forEach(function(m, i) {
+    var route = routes[i];
+    var id    = 'lmrun'+i;
+    var dur   = (3.5 + Math.random() * 1.5).toFixed(1);
+    var delay = (i === 0 ? rnd(1,3) : rnd(4,8));
 
-  chosen.forEach(function(slot, i) {
-    var isTop  = slot.type==='nav' || slot.type==='bottom';
-    var monster = isTop ? bottomPool[i % bottomPool.length] : sidePool[i % sidePool.length];
-    var id = 'lm'+i;
+    var anim = buildPath(id, route.x0, route.y0, route.x1, route.y1, dur, delay);
 
-    var outer = document.createElement('div');
-    outer.style.cssText = 'position:fixed;pointer-events:none;overflow:hidden;will-change:transform;';
+    var el = document.createElement('div');
+    el.style.cssText = 'position:fixed;left:0;top:0;z-index:9997;pointer-events:none;will-change:transform;';
+    el.innerHTML = m.svg;
+    el.style.animation = anim;
 
-    var inner = document.createElement('div');
-    inner.innerHTML = monster.svg;
+    /* Startpositie (anders flitst het even op op 0,0) */
+    el.style.transform = 'translate('+route.x0+'px,'+route.y0+'px)';
 
-    if (slot.type === 'nav') {
-      /* Achter navigatiebalk: monster hangt onder de nav, nav ligt er bovenop */
-      outer.style.zIndex = '50'; /* onder topbar (z-index:100) */
-      outer.style.top    = navH + 'px';
-      outer.style.left   = slot.x + 'px';
-      outer.style.width  = monster.w + 'px';
-      outer.style.height = monster.h + 'px';
-
-      /* Verberg: alles boven nav-rand → translateY(-h+10) */
-      var hideY = -(monster.h - 10);
-      var peekY = 0;
-      kf(id,
-        '0%,100%{transform:translateY('+hideY+'px)}'+
-        '35%,65%{transform:translateY('+peekY+'px)}'
-      );
-      inner.style.animation = id+' '+monster.dur+'s ease-in-out infinite '+(i*1.6)+'s';
-
-    } else if (slot.type === 'bottom') {
-      outer.style.zIndex  = '9997';
-      outer.style.bottom  = '0';
-      outer.style.left    = slot.x + 'px';
-      outer.style.width   = monster.w + 'px';
-      outer.style.height  = monster.h + 'px';
-
-      kf(id,
-        '0%,100%{transform:translateY('+monster.hideY+'px)}'+
-        '35%,65%{transform:translateY('+monster.peekY+'px)}'
-      );
-      inner.style.animation = id+' '+monster.dur+'s ease-in-out infinite '+(i*1.6)+'s';
-
-    } else {
-      /* Zijkant */
-      outer.style.zIndex  = '9997';
-      var fromLeft = slot.type === 'left';
-      outer.style[slot.type] = '0';
-      outer.style.top     = slot.y + 'px';
-      outer.style.width   = monster.w + 'px';
-      outer.style.height  = monster.h + 'px';
-
-      if (!fromLeft) {
-        var svgEl = inner.querySelector('svg');
-        if (svgEl) svgEl.style.transform = 'scaleX(-1)';
-      }
-
-      var fromX = (fromLeft ? -1 : 1) * monster.hideX;
-      kf(id,
-        '0%,100%{transform:translateX('+fromX+'px)}'+
-        '35%,65%{transform:translateX(0)}'
-      );
-      inner.style.animation = id+' '+monster.dur+'s ease-in-out infinite '+(i*1.6)+'s';
-    }
-
-    outer.appendChild(inner);
-    document.body.appendChild(outer);
+    document.body.appendChild(el);
   });
 
 })();
