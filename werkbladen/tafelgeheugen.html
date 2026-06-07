@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leerblad – Tafelgeheugen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; }
+    body { font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f8f8f8; color: #1a1a1a; display: flex; flex-direction: column; }
+
+    /* ── Topbar ── */
+    .topbar { background: #fff; border-bottom: 0.5px solid #e5e5e5; position: sticky; top: 0; z-index: 100; }
+    .topbar-inner { max-width: 1280px; margin: 0 auto; padding: 0 160px; display: flex; align-items: center; justify-content: space-between; height: 84px; gap: 1rem; }
+    .logo-link { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; flex-shrink: 0; }
+    .logo-text { font-size: 40px; font-weight: 200; letter-spacing: 1.5px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.1; }
+    .logo-tagline-row { display: flex; align-items: center; gap: 7px; }
+    .logo-tagline-line { height: 1px; width: 36px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); opacity: 0.4; }
+    .logo-tagline { font-size: 8.5px; letter-spacing: 3px; color: #2A7FD4; font-weight: 400; text-transform: uppercase; }
+    nav { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+    .nav-btn { font-size: 16px; font-weight: 400; color: #888; border: none; background: none; padding: 10px 20px; border-radius: 24px; cursor: pointer; transition: background 0.18s, color 0.18s; white-space: nowrap; text-decoration: none; display: inline-flex; align-items: center; }
+    .nav-btn:hover, .nav-dropdown:hover > .nav-btn { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
+    .nav-btn.active { background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
+    .nav-btn.active:hover { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
+    .nav-btn.soon { color: #ccc; cursor: default; pointer-events: none; }
+    .tag { font-size: 9px; background: rgba(255,255,255,0.25); color: inherit; padding: 2px 6px; border-radius: 10px; margin-left: 4px; }
+    .nav-btn:not(:hover) .tag { background: #f0f0f0; color: #bbb; }
+    .nav-dropdown { position: relative; display: inline-flex; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; padding-top: 8px; min-width: 200px; z-index: 200; flex-direction: column; }
+    .nav-dropdown-menu-inner { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 12px; padding: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 2px; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: flex; }
+    .nav-dropdown-item { font-size: 14px; color: #555; padding: 9px 14px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: background 0.12s, color 0.12s; white-space: nowrap; }
+    .nav-dropdown-item:hover { background: #e8f4fd; color: #2A7FD4; }
+    .nav-dropdown-item.soon { color: #ccc; pointer-events: none; }
+    .nav-dropdown-item.soon .tag { background: #f5f5f5; color: #ccc; }
+
+    /* ── Pagina ── */
+    .main { max-width: 1280px; width: 100%; margin: 0 auto; padding: 0.75rem 160px 0; flex: 1; display: flex; flex-direction: column; min-height: 0; }
+    .page-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 0.5rem; flex-shrink: 0; }
+    .page-title { font-size: 22px; font-weight: 300; color: #1a1a1a; }
+    .page-sub { font-size: 12px; color: #bbb; }
+
+    /* ── Instellingen balk ── */
+    .settings-bar {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap; flex-shrink: 0;
+      margin-bottom: 0.5rem;
+      background: #fff; border: 0.5px solid #e5e5e5; border-radius: 12px; padding: 10px 16px;
+    }
+    .settings-label { font-size: 11px; color: #999; white-space: nowrap; }
+    .tafel-chips { display: flex; gap: 5px; flex-wrap: wrap; flex: 1; }
+    .chip {
+      font-size: 11px; border: 0.5px solid #e0e0e0; background: #f8f8f8; color: #555;
+      padding: 4px 11px; border-radius: 20px; cursor: pointer; transition: all 0.13s; user-select: none;
+    }
+    .chip:hover { border-color: #2A7FD4; color: #2A7FD4; background: #e8f4fd; }
+    .chip.active { border-color: #2A7FD4; background: #e8f4fd; color: #2A7FD4; font-weight: 600; }
+    .start-btn {
+      font-size: 13px; font-weight: 600;
+      background: linear-gradient(90deg, #2A7FD4, #2DBF8E);
+      color: #fff; border: none; padding: 8px 22px; border-radius: 24px; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s; white-space: nowrap;
+    }
+    .start-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+    .start-btn:active { transform: translateY(0); }
+
+    /* ── Score balk ── */
+    .score-bar { display: flex; gap: 16px; margin-bottom: 0.5rem; align-items: center; flex-shrink: 0; }
+    .score-item { display: flex; flex-direction: column; align-items: center; }
+    .score-label { font-size: 8px; text-transform: uppercase; letter-spacing: 2px; color: #bbb; margin-bottom: 1px; }
+    .score-val { font-size: 18px; font-weight: 700; color: #1a1a1a; }
+    .score-val.moves { color: #2A7FD4; }
+
+    /* ── Memory grid ── */
+    .memory-grid {
+      flex: 1; min-height: 0;
+      display: grid;
+      gap: 7px;
+      align-content: stretch;
+    }
+    .memory-grid.has-cards { grid-auto-rows: 1fr; }
+
+    /* ── Kaart ── */
+    .card-wrap { perspective: 600px; cursor: pointer; }
+    .card-inner {
+      width: 100%; height: 100%;
+      position: relative; transform-style: preserve-3d;
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      border-radius: 10px;
+    }
+    .card-wrap.flipped .card-inner { transform: rotateY(180deg); }
+    .card-wrap.matched .card-inner { transform: rotateY(180deg); }
+
+    .card-face {
+      position: absolute; inset: 0; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      backface-visibility: hidden; -webkit-backface-visibility: hidden;
+      font-family: 'Inter', sans-serif;
+    }
+    .card-back { box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
+    .card-back::after {
+      content: '×'; font-size: 20px; font-weight: 300; color: rgba(255,255,255,0.3);
+    }
+    .card-front {
+      transform: rotateY(180deg);
+      font-size: clamp(10px, 1.4vw, 17px);
+      font-weight: 800; color: #fff; letter-spacing: -0.3px;
+      text-align: center; padding: 3px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.15); line-height: 1.2;
+    }
+    .card-wrap.matched .card-front { box-shadow: 0 0 0 2px #fff, 0 3px 12px rgba(0,0,0,0.18); }
+
+    /* ── Resultaat overlay ── */
+    .result-overlay {
+      display: none; position: fixed; inset: 0; z-index: 300;
+      background: rgba(248,248,248,0.88); backdrop-filter: blur(6px);
+      align-items: center; justify-content: center;
+    }
+    .result-overlay.visible { display: flex; }
+    .result-box {
+      background: #fff; border: 0.5px solid #e5e5e5; border-radius: 20px;
+      padding: 2.5rem 3rem; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    }
+    .result-title { font-size: 24px; font-weight: 700; margin-bottom: 8px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .result-sub { font-size: 14px; color: #888; margin-bottom: 1.5rem; }
+
+    footer { border-top: 0.5px solid #e5e5e5; background: #fff; padding: 0.6rem 0; text-align: center; font-size: 11px; color: #bbb; flex-shrink: 0; }
+
+    @media (max-width: 1100px) { .topbar-inner, .main { padding-left: 2rem; padding-right: 2rem; } }
+    @media (max-width: 600px) {
+      .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
+      nav { gap: 2px; } .nav-btn { font-size: 12px; padding: 5px 10px; }
+      .main { padding: 0.5rem 1rem 0; }
+      .memory-grid { gap: 5px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-link" href="../index.html">
+      <span class="logo-text">Leerblad</span>
+      <div class="logo-tagline-row"><div class="logo-tagline-line"></div><div class="logo-tagline">Werkbladen op maat</div><div class="logo-tagline-line"></div></div>
+    </a>
+    <nav>
+      <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
+      <div class="nav-dropdown">
+        <a class="nav-btn active" href="rekenindex.html">Rekenen</a>
+        <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
+          <a class="nav-dropdown-item" href="tafelsommen.html">Tafelsommen</a>
+          <a class="nav-dropdown-item" href="deeltafels.html">Deeltafels</a>
+          <a class="nav-dropdown-item" href="tafelspellen.html">Tafelspellen</a>
+          <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+        </div></div>
+      </div>
+      <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
+      <span class="nav-btn soon">Werkboekjes<span class="tag">binnenkort</span></span>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+  <div class="page-header">
+    <h1 class="page-title">Tafelgeheugen</h1>
+    <span class="page-sub">Zoek de bijpassende paren.</span>
+  </div>
+
+  <!-- Instellingen -->
+  <div class="settings-bar">
+    <span class="settings-label">Tafel:</span>
+    <div class="tafel-chips" id="tafelChips"></div>
+    <button class="start-btn" onclick="startSpel()">Spelen</button>
+  </div>
+
+  <!-- Scores -->
+  <div class="score-bar">
+    <div class="score-item">
+      <div class="score-label">Zetten</div>
+      <div class="score-val moves" id="movesDisplay">—</div>
+    </div>
+    <div class="score-item">
+      <div class="score-label">Gevonden</div>
+      <div class="score-val" id="foundDisplay">—</div>
+    </div>
+    <div id="kiesMsg" style="font-size:13px;color:#bbb;margin-left:4px;">Kies een tafel om te beginnen.</div>
+  </div>
+
+  <!-- Grid -->
+  <div class="memory-grid" id="memoryGrid"></div>
+</main>
+
+<footer>www.leerblad.nl</footer>
+
+<!-- Resultaat overlay -->
+<div class="result-overlay" id="resultOverlay">
+  <div class="result-box">
+    <div class="result-title">Alle paren gevonden!</div>
+    <div class="result-sub" id="resultSub"></div>
+    <button class="start-btn" onclick="document.getElementById('resultOverlay').classList.remove('visible'); startSpel()">Nog een keer</button>
+  </div>
+</div>
+
+<script>
+  /* ── Kleurenpalet: egale kleuren ── */
+  const KLEUREN = [
+    '#E53935','#D81B60','#8E24AA','#5E35B1','#3949AB',
+    '#1E88E5','#00ACC1','#00897B','#43A047','#F4511E',
+    '#6D4C41','#F9A825','#039BE5','#7CB342','#C0CA33',
+    '#FB8C00','#546E7A','#EC407A','#AB47BC','#26C6DA',
+  ];
+
+  function willekeurigeKleur(uitgesloten) {
+    const opties = KLEUREN.filter(k => k !== uitgesloten);
+    return opties[Math.floor(Math.random() * opties.length)];
+  }
+
+  /* ── Tafelkeuze (meerdere) ── */
+  const gekozenTafels = new Set();
+  const chips = document.getElementById('tafelChips');
+  for (let t = 1; t <= 10; t++) {
+    const c = document.createElement('span');
+    c.className = 'chip';
+    c.textContent = t;
+    c.onclick = () => {
+      if (gekozenTafels.has(t)) { gekozenTafels.delete(t); c.classList.remove('active'); }
+      else { gekozenTafels.add(t); c.classList.add('active'); }
+      document.getElementById('kiesMsg').style.display = gekozenTafels.size ? 'none' : '';
+    };
+    chips.appendChild(c);
+  }
+
+  /* ── State ── */
+  let kaarten = [], omgedraaid = [], gevonden = 0, zetten = 0, bezig = false;
+  let aantalParen = 0;
+
+  /* ── Spel starten ── */
+  function startSpel() {
+    if (!gekozenTafels.size) {
+      document.getElementById('kiesMsg').style.display = '';
+      return;
+    }
+    document.getElementById('resultOverlay').classList.remove('visible');
+    document.getElementById('kiesMsg').style.display = 'none';
+
+    /* Kleurpool voor voorkanten (per paar) */
+    const kleurPool = [...KLEUREN].sort(() => Math.random() - 0.5);
+
+    /* Bouw paren voor alle gekozen tafels (i=1..10, skip 0×t) */
+    const paren = [];
+    let paarTeller = 0;
+    for (const tafel of [...gekozenTafels].sort((a,b)=>a-b)) {
+      for (let i = 1; i <= 10; i++) {
+        const voorKleur = kleurPool[paarTeller % kleurPool.length];
+        const uid = paarTeller;
+        paren.push({ type: 'som',      tekst: `${i} × ${tafel}`, voorKleur, achterKleur: willekeurigeKleur(voorKleur), paarId: uid });
+        paren.push({ type: 'uitkomst', tekst: String(i * tafel),  voorKleur, achterKleur: willekeurigeKleur(voorKleur), paarId: uid });
+        paarTeller++;
+      }
+    }
+
+    aantalParen = paarTeller;
+
+    /* Schudden */
+    for (let i = paren.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [paren[i], paren[j]] = [paren[j], paren[i]];
+    }
+
+    kaarten    = paren;
+    omgedraaid = [];
+    gevonden   = 0;
+    zetten     = 0;
+    bezig      = false;
+
+    document.getElementById('movesDisplay').textContent = '0';
+    document.getElementById('foundDisplay').textContent = `0 / ${aantalParen}`;
+
+    const grid = document.getElementById('memoryGrid');
+    /* Kies kolommen zodat het grid altijd volledig gevuld is (deelt de kaartjes exact) */
+    const totaal = paren.length; /* altijd veelvoud van 20 */
+    const voorkeursCols = [4, 5, 10, 8, 20];
+    const cols = voorkeursCols.find(c => totaal % c === 0) ?? 4;
+    grid.style.gridTemplateColumns = `repeat(${cols}, 1fr)`;
+    grid.classList.add('has-cards');
+    grid.innerHTML = '';
+
+    kaarten.forEach((k, idx) => {
+      const wrap = document.createElement('div');
+      wrap.className = 'card-wrap';
+      wrap.dataset.idx = idx;
+      wrap.innerHTML = `
+        <div class="card-inner">
+          <div class="card-face card-back" style="background:${k.achterKleur}"></div>
+          <div class="card-face card-front" style="background:${k.voorKleur}">${k.tekst}</div>
+        </div>`;
+      wrap.addEventListener('click', () => klik(idx));
+      grid.appendChild(wrap);
+    });
+  }
+
+  /* ── Kaart klikken ── */
+  function klik(idx) {
+    if (bezig) return;
+    const wrap = document.querySelector(`.card-wrap[data-idx="${idx}"]`);
+    if (!wrap || wrap.classList.contains('flipped') || wrap.classList.contains('matched')) return;
+    if (omgedraaid.length === 2) return;
+
+    wrap.classList.add('flipped');
+    omgedraaid.push(idx);
+
+    if (omgedraaid.length === 2) {
+      zetten++;
+      document.getElementById('movesDisplay').textContent = zetten;
+      bezig = true;
+      setTimeout(controleer, 700);
+    }
+  }
+
+  function controleer() {
+    const [i1, i2] = omgedraaid;
+    const k1 = kaarten[i1], k2 = kaarten[i2];
+
+    if (k1.paarId === k2.paarId && k1.type !== k2.type) {
+      document.querySelector(`.card-wrap[data-idx="${i1}"]`).classList.add('matched');
+      document.querySelector(`.card-wrap[data-idx="${i2}"]`).classList.add('matched');
+      gevonden++;
+      document.getElementById('foundDisplay').textContent = `${gevonden} / ${aantalParen}`;
+      if (gevonden === aantalParen) setTimeout(() => gewonnen(), 300);
+    } else {
+      document.querySelector(`.card-wrap[data-idx="${i1}"]`).classList.remove('flipped');
+      document.querySelector(`.card-wrap[data-idx="${i2}"]`).classList.remove('flipped');
+    }
+
+    omgedraaid = [];
+    bezig = false;
+  }
+
+  function gewonnen() {
+    const tafelsSleutel = [...gekozenTafels].sort((a,b)=>a-b).join('-');
+    const key = 'geheugen_best_' + tafelsSleutel;
+    const huidig = localStorage.getItem(key);
+    const isRecord = !huidig || zetten < +huidig;
+    if (isRecord) localStorage.setItem(key, zetten);
+
+    const sub = isRecord && huidig
+      ? `Gelukt in ${zetten} zetten — nieuw record! (was ${huidig})`
+      : isRecord
+      ? `Gelukt in ${zetten} zetten — eerste keer gespeeld!`
+      : `Gelukt in ${zetten} zetten. Beste: ${huidig} zetten.`;
+
+    document.getElementById('resultSub').textContent = sub;
+    document.getElementById('resultOverlay').classList.add('visible');
+  }
+</script>
+</body>
+</html>
