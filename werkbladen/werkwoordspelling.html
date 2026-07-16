@@ -376,6 +376,7 @@
       .main { padding: 1.5rem 1rem 3rem; }
     }
   </style>
+  <link rel="stylesheet" href="../assets/theme.css" />
 </head>
 <body>
 
@@ -808,7 +809,7 @@
     );
 
     if (kandidaten.length === 0) {
-      out.innerHTML = `<div style="color:#c0392b;font-size:13px;padding:0.5rem 0;">
+      out.innerHTML = `<div style="color:#ff7a7a;font-size:13px;padding:0.5rem 0;">
         <strong>Geen zinnen gevonden</strong> voor deze combinatie. Kies een andere instelling.
       </div>`;
       return;
@@ -844,7 +845,7 @@
     html += `<ul class="zinnen-list">`;
     geselecteerd.forEach((z, i) => {
       const zinFormatted = formatLijn(formatZin(z.zin));
-      const badge = `<span style="font-size:10px;color:#2A7FD4;background:#e8f4fd;border-radius:4px;padding:1px 7px;margin-left:6px;white-space:nowrap;">${z.vorm}</span>`;
+      const badge = `<span style="font-size:10px;color:#7cc4ff;background:rgba(77,169,255,0.12);border:1px solid rgba(77,169,255,0.25);border-radius:4px;padding:1px 7px;margin-left:6px;white-space:nowrap;">${z.vorm}</span>`;
       html += `<li><span class="nr">${i + 1}.</span><span>${zinFormatted}${badge}</span></li>`;
     });
     html += `</ul>`;
@@ -968,6 +969,6 @@
 
   /* ── Init: geen groep voorgeselecteerd ── */
 </script>
-<script src="../assets/monsters.js"></script>
+
 </body>
 </html>
