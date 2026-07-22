@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){try{var r=localStorage.getItem('leerblad-role');document.documentElement.setAttribute('data-theme',r==='leerling'?'dark':'light');if(r)document.documentElement.setAttribute('data-role',r);}catch(e){}})();</script>
   <title>Leerblad – Werkbladen op maat</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -256,6 +257,44 @@
       .modules-section { padding: 2rem 1rem 3rem; }
       .modules-grid { grid-template-columns: 1fr 1fr; }
     }
+
+    /* ── Leerling-startpagina (donker) ── */
+    .student-home { max-width: 1280px; margin: 0 auto; padding: 3.5rem 160px 5rem; }
+    .sh-hero { text-align: center; margin-bottom: 2.75rem; }
+    .sh-hero h1 { font-family: 'Space Grotesk', 'Inter', sans-serif; font-size: 38px; font-weight: 600; color: #e9eef8; letter-spacing: -0.5px; margin-bottom: 0.75rem; }
+    .sh-hero h1 span { background: linear-gradient(90deg, #4da9ff, #3ce6b4); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 18px rgba(60,230,180,0.3)); }
+    .sh-hero p { font-size: 15px; color: #9aa7bf; line-height: 1.7; max-width: 540px; margin: 0 auto; }
+    .sh-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+    .sh-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 18px; padding: 1.75rem 1.5rem; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: inherit; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: transform .18s, box-shadow .18s, border-color .18s; }
+    .sh-card .sh-emoji { font-size: 40px; line-height: 1; }
+    .sh-card .sh-title { font-family: 'Space Grotesk', 'Inter', sans-serif; font-size: 19px; font-weight: 600; color: #e9eef8; }
+    .sh-card .sh-desc { font-size: 13px; color: #9aa7bf; line-height: 1.55; flex: 1; }
+    .sh-card .sh-badge { align-self: flex-start; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; }
+    .sh-card.play { border-color: rgba(77,169,255,0.4); }
+    .sh-card.play:hover { transform: translateY(-3px); border-color: rgba(77,169,255,0.7); box-shadow: 0 12px 36px rgba(60,230,180,0.22); }
+    .sh-card.play .sh-badge { background: linear-gradient(90deg, #4da9ff, #3ce6b4); color: #04121c; }
+    .sh-card.locked { opacity: 0.5; cursor: default; }
+    .sh-card.locked .sh-badge { background: rgba(255,255,255,0.06); color: #5d6a83; }
+    @media (max-width: 768px) { .student-home { padding: 2rem 1rem 3rem; } .sh-hero h1 { font-size: 28px; } .sh-grid { grid-template-columns: 1fr 1fr; } }
+
+    /* ── Keuzescherm (leerkracht / leerling) ── */
+    #role-choice { position: fixed; inset: 0; z-index: 500; display: flex; }
+    #role-choice[hidden] { display: none; }
+    .rc-panel { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 2rem; cursor: pointer; border: none; font-family: inherit; transition: flex-grow .3s ease; position: relative; overflow: hidden; }
+    .rc-panel:hover { flex-grow: 1.15; }
+    .rc-teacher { background: #f8f8f8; color: #1a1a1a; }
+    .rc-teacher:hover { background: #fff; }
+    .rc-student { background: radial-gradient(ellipse 700px 500px at 50% 30%, rgba(45,111,212,0.25), transparent 65%), #05080f; color: #e9eef8; }
+    .rc-emoji { font-size: 72px; line-height: 1; margin-bottom: 1.25rem; }
+    .rc-panel h2 { font-family: 'Space Grotesk', 'Inter', sans-serif; font-size: 30px; font-weight: 600; margin-bottom: 0.6rem; letter-spacing: -0.3px; }
+    .rc-teacher h2 { color: #2A7FD4; }
+    .rc-student h2 { background: linear-gradient(90deg, #4da9ff, #3ce6b4); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+    .rc-panel p { font-size: 14px; line-height: 1.6; max-width: 300px; opacity: 0.75; margin-bottom: 1.5rem; }
+    .rc-cta { font-size: 13px; font-weight: 600; padding: 11px 28px; border-radius: 26px; }
+    .rc-teacher .rc-cta { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
+    .rc-student .rc-cta { background: linear-gradient(90deg, #4da9ff, #3ce6b4); color: #04121c; }
+    .rc-brand { position: absolute; top: 2rem; left: 0; right: 0; text-align: center; font-family: 'Space Grotesk', 'Inter', sans-serif; font-size: 15px; letter-spacing: 3px; text-transform: uppercase; opacity: 0.4; pointer-events: none; }
+    @media (max-width: 700px) { #role-choice { flex-direction: column; } .rc-panel:hover { flex-grow: 1; } .rc-emoji { font-size: 52px; } .rc-panel h2 { font-size: 24px; } }
   </style>
   <link rel="stylesheet" href="assets/theme.css" />
 </head>
@@ -290,6 +329,9 @@
     </nav>
   </div>
 </header>
+
+<!-- ══════ LEERKRACHT-WEERGAVE ══════ -->
+<div data-role-view="leerkracht">
 
 <!-- HERO -->
 <section class="hero">
@@ -338,10 +380,69 @@
   </div>
 </section>
 
+</div><!-- /leerkracht-weergave -->
+
+<!-- ══════ LEERLING-WEERGAVE ══════ -->
+<section class="student-home" data-role-view="leerling" hidden>
+  <div class="sh-hero">
+    <h1>Hoi! Klaar om te <span>oefenen</span>?</h1>
+    <p>Kies een spel en oefen de tafels op je eigen tempo. De andere onderdelen van Leerblad zijn nog even in onderhoud.</p>
+  </div>
+  <div class="sh-grid">
+
+    <a class="sh-card play" href="werkbladen/tafelspellen.html">
+      <div class="sh-emoji">🎮</div>
+      <div class="sh-title">Tafelspellen</div>
+      <div class="sh-desc">Speel Tafelsnake en Tafelgeheugen en word een echte tafelbaas.</div>
+      <span class="sh-badge">Spelen</span>
+    </a>
+
+    <div class="sh-card locked">
+      <div class="sh-emoji">✏️</div>
+      <div class="sh-title">Werkwoordspelling</div>
+      <div class="sh-desc">Oefenen met werkwoorden. Deze komt er binnenkort aan.</div>
+      <span class="sh-badge">In onderhoud</span>
+    </div>
+
+    <div class="sh-card locked">
+      <div class="sh-emoji">🔢</div>
+      <div class="sh-title">Rekenen</div>
+      <div class="sh-desc">Sommen en tafels oefenen. Deze komt er binnenkort aan.</div>
+      <span class="sh-badge">In onderhoud</span>
+    </div>
+
+    <div class="sh-card locked">
+      <div class="sh-emoji">📚</div>
+      <div class="sh-title">Lezen</div>
+      <div class="sh-desc">Leuke leesoefeningen. Deze komt er binnenkort aan.</div>
+      <span class="sh-badge">In onderhoud</span>
+    </div>
+
+  </div>
+</section>
+
 <footer>
   www.leerblad.nl
 </footer>
 
+<!-- ══════ KEUZESCHERM (eerste bezoek) ══════ -->
+<div id="role-choice" hidden>
+  <button type="button" class="rc-panel rc-teacher" data-choose="leerkracht">
+    <div class="rc-brand">Leerblad</div>
+    <div class="rc-emoji">👩‍🏫</div>
+    <h2>Ik ben leerkracht</h2>
+    <p>Maak kant-en-klare werkbladen met nakijkblad voor je klas.</p>
+    <span class="rc-cta">Ga verder →</span>
+  </button>
+  <button type="button" class="rc-panel rc-student" data-choose="leerling">
+    <div class="rc-brand">Leerblad</div>
+    <div class="rc-emoji">🎒</div>
+    <h2>Ik ben leerling</h2>
+    <p>Oefen de tafels met leuke spelletjes.</p>
+    <span class="rc-cta">Ga verder →</span>
+  </button>
+</div>
 
+<script src="assets/role.js"></script>
 </body>
 </html>
