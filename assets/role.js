@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════
    Leerblad — rolbeheer (leerkracht / leerling)
-   - Onthoudt de gekozen rol in localStorage.
+   - Bewaart de gekozen rol in sessionStorage (alleen huidig bezoek; nieuw bezoek vraagt opnieuw).
    - Zet het thema (leerkracht = licht, leerling = donker).
    - Injecteert de wisselknop rechtsboven.
    - Leerling: alle pagina's in onderhoud behalve de tafelspellen.
@@ -13,11 +13,13 @@
   /* Pagina's die een leerling wél mag gebruiken (de spelletjes) */
   var LEERLING_TOEGESTAAN = ['tafelspellen.html', 'tafelsnake.html', 'tafelgeheugen.html'];
 
+  /* sessionStorage: de rol geldt alleen binnen het huidige bezoek.
+     Bij een nieuw bezoek (nieuw tabblad / opnieuw openen) wordt opnieuw gevraagd. */
   function getRole() {
-    try { return localStorage.getItem(KEY); } catch (e) { return null; }
+    try { return sessionStorage.getItem(KEY); } catch (e) { return null; }
   }
   function setRole(r) {
-    try { localStorage.setItem(KEY, r); } catch (e) {}
+    try { sessionStorage.setItem(KEY, r); } catch (e) {}
   }
 
   var savedRole = getRole();               // kan null zijn (nog niet gekozen)
@@ -37,15 +39,18 @@
   /* ── Stijlen voor wisselknop, keuzescherm en onderhoud ── */
   function injectStyles() {
     var css = ''
-      + '.role-toggle{display:inline-flex;align-items:center;background:#f0f2f5;border:1px solid #e5e5e5;border-radius:22px;padding:3px;margin-left:16px;gap:2px;flex-shrink:0}'
-      + '.role-toggle button{font-family:inherit;font-size:12.5px;border:none;background:none;color:#8a94a6;padding:6px 15px;border-radius:18px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s;display:inline-flex;align-items:center;gap:5px}'
+      /* wisselknop staat onder het logo */
+      + '.logo-col{display:flex;flex-direction:column;align-items:center;gap:8px;flex-shrink:0}'
+      + '.topbar-inner{height:auto !important;min-height:84px;padding-top:11px !important;padding-bottom:11px !important;align-items:center}'
+      + '.role-toggle{display:inline-flex;align-items:center;background:#f0f2f5;border:1px solid #e5e5e5;border-radius:20px;padding:3px;gap:2px;flex-shrink:0}'
+      + '.role-toggle button{font-family:inherit;font-size:12px;border:none;background:none;color:#8a94a6;padding:5px 13px;border-radius:16px;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s;display:inline-flex;align-items:center;gap:5px}'
       + '.role-toggle button:hover{color:#2A7FD4}'
       + '.role-toggle button[aria-pressed="true"]{background:linear-gradient(90deg,#2A7FD4,#2DBF8E);color:#fff;font-weight:600}'
       + '[data-theme="dark"] .role-toggle{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1)}'
       + '[data-theme="dark"] .role-toggle button{color:#9aa7bf}'
       + '[data-theme="dark"] .role-toggle button:hover{color:#7cc4ff}'
       + '[data-theme="dark"] .role-toggle button[aria-pressed="true"]{background:linear-gradient(90deg,#4da9ff,#3ce6b4);color:#04121c}'
-      + '@media (max-width:600px){.role-toggle{margin-left:0}.role-toggle button{font-size:11px;padding:5px 11px}}'
+      + '@media (max-width:600px){.role-toggle button{font-size:11px;padding:5px 11px}}'
 
       /* Onderhoud-overlay (leerling op geblokkeerde pagina) */
       + '.onderhoud{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:2rem;'
@@ -70,9 +75,6 @@
 
   /* ── Wisselknop rechtsboven ── */
   function injectToggle() {
-    var nav = document.querySelector('.topbar-inner nav') || document.querySelector('.topbar-inner');
-    if (!nav) return;
-
     var wrap = document.createElement('div');
     wrap.className = 'role-toggle';
     wrap.setAttribute('role', 'group');
@@ -92,7 +94,18 @@
       wrap.appendChild(b);
     });
 
-    nav.appendChild(wrap);
+    /* Plaats de wisselknop onder het logo */
+    var logo = document.querySelector('.topbar-inner .logo-link');
+    if (logo && logo.parentNode) {
+      var col = document.createElement('div');
+      col.className = 'logo-col';
+      logo.parentNode.insertBefore(col, logo);
+      col.appendChild(logo);
+      col.appendChild(wrap);
+    } else {
+      var nav = document.querySelector('.topbar-inner nav') || document.querySelector('.topbar-inner');
+      if (nav) nav.appendChild(wrap);
+    }
   }
 
   /* ── Rolafhankelijke secties tonen/verbergen ── */
