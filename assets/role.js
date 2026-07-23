@@ -11,7 +11,10 @@
   var DEFAULT = 'leerkracht';
 
   /* Pagina's die een leerling wél mag gebruiken (de spelletjes) */
-  var LEERLING_TOEGESTAAN = ['tafelspellen.html', 'tafelsnake.html', 'tafelgeheugen.html'];
+  var LEERLING_TOEGESTAAN = [
+    'tafelspellen.html', 'tafelsnake.html', 'tafelgeheugen.html',
+    'verhaalspellen.html', 'verhaalpad.html', 'verhaallijn.html', 'verhaalballon.html'
+  ];
 
   /* sessionStorage: de rol geldt alleen binnen het huidige bezoek.
      Bij een nieuw bezoek (nieuw tabblad / opnieuw openen) wordt opnieuw gevraagd. */
@@ -51,6 +54,9 @@
       + '[data-theme="dark"] .role-toggle button:hover{color:#7cc4ff}'
       + '[data-theme="dark"] .role-toggle button[aria-pressed="true"]{background:linear-gradient(90deg,#4da9ff,#3ce6b4);color:#04121c}'
       + '@media (max-width:600px){.role-toggle button{font-size:11px;padding:5px 11px}}'
+
+      /* Footer overal licht, gecentreerd en onopvallend (donkere variant staat in theme.css) */
+      + 'footer{text-align:center;padding:1.15rem 0;font-size:12px;color:#bbb;background:transparent;border-top:1px solid rgba(0,0,0,0.06)}'
 
       /* Onderhoud-overlay (leerling op geblokkeerde pagina) */
       + '.onderhoud{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:2rem;'
@@ -105,6 +111,34 @@
     } else {
       var nav = document.querySelector('.topbar-inner nav') || document.querySelector('.topbar-inner');
       if (nav) nav.appendChild(wrap);
+    }
+  }
+
+  /* ── Nav aanpassen voor leerling: Rekenen = Tafelspellen + Verhaalspellen ── */
+  function adjustNav() {
+    if (role !== 'leerling') return;
+    var prefix = inWerkbladen ? '' : 'werkbladen/';
+
+    // Zoek de "Rekenen" dropdown in de nav
+    var dropdowns = document.querySelectorAll('.topbar-inner .nav-dropdown');
+    for (var i = 0; i < dropdowns.length; i++) {
+      var top = dropdowns[i].querySelector('.nav-btn');
+      if (!top || top.textContent.trim().toLowerCase().indexOf('rekenen') !== 0) continue;
+
+      // Rekenen-knop wijst voor de leerling naar de tafelspellen (rekenindex is in onderhoud)
+      top.setAttribute('href', prefix + 'tafelspellen.html');
+
+      var inner = dropdowns[i].querySelector('.nav-dropdown-menu-inner');
+      if (inner) {
+        inner.innerHTML = '';
+        [['Tafelspellen', 'tafelspellen.html'], ['Verhaalspellen', 'verhaalspellen.html']].forEach(function (it) {
+          var a = document.createElement('a');
+          a.className = 'nav-dropdown-item';
+          a.href = prefix + it[1];
+          a.textContent = it[0];
+          inner.appendChild(a);
+        });
+      }
     }
   }
 
@@ -168,6 +202,7 @@
   injectStyles();
   document.addEventListener('DOMContentLoaded', function () {
     injectToggle();
+    adjustNav();
     applyViews();
     enforceAccess();
     handleChoice();

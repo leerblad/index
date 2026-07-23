@@ -264,6 +264,8 @@
     .sh-hero h1 { font-family: 'Space Grotesk', 'Inter', sans-serif; font-size: 38px; font-weight: 600; color: #e9eef8; letter-spacing: -0.5px; margin-bottom: 0.75rem; }
     .sh-hero h1 span { background: linear-gradient(90deg, #4da9ff, #3ce6b4); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 18px rgba(60,230,180,0.3)); }
     .sh-hero p { font-size: 15px; color: #9aa7bf; line-height: 1.7; max-width: 540px; margin: 0 auto; }
+    .sh-cat { font-family: 'Space Grotesk', 'Inter', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: #7cc4ff; margin: 0 0 1rem; }
+    .sh-cat + .sh-grid { margin-bottom: 2.25rem; }
     .sh-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
     .sh-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 18px; padding: 1.75rem 1.5rem; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: inherit; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: transform .18s, box-shadow .18s, border-color .18s; }
     .sh-card .sh-emoji { font-size: 40px; line-height: 1; }
@@ -388,6 +390,7 @@
     <h1>Hoi! Klaar om te <span>oefenen</span>?</h1>
     <p>Kies een spel en oefen de tafels op je eigen tempo. De andere onderdelen van Leerblad zijn nog even in onderhoud.</p>
   </div>
+  <div class="sh-cat">Rekenen</div>
   <div class="sh-grid">
 
     <a class="sh-card play" href="werkbladen/tafelspellen.html">
@@ -397,17 +400,22 @@
       <span class="sh-badge">Spelen</span>
     </a>
 
+    <a class="sh-card play" href="werkbladen/verhaalspellen.html">
+      <div class="sh-emoji">📖</div>
+      <div class="sh-title">Verhaalspellen</div>
+      <div class="sh-desc">Los echte verhaalsommen op met een spel. Kies je groep en ga aan de slag.</div>
+      <span class="sh-badge">Spelen</span>
+    </a>
+
+  </div>
+
+  <div class="sh-cat">Andere vakken</div>
+  <div class="sh-grid">
+
     <div class="sh-card locked">
       <div class="sh-emoji">✏️</div>
       <div class="sh-title">Werkwoordspelling</div>
       <div class="sh-desc">Oefenen met werkwoorden. Deze komt er binnenkort aan.</div>
-      <span class="sh-badge">In onderhoud</span>
-    </div>
-
-    <div class="sh-card locked">
-      <div class="sh-emoji">🔢</div>
-      <div class="sh-title">Rekenen</div>
-      <div class="sh-desc">Sommen en tafels oefenen. Deze komt er binnenkort aan.</div>
       <span class="sh-badge">In onderhoud</span>
     </div>
 

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){try{var r=sessionStorage.getItem('leerblad-role');document.documentElement.setAttribute('data-theme',r==='leerling'?'dark':'light');if(r)document.documentElement.setAttribute('data-role',r);}catch(e){}})();</script>
+  <title>Leerblad – Trek de lijn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f8f8f8; color: #1a1a1a; min-height: 100vh; }
+
+    .topbar { background: #fff; border-bottom: 0.5px solid #e5e5e5; position: sticky; top: 0; z-index: 100; }
+    .topbar-inner { max-width: 1280px; margin: 0 auto; padding: 0 160px; display: flex; align-items: center; justify-content: space-between; height: 84px; gap: 1rem; }
+    .logo-link { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; flex-shrink: 0; }
+    .logo-text { font-size: 40px; font-weight: 200; letter-spacing: 1.5px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.1; }
+    .logo-tagline-row { display: flex; align-items: center; gap: 7px; }
+    .logo-tagline-line { height: 1px; width: 36px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); opacity: 0.4; }
+    .logo-tagline { font-size: 8.5px; letter-spacing: 3px; color: #2A7FD4; font-weight: 400; text-transform: uppercase; }
+    nav { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+    .nav-btn { font-size: 16px; font-weight: 400; color: #888; border: none; background: none; padding: 10px 20px; border-radius: 24px; cursor: pointer; transition: background 0.18s, color 0.18s; white-space: nowrap; text-decoration: none; display: inline-flex; align-items: center; }
+    .nav-btn:hover, .nav-dropdown:hover > .nav-btn { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
+    .nav-btn.active { background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
+    .nav-btn.soon { color: #ccc; cursor: default; pointer-events: none; }
+    .tag { font-size: 9px; background: rgba(255,255,255,0.25); color: inherit; padding: 2px 6px; border-radius: 10px; margin-left: 4px; }
+    .nav-btn:not(:hover) .tag { background: #f0f0f0; color: #bbb; }
+    .nav-dropdown { position: relative; display: inline-flex; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; padding-top: 8px; min-width: 200px; z-index: 200; flex-direction: column; }
+    .nav-dropdown-menu-inner { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 12px; padding: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 2px; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: flex; }
+    .nav-dropdown-item { font-size: 14px; color: #555; padding: 9px 14px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .nav-dropdown-item:hover { background: #e8f4fd; color: #2A7FD4; }
+    .nav-dropdown-item.soon { color: #ccc; pointer-events: none; }
+
+    .main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+    .page-title { font-size: 28px; font-weight: 300; color: #1a1a1a; margin-bottom: 4px; }
+    .page-sub { font-size: 13px; color: #999; margin-bottom: 1.75rem; }
+
+    .setup { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 16px; padding: 1.75rem; text-align: center; }
+    .setup h2 { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+    .setup p { font-size: 13px; color: #999; margin-bottom: 1.25rem; }
+    .groep-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .g-chip { font-size: 14px; font-weight: 500; border: 1px solid #e0e0e0; background: #f8f8f8; color: #555; padding: 10px 18px; border-radius: 12px; cursor: pointer; transition: all 0.15s; }
+    .g-chip:hover { border-color: #2A7FD4; color: #2A7FD4; }
+    .g-chip.active { border-color: #2A7FD4; background: #e8f4fd; color: #2A7FD4; }
+    .start-btn { font-size: 15px; font-weight: 600; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; border: none; padding: 12px 34px; border-radius: 28px; cursor: pointer; transition: opacity 0.2s, transform 0.15s; }
+    .start-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .start-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .game { display: none; }
+    .game.on { display: block; }
+    .hud { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .hud-info { font-size: 13px; color: #666; }
+    .hud-info b { color: #2A7FD4; }
+    .hud-groep { font-size: 12px; color: #999; }
+
+    .board { position: relative; display: grid; grid-template-columns: 1fr 120px; gap: 60px; }
+    .board svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .col { display: flex; flex-direction: column; gap: 14px; position: relative; z-index: 2; }
+    .col-ans { justify-content: space-around; }
+
+    .som { background: #fff; border: 1.5px solid #e5e5e5; border-radius: 12px; padding: 0.9rem 1rem; font-size: 13.5px; line-height: 1.5; color: #1a1a1a; cursor: pointer; transition: all 0.14s; }
+    .som:hover { border-color: #2A7FD4; }
+    .som.active { border-color: #2A7FD4; background: #e8f4fd; box-shadow: 0 0 0 3px rgba(42,127,212,0.12); }
+    .som.klaar { border-color: #2DBF8E; background: #eafaf4; cursor: default; }
+    .som.mis { border-color: #ff6b6b; background: #ffecec; }
+
+    .ans { background: #fff; border: 1.5px solid #e5e5e5; border-radius: 12px; padding: 0.9rem 0.5rem; font-size: 17px; font-weight: 700; color: #1a1a1a; cursor: pointer; text-align: center; transition: all 0.14s; }
+    .ans:hover { border-color: #2A7FD4; }
+    .ans.klaar { border-color: #2DBF8E; background: #eafaf4; color: #17a877; cursor: default; }
+    .ans.mis { border-color: #ff6b6b; background: #ffecec; }
+
+    .overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(4,6,12,0.75); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 1.5rem; }
+    .overlay.on { display: flex; }
+    .over-card { background: #fff; border-radius: 20px; padding: 2.5rem 2.75rem; text-align: center; max-width: 400px; box-shadow: 0 24px 64px rgba(0,0,0,0.3); }
+    .over-emoji { font-size: 56px; margin-bottom: 0.75rem; }
+    .over-card h2 { font-size: 24px; font-weight: 800; margin-bottom: 8px; }
+    .over-card p { font-size: 14px; color: #888; margin-bottom: 1.5rem; line-height: 1.6; }
+
+    footer { border-top: 0.5px solid #e5e5e5; background: #fff; padding: 1.25rem 0; text-align: center; font-size: 12px; color: #bbb; margin-top: 2rem; }
+
+    /* Donkere (leerling) varianten */
+    [data-theme="dark"] .setup { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); }
+    [data-theme="dark"] .setup h2 { color: #e9eef8; }
+    [data-theme="dark"] .g-chip { background: rgba(255,255,255,0.045); border-color: rgba(255,255,255,0.12); color: #9aa7bf; }
+    [data-theme="dark"] .g-chip:hover { border-color: #4da9ff; color: #7cc4ff; }
+    [data-theme="dark"] .g-chip.active { background: rgba(77,169,255,0.14); border-color: #4da9ff; color: #7cc4ff; }
+    [data-theme="dark"] .hud-info { color: #9aa7bf; } [data-theme="dark"] .hud-info b { color: #7cc4ff; } [data-theme="dark"] .hud-groep { color: #5d6a83; }
+    [data-theme="dark"] .som, [data-theme="dark"] .ans { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.14); color: #e9eef8; }
+    [data-theme="dark"] .som:hover, [data-theme="dark"] .ans:hover { border-color: #4da9ff; }
+    [data-theme="dark"] .som.active { border-color: #4da9ff; background: rgba(77,169,255,0.14); box-shadow: 0 0 0 3px rgba(77,169,255,0.14); }
+    [data-theme="dark"] .som.klaar, [data-theme="dark"] .ans.klaar { border-color: #3ce6b4; background: rgba(60,230,180,0.16); color: #6ff0c8; }
+    [data-theme="dark"] .som.mis, [data-theme="dark"] .ans.mis { border-color: #ff6b6b; background: rgba(255,107,107,0.16); }
+    [data-theme="dark"] .over-card { background: #0d1320; box-shadow: 0 24px 64px rgba(0,0,0,0.6); }
+    [data-theme="dark"] .over-card h2 { color: #e9eef8; }
+
+    @media (max-width: 1100px) { .topbar-inner { padding-left: 2rem; padding-right: 2rem; } }
+    @media (max-width: 600px) { .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; } nav { gap: 2px; } .nav-btn { font-size: 12px; padding: 5px 10px; } .board { grid-template-columns: 1fr 90px; gap: 34px; } .som { font-size: 12.5px; } }
+  </style>
+  <link rel="stylesheet" href="../assets/theme.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-link" href="../index.html">
+      <span class="logo-text">Leerblad</span>
+      <div class="logo-tagline-row"><div class="logo-tagline-line"></div><div class="logo-tagline">Werkbladen op maat</div><div class="logo-tagline-line"></div></div>
+    </a>
+    <nav>
+      <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
+      <div class="nav-dropdown">
+        <a class="nav-btn active" href="rekenindex.html">Rekenen</a>
+        <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
+          <a class="nav-dropdown-item" href="tafelsommen.html">Tafelsommen</a>
+          <a class="nav-dropdown-item" href="deeltafels.html">Deeltafels</a>
+          <a class="nav-dropdown-item" href="tafelspellen.html">Tafelspellen</a>
+          <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+        </div></div>
+      </div>
+      <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
+      <span class="nav-btn soon">Werkboekjes<span class="tag">binnenkort</span></span>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+  <h1 class="page-title">Trek de lijn</h1>
+  <p class="page-sub">Verbind elke verhaalsom met het juiste antwoord. Klik een som en daarna het antwoord.</p>
+
+  <div class="setup" id="setup">
+    <h2>In welke groep zit je?</h2>
+    <p>De verhaalsommen passen zich aan jouw groep aan.</p>
+    <div class="groep-chips" id="groepChips"></div>
+    <button class="start-btn" id="startBtn" disabled>Start het spel</button>
+  </div>
+
+  <div class="game" id="game">
+    <div class="hud">
+      <div class="hud-info">Goed verbonden: <b id="scoreTxt">0</b> / 4</div>
+      <div class="hud-groep" id="hudGroep"></div>
+    </div>
+    <div class="board" id="board">
+      <svg id="svg"></svg>
+      <div class="col col-som" id="colSom"></div>
+      <div class="col col-ans" id="colAns"></div>
+    </div>
+  </div>
+</main>
+
+<footer>www.leerblad.nl</footer>
+
+<div class="overlay" id="overlay">
+  <div class="over-card">
+    <div class="over-emoji">🎉</div>
+    <h2>Alles goed verbonden!</h2>
+    <p id="overText"></p>
+    <button class="start-btn" id="overBtn">Nog een keer</button>
+  </div>
+</div>
+
+<script src="../assets/redactiesommen.js"></script>
+<script>
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var groep = null, sommen = [], gekozenSom = null, goed = 0;
+
+  var chips = document.getElementById('groepChips');
+  [4,5,6,7,8].forEach(function(g){
+    var b = document.createElement('button');
+    b.className = 'g-chip'; b.textContent = 'Groep ' + g;
+    b.onclick = function(){
+      groep = g;
+      Array.prototype.forEach.call(chips.children, function(c){ c.classList.remove('active'); });
+      b.classList.add('active');
+      document.getElementById('startBtn').disabled = false;
+    };
+    chips.appendChild(b);
+  });
+
+  function shuffle(a){ for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t; } return a; }
+
+  function maakSommen(){
+    var uit = [], tekens = {}, pog = 0;
+    while (uit.length < 4 && pog < 80){
+      pog++;
+      var s = Redactiesommen.genereer(groep);
+      var t = s.format(s.antwoord);
+      if (tekens[t]) continue;      // unieke antwoorden nodig voor matching
+      tekens[t] = true;
+      uit.push({ vraag: s.vraag, antw: t, id: uit.length });
+    }
+    return uit;
+  }
+
+  function start(){
+    goed = 0; gekozenSom = null;
+    sommen = maakSommen();
+    document.getElementById('setup').style.display = 'none';
+    document.getElementById('game').classList.add('on');
+    document.getElementById('hudGroep').textContent = 'Groep ' + groep;
+    document.getElementById('scoreTxt').textContent = '0';
+
+    var colSom = document.getElementById('colSom'); colSom.innerHTML = '';
+    var colAns = document.getElementById('colAns'); colAns.innerHTML = '';
+    document.getElementById('svg').innerHTML = '';
+
+    sommen.forEach(function(s){
+      var d = document.createElement('div');
+      d.className = 'som'; d.textContent = s.vraag; d.dataset.id = s.id;
+      d.onclick = function(){ kiesSom(d, s); };
+      colSom.appendChild(d);
+    });
+    var geschud = shuffle(sommen.slice());
+    geschud.forEach(function(s){
+      var d = document.createElement('div');
+      d.className = 'ans'; d.textContent = s.antw; d.dataset.id = s.id;
+      d.onclick = function(){ kiesAns(d, s); };
+      colAns.appendChild(d);
+    });
+  }
+
+  function kiesSom(el, s){
+    if (el.classList.contains('klaar')) return;
+    Array.prototype.forEach.call(document.getElementById('colSom').children, function(c){ c.classList.remove('active'); });
+    el.classList.add('active');
+    gekozenSom = { el: el, data: s };
+  }
+
+  function kiesAns(el, s){
+    if (el.classList.contains('klaar')) return;
+    if (!gekozenSom){ flits(el); return; }
+    if (gekozenSom.data.id === s.id){
+      gekozenSom.el.classList.remove('active');
+      gekozenSom.el.classList.add('klaar');
+      el.classList.add('klaar');
+      lijn(gekozenSom.el, el, true);
+      gekozenSom = null;
+      goed++;
+      document.getElementById('scoreTxt').textContent = goed;
+      if (goed >= 4){ setTimeout(win, 500); }
+    } else {
+      flits(el); flits(gekozenSom.el);
+      gekozenSom.el.classList.remove('active');
+      gekozenSom = null;
+    }
+  }
+
+  function flits(el){
+    el.classList.add('mis');
+    setTimeout(function(){ el.classList.remove('mis'); }, 450);
+  }
+
+  function lijn(somEl, ansEl, ok){
+    var svg = document.getElementById('svg');
+    var b = document.getElementById('board').getBoundingClientRect();
+    var r1 = somEl.getBoundingClientRect(), r2 = ansEl.getBoundingClientRect();
+    var l = document.createElementNS(SVGNS, 'line');
+    l.setAttribute('x1', (r1.right - b.left)); l.setAttribute('y1', (r1.top + r1.height/2 - b.top));
+    l.setAttribute('x2', (r2.left - b.left)); l.setAttribute('y2', (r2.top + r2.height/2 - b.top));
+    l.setAttribute('stroke', ok ? '#2DBF8E' : '#ff6b6b');
+    l.setAttribute('stroke-width', '3'); l.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(l);
+  }
+
+  function win(){
+    document.getElementById('overText').textContent = 'Super! Je hebt alle vier de verhaalsommen aan het juiste antwoord gekoppeld.';
+    document.getElementById('overlay').classList.add('on');
+  }
+
+  document.getElementById('startBtn').onclick = start;
+  document.getElementById('overBtn').onclick = function(){
+    document.getElementById('overlay').classList.remove('on');
+    start();
+  };
+</script>
+<script src="../assets/role.js"></script>
+</body>
+</html>
