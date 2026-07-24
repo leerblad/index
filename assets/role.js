@@ -13,7 +13,8 @@
   /* Pagina's die een leerling wél mag gebruiken (de spelletjes) */
   var LEERLING_TOEGESTAAN = [
     'tafelspellen.html', 'tafelsnake.html', 'tafelgeheugen.html',
-    'verhaalspellen.html', 'verhaalpad.html', 'verhaallijn.html', 'verhaalballon.html'
+    'verhaalspellen.html', 'verhaalpad.html', 'verhaallijn.html', 'verhaalballon.html',
+    'werkwoordspellen.html', 'wwpad.html', 'wwlijn.html', 'wwballon.html'
   ];
 
   /* sessionStorage: de rol geldt alleen binnen het huidige bezoek.
@@ -55,8 +56,15 @@
       + '[data-theme="dark"] .role-toggle button[aria-pressed="true"]{background:linear-gradient(90deg,#4da9ff,#3ce6b4);color:#04121c}'
       + '@media (max-width:600px){.role-toggle button{font-size:11px;padding:5px 11px}}'
 
-      /* Footer overal licht, gecentreerd en onopvallend (donkere variant staat in theme.css) */
-      + 'footer{text-align:center;padding:1.15rem 0;font-size:12px;color:#bbb;background:transparent;border-top:1px solid rgba(0,0,0,0.06)}'
+      /* Footer overal exact hetzelfde: licht, gecentreerd, onopvallend (donker in theme.css) */
+      + 'footer{text-align:center !important;padding:1.15rem 0 !important;margin:0 !important;font-size:12px !important;font-weight:400 !important;color:#bbb !important;background:transparent !important;border-top:1px solid rgba(0,0,0,0.06) !important;letter-spacing:normal !important}'
+
+      /* Streep + lichtgrijs "lln"-label in de nav-dropdown */
+      + '.nav-dropdown-divider{height:1px;background:#ececec;margin:6px 8px}'
+      + '[data-theme="dark"] .nav-dropdown-divider{background:rgba(255,255,255,0.1)}'
+      + '.lln-tag{margin-left:auto;font-size:9.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:#c7c7c7}'
+      + '.nav-dropdown-item:hover .lln-tag{color:#9cc4e6}'
+      + '[data-theme="dark"] .lln-tag{color:#556074}'
 
       /* Onderhoud-overlay (leerling op geblokkeerde pagina) */
       + '.onderhoud{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:2rem;'
@@ -114,32 +122,87 @@
     }
   }
 
-  /* ── Nav aanpassen voor leerling: Rekenen = Tafelspellen + Verhaalspellen ── */
-  function adjustNav() {
-    if (role !== 'leerling') return;
-    var prefix = inWerkbladen ? '' : 'werkbladen/';
+  /* ── Nav-dropdowns rolafhankelijk opbouwen (consistent op elke pagina) ── */
+  function navItem(prefix, label, file, opts) {
+    opts = opts || {};
+    var el = document.createElement(opts.soon ? 'span' : 'a');
+    el.className = 'nav-dropdown-item' + (opts.soon ? ' soon' : '');
+    if (!opts.soon) el.href = prefix + file;
+    el.appendChild(document.createTextNode(label));
+    if (opts.soon) {
+      var t = document.createElement('span'); t.className = 'tag'; t.textContent = 'binnenkort'; el.appendChild(t);
+    }
+    if (opts.lln) {
+      var l = document.createElement('span'); l.className = 'lln-tag'; l.textContent = 'lln'; el.appendChild(l);
+    }
+    return el;
+  }
+  function navDivider() { var d = document.createElement('div'); d.className = 'nav-dropdown-divider'; return d; }
 
-    // Zoek de "Rekenen" dropdown in de nav
+  function adjustNav() {
+    var prefix = inWerkbladen ? '' : 'werkbladen/';
     var dropdowns = document.querySelectorAll('.topbar-inner .nav-dropdown');
     for (var i = 0; i < dropdowns.length; i++) {
       var top = dropdowns[i].querySelector('.nav-btn');
-      if (!top || top.textContent.trim().toLowerCase().indexOf('rekenen') !== 0) continue;
-
-      // Rekenen-knop wijst voor de leerling naar de tafelspellen (rekenindex is in onderhoud)
-      top.setAttribute('href', prefix + 'tafelspellen.html');
-
       var inner = dropdowns[i].querySelector('.nav-dropdown-menu-inner');
-      if (inner) {
+      if (!top || !inner) continue;
+      var label = top.textContent.trim().toLowerCase();
+
+      if (label.indexOf('rekenen') === 0) {
         inner.innerHTML = '';
-        [['Tafelspellen', 'tafelspellen.html'], ['Verhaalspellen', 'verhaalspellen.html']].forEach(function (it) {
-          var a = document.createElement('a');
-          a.className = 'nav-dropdown-item';
-          a.href = prefix + it[1];
-          a.textContent = it[0];
-          inner.appendChild(a);
-        });
+        if (role === 'leerling') {
+          // rekenindex is in onderhoud → Rekenen-knop naar de spellen
+          top.setAttribute('href', prefix + 'tafelspellen.html');
+          inner.appendChild(navItem(prefix, 'Tafelspellen', 'tafelspellen.html'));
+          inner.appendChild(navItem(prefix, 'Verhaalspellen', 'verhaalspellen.html'));
+        } else {
+          top.setAttribute('href', prefix + 'rekenindex.html');
+          // eerst de werkbladgeneratoren
+          inner.appendChild(navItem(prefix, 'Tafelsommen', 'tafelsommen.html'));
+          inner.appendChild(navItem(prefix, 'Deeltafels', 'deeltafels.html'));
+          // streep, daarna de uitleg van de leerlingpagina's (met grijs 'lln')
+          inner.appendChild(navDivider());
+          inner.appendChild(navItem(prefix, 'Tafelspellen', 'tafelspellen.html', { lln: true }));
+          inner.appendChild(navItem(prefix, 'Redactiesommen', 'verhaalspellen.html', { lln: true }));
+        }
       }
     }
+    adjustWerkwoord(prefix);
+  }
+
+  /* Werkwoordspelling: leerling → spellen-hub; leerkracht → dropdown (werkbladen + streep + lln-uitleg) */
+  function adjustWerkwoord(prefix) {
+    var links = document.querySelectorAll('.topbar-inner nav > .nav-btn');
+    var top = null;
+    for (var i = 0; i < links.length; i++) {
+      if (links[i].textContent.trim().toLowerCase().indexOf('werkwoordspelling') === 0) { top = links[i]; break; }
+    }
+    if (!top) return;
+
+    if (role === 'leerling') {
+      top.setAttribute('href', prefix + 'werkwoordspellen.html');
+      return;
+    }
+
+    // leerkracht: bouw een dropdown om de bestaande knop heen
+    var wasActief = top.classList.contains('active');
+    var dd = document.createElement('div');
+    dd.className = 'nav-dropdown';
+    var menu = document.createElement('div');
+    menu.className = 'nav-dropdown-menu';
+    var innerM = document.createElement('div');
+    innerM.className = 'nav-dropdown-menu-inner';
+    menu.appendChild(innerM);
+
+    top.parentNode.insertBefore(dd, top);
+    top.setAttribute('href', prefix + 'werkwoordspelling.html');
+    if (wasActief) top.classList.add('active');
+    dd.appendChild(top);
+    dd.appendChild(menu);
+
+    innerM.appendChild(navItem(prefix, 'Werkbladen', 'werkwoordspelling.html'));
+    innerM.appendChild(navDivider());
+    innerM.appendChild(navItem(prefix, 'Werkwoordspellen', 'werkwoordspellen.html', { lln: true }));
   }
 
   /* ── Rolafhankelijke secties tonen/verbergen ── */

@@ -555,12 +555,12 @@
         const somTekst = `${dt} ÷ ${dl} = `;
 
         doc.setTextColor(30);
-        doc.text(somTekst, x, y);
-
-        const lineX = x + doc.getTextWidth(somTekst);
         if (isAntwoord) {
-          doc.text(String(s.antwoord), lineX + 1, y);
+          /* Antwoord in één tekst-string, zodat de volgorde altijd klopt */
+          doc.text(somTekst + s.antwoord, x, y);
         } else {
+          doc.text(somTekst, x, y);
+          const lineX = x + doc.getTextWidth(somTekst);
           doc.setDrawColor(180);
           doc.line(lineX, y + 0.3, lineX + 13, y + 0.3);
         }

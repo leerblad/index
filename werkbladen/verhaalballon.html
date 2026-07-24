@@ -70,6 +70,13 @@
     .balloon.pop { animation: pop 0.25s forwards; pointer-events: none; }
     @keyframes pop { to { transform: scale(1.6); opacity: 0; } }
 
+    .feedback { position: absolute; top: 14px; left: 50%; transform: translateX(-50%) translateY(-8px); padding: 8px 22px; border-radius: 22px; font-weight: 800; font-size: 15px; color: #fff; opacity: 0; transition: opacity 0.15s, transform 0.15s; z-index: 6; pointer-events: none; white-space: nowrap; box-shadow: 0 6px 20px rgba(0,0,0,0.18); }
+    .feedback.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .feedback.goed { background: #2DBF8E; }
+    .feedback.fout { background: #ff6b6b; }
+    @keyframes barshake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-7px)} 75%{transform:translateX(7px)} }
+    .som-bar.shake { animation: barshake 0.3s; }
+
     .overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(4,6,12,0.75); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 1.5rem; }
     .overlay.on { display: flex; }
     .over-card { background: #fff; border-radius: 20px; padding: 2.5rem 2.75rem; text-align: center; max-width: 400px; box-shadow: 0 24px 64px rgba(0,0,0,0.3); }
@@ -135,7 +142,7 @@
       <div class="box"><div class="lbl">Tijd</div><div class="val tijd" id="tijdVal">60</div></div>
     </div>
     <div class="som-bar" id="somBar">—</div>
-    <div class="sky" id="sky"></div>
+    <div class="sky" id="sky"><div class="feedback" id="feedback"></div></div>
   </div>
 </main>
 
@@ -194,16 +201,25 @@
       el.textContent = o.tekst;
       var x = i * vak + vak/2 - 31 + (Math.random()*vak*0.3 - vak*0.15);
       x = Math.max(4, Math.min(W - 66, x));
-      var y = H + 20 + Math.random()*120;      // gestaffeld onderin starten
+      var y = H * (0.5 + Math.random()*0.45);   // meteen zichtbaar, onderin het luchtruim
       el.style.left = x + 'px';
       el.style.top = '0px';
       el.style.transform = 'translateY(' + y + 'px)';
-      var speed = 34 + Math.random()*14 + (groep-4)*3;   // px per seconde
+      var speed = 14 + Math.random()*6 + (groep-4)*2;   // px per seconde (rustig tempo)
       var bal = { el: el, y: y, speed: speed, goed: o.goed, klaar: false };
       el.onclick = function(){ knal(bal); };
       sky.appendChild(el);
       ballonnen.push(bal);
     });
+  }
+
+  var fbEl = document.getElementById('feedback');
+  var fbTimer = null;
+  function toonFeedback(soort, tekst){
+    fbEl.textContent = tekst;
+    fbEl.className = 'feedback show ' + soort;
+    clearTimeout(fbTimer);
+    fbTimer = setTimeout(function(){ fbEl.className = 'feedback ' + soort; }, 800);
   }
 
   function knal(bal){
@@ -213,10 +229,15 @@
     if (bal.goed){
       score++;
       document.getElementById('scoreVal').textContent = score;
-      setTimeout(ronde, 180);
+      toonFeedback('goed', 'Goed! +1');
+      setTimeout(ronde, 280);
     } else {
       tijd = Math.max(0, tijd - 3);          // straftijd
       document.getElementById('tijdVal').textContent = tijd;
+      toonFeedback('fout', 'Fout! −3 sec');
+      var bar = document.getElementById('somBar');
+      bar.classList.add('shake');
+      setTimeout(function(){ bar.classList.remove('shake'); }, 320);
     }
   }
 

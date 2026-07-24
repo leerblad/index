@@ -76,17 +76,8 @@
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
 }
-[data-theme="dark"] .logo-text {
-  font-family: var(--font-display);
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  background: var(--acc-grad);
-  -webkit-background-clip: text;
-  background-clip: text;
-  filter: drop-shadow(0 0 14px rgba(77, 169, 255, 0.35));
-}
-[data-theme="dark"] .logo-tagline { color: var(--acc-text); opacity: 0.85; }
-[data-theme="dark"] .logo-tagline-line { background: var(--acc-grad); opacity: 0.5; }
+/* Logo bewust NIET aangepast in donker: exact gelijk aan de lichte weergave
+   (zelfde font, dikte, letterafstand en kleurverloop). */
 
 [data-theme="dark"] .nav-btn { color: var(--text-2); font-family: var(--font-display); font-weight: 400; }
 [data-theme="dark"] .nav-btn:hover,
@@ -272,14 +263,15 @@
 [data-theme="dark"] .card-front { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45); }
 [data-theme="dark"] .card-wrap.matched .card-front { box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85), 0 0 18px rgba(77, 169, 255, 0.4); }
 
-/* ── Footer ── */
+/* ── Footer (zelfde maten als de lichte variant in role.js; alleen kleur/rand verschillen) ── */
 [data-theme="dark"] footer {
   background: transparent !important;
   border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
   color: var(--text-soon) !important;
-  text-align: center;
-  padding: 1.1rem 0;
-  font-size: 12px;
+  text-align: center !important;
+  padding: 1.15rem 0 !important;
+  margin: 0 !important;
+  font-size: 12px !important;
 }
 
 /* ── Focus & scrollbar ── */

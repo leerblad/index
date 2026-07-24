@@ -354,5 +354,28 @@
     return out;
   }
 
-  global.Redactiesommen = { genereer: genereer, reeks: reeks };
+  /* Eenheid van een som afleiden uit de opmaak (bijv. "€", "km", "" voor kaal getal) */
+  function eenheidVan(s) { return s.format(0).replace(/[0-9.,\s]/g, ''); }
+
+  /* Reeks sommen met dezelfde eenheid — zo zijn de antwoorden niet te raden aan de eenheid.
+     Handig voor 'Trek de lijn'. */
+  function reeksZelfdeEenheid(groep, aantal) {
+    var buckets = {};
+    for (var i = 0; i < aantal * 30; i++) {
+      var s = genereer(groep);
+      var k = eenheidVan(s);
+      if (!buckets[k]) buckets[k] = [];
+      var at = s.format(s.antwoord);
+      var dubbel = buckets[k].some(function (x) { return x.format(x.antwoord) === at || x.vraag === s.vraag; });
+      if (!dubbel) buckets[k].push(s);
+    }
+    var haalbaar = Object.keys(buckets).filter(function (k) { return buckets[k].length >= aantal; });
+    if (!haalbaar.length) return reeks(groep, aantal); // terugval: gemengd
+    var groepje = buckets[haalbaar[Math.floor(Math.random() * haalbaar.length)]];
+    // schud en neem er 'aantal'
+    for (var j = groepje.length - 1; j > 0; j--) { var m = Math.floor(Math.random() * (j + 1)); var t = groepje[j]; groepje[j] = groepje[m]; groepje[m] = t; }
+    return groepje.slice(0, aantal);
+  }
+
+  global.Redactiesommen = { genereer: genereer, reeks: reeks, reeksZelfdeEenheid: reeksZelfdeEenheid };
 })(typeof window !== 'undefined' ? window : this);

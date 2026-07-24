@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script>(function(){try{var r=sessionStorage.getItem('leerblad-role');document.documentElement.setAttribute('data-theme',r==='leerling'?'dark':'light');if(r)document.documentElement.setAttribute('data-role',r);}catch(e){}})();</script>
-  <title>Leerblad – Verhaalspellen</title>
+  <title>Leerblad – Werkwoordspellen</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -76,9 +76,9 @@
       <div class="logo-tagline-row"><div class="logo-tagline-line"></div><div class="logo-tagline">Werkbladen op maat</div><div class="logo-tagline-line"></div></div>
     </a>
     <nav>
-      <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
+      <a class="nav-btn active" href="werkwoordspelling.html">Werkwoordspelling</a>
       <div class="nav-dropdown">
-        <a class="nav-btn active" href="rekenindex.html">Rekenen</a>
+        <a class="nav-btn" href="rekenindex.html">Rekenen</a>
         <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
           <a class="nav-dropdown-item" href="tafelsommen.html">Tafelsommen</a>
           <a class="nav-dropdown-item" href="deeltafels.html">Deeltafels</a>
@@ -95,29 +95,29 @@
 
   <!-- ══════ LEERLING: speelbare spellen ══════ -->
   <div data-role-view="leerling">
-    <h1 class="section-title">Verhaalspellen</h1>
-    <p class="section-sub">Los echte verhaalsommen op met een spel. Kies een spel om te beginnen.</p>
+    <h1 class="section-title">Werkwoordspellen</h1>
+    <p class="section-sub">Oefen de werkwoordspelling met een spel. Kies een spel om te beginnen.</p>
     <div class="modules-label">Beschikbare spellen</div>
     <div class="modules-grid">
 
-      <a class="module-card active" href="verhaalpad.html">
+      <a class="module-card active" href="wwpad.html">
         <div class="module-icon">🏎️</div>
-        <div class="module-title">Verhaalpad</div>
-        <div class="module-desc">Race over het pad naar de finish. Kies bij elke stap het juiste antwoord om verder te rijden.</div>
+        <div class="module-title">Woordpad</div>
+        <div class="module-desc">Race over het pad naar de finish. Kies bij elke stap de juiste spelling om verder te rijden.</div>
         <span class="module-tag">Beschikbaar</span>
       </a>
 
-      <a class="module-card active" href="verhaallijn.html">
+      <a class="module-card active" href="wwlijn.html">
         <div class="module-icon">✏️</div>
         <div class="module-title">Trek de lijn</div>
-        <div class="module-desc">Verbind elke verhaalsom met het juiste antwoord door een lijn te trekken.</div>
+        <div class="module-desc">Verbind elke zin met het juist gespelde werkwoord door een lijn te trekken.</div>
         <span class="module-tag">Beschikbaar</span>
       </a>
 
-      <a class="module-card active" href="verhaalballon.html">
+      <a class="module-card active" href="wwballon.html">
         <div class="module-icon">🎈</div>
-        <div class="module-title">Antwoordballon</div>
-        <div class="module-desc">Knal de ballon met het juiste antwoord voordat de tijd om is. Hoeveel haal je er?</div>
+        <div class="module-title">Woordballon</div>
+        <div class="module-desc">Knal de ballon met de juiste spelling voordat de tijd om is. Hoeveel haal je er?</div>
         <span class="module-tag">Beschikbaar</span>
       </a>
 
@@ -126,30 +126,30 @@
 
   <!-- ══════ LEERKRACHT: uitleg ══════ -->
   <div data-role-view="leerkracht" hidden>
-    <h1 class="section-title">Redactiesommen</h1>
-    <p class="section-sub">Uitleg over de redactiesommen-spellen (voor de leerling: <em>Verhaalspellen</em>).</p>
-    <p class="uitleg-intro">Bij deze spellen oefenen leerlingen met echte redactiesommen (verhaalsommen). De leerling kiest eerst de eigen groep (4 t/m 8); de sommen lopen automatisch op in moeilijkheid — van optellen en aftrekken met geld tot procenten, verhoudingen en meerstapssommen. Elk spel verpakt de sommen in een ander spelelement, zodat oefenen leuk blijft.</p>
+    <h1 class="section-title">Werkwoordspellen</h1>
+    <p class="section-sub">Uitleg over de werkwoordspelling-spellen voor je leerlingen.</p>
+    <p class="uitleg-intro">Bij de werkwoordspellen oefenen leerlingen de werkwoordspelling met dezelfde zinnen als de werkbladgenerator. De leerling kiest eerst de eigen groep (5 t/m 8); de zinnen lopen automatisch op in moeilijkheid — van de tegenwoordige tijd tot voltooid deelwoorden en bijvoeglijk gebruikte deelwoorden. Bij elke zin krijgt de leerling het juiste woord tussen plausibele foute spellingen (bijvoorbeeld <em>word / wordt / worden</em>).</p>
 
     <div class="uitleg-grid">
       <div class="uitleg-card">
-        <div class="u-head"><span class="u-title">🏎️ Verhaalpad</span></div>
-        <div class="u-desc">De leerling racet over een pad naar de finish. Bij elke halte verschijnt een verhaalsom en kiest de leerling uit drie antwoorden het juiste om verder te komen.</div>
-        <div class="u-tip">Didactisch: zorgvuldig lezen en stap-voor-stap oplossen; een fout kost een leven, dus nauwkeurigheid loont.</div>
+        <div class="u-head"><span class="u-title">🏎️ Woordpad</span></div>
+        <div class="u-desc">De leerling racet over een pad naar de finish. Bij elke halte verschijnt een zin met een gat en kiest de leerling uit drie spellingen de juiste om verder te komen.</div>
+        <div class="u-tip">Didactisch: bewust de spellingregel toepassen; een fout kost een leven, dus nauwkeurigheid loont.</div>
       </div>
       <div class="uitleg-card">
         <div class="u-head"><span class="u-title">✏️ Trek de lijn</span></div>
-        <div class="u-desc">Vier verhaalsommen en vier antwoorden staan door elkaar. De leerling verbindt elke som met het juiste antwoord door een lijn te trekken.</div>
-        <div class="u-tip">Didactisch: overzicht houden en meerdere sommen vergelijken; goed voor het schatten van uitkomsten.</div>
+        <div class="u-desc">Vier zinnen en vier werkwoorden staan door elkaar. De leerling verbindt elke zin met het juist gespelde werkwoord door een lijn te trekken.</div>
+        <div class="u-tip">Didactisch: overzicht houden en de vorm per zin bepalen; goed voor het herkennen van tijd en persoon.</div>
       </div>
       <div class="uitleg-card">
-        <div class="u-head"><span class="u-title">🎈 Antwoordballon</span></div>
-        <div class="u-desc">Er verschijnt een verhaalsom; de juiste uitkomst zweeft tussen de foute antwoorden in ballonnen. De leerling knalt de juiste ballon voor de tijd om is.</div>
-        <div class="u-tip">Didactisch: vlot hoofdrekenen onder lichte tijdsdruk; goed voor automatiseren.</div>
+        <div class="u-head"><span class="u-title">🎈 Woordballon</span></div>
+        <div class="u-desc">Er verschijnt een zin; de juiste spelling zweeft tussen de foute vormen in ballonnen. De leerling knalt de juiste ballon voor de tijd om is.</div>
+        <div class="u-tip">Didactisch: vlot de juiste vorm herkennen onder lichte tijdsdruk; goed voor automatiseren.</div>
       </div>
     </div>
 
     <div class="uitleg-note">
-      <strong>Hoe spelen leerlingen deze spellen?</strong> De verhaalspellen staan in de leerling-weergave onder <em>Rekenen → Verhaalspellen</em>. Laat de leerling rechtsboven (onder het logo) op <em>Leerling</em> klikken, of open Leerblad op de tablets en kies bij het startscherm voor <em>Ik ben leerling</em>.
+      <strong>Hoe spelen leerlingen deze spellen?</strong> De werkwoordspellen staan in de leerling-weergave onder <em>Werkwoordspelling</em>. Laat de leerling rechtsboven (onder het logo) op <em>Leerling</em> klikken, of open Leerblad op de tablets en kies bij het startscherm voor <em>Ik ben leerling</em>.
     </div>
   </div>
 
