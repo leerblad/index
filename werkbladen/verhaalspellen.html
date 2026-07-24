@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){try{var r=sessionStorage.getItem('leerblad-role');document.documentElement.setAttribute('data-theme',r==='leerling'?'dark':'light');if(r)document.documentElement.setAttribute('data-role',r);}catch(e){}})();</script>
+  <title>Leerblad – Verhaalspellen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f8f8f8; color: #1a1a1a; min-height: 100vh; }
+
+    .topbar { background: #fff; border-bottom: 0.5px solid #e5e5e5; position: sticky; top: 0; z-index: 100; }
+    .topbar-inner { max-width: 1280px; margin: 0 auto; padding: 0 160px; display: flex; align-items: center; justify-content: space-between; height: 84px; gap: 1rem; }
+    .logo-link { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; flex-shrink: 0; }
+    .logo-text { font-size: 40px; font-weight: 200; letter-spacing: 1.5px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.1; }
+    .logo-tagline-row { display: flex; align-items: center; gap: 7px; }
+    .logo-tagline-line { height: 1px; width: 36px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); opacity: 0.4; }
+    .logo-tagline { font-size: 8.5px; letter-spacing: 3px; color: #2A7FD4; font-weight: 400; text-transform: uppercase; }
+    nav { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+    .nav-btn { font-size: 16px; font-weight: 400; color: #888; border: none; background: none; padding: 10px 20px; border-radius: 24px; cursor: pointer; transition: background 0.18s, color 0.18s; white-space: nowrap; text-decoration: none; display: inline-flex; align-items: center; }
+    .nav-btn:hover, .nav-dropdown:hover > .nav-btn { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
+    .nav-btn.active { background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
+    .nav-btn.active:hover { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
+    .nav-btn.soon { color: #ccc; cursor: default; pointer-events: none; }
+    .tag { font-size: 9px; background: rgba(255,255,255,0.25); color: inherit; padding: 2px 6px; border-radius: 10px; margin-left: 4px; }
+    .nav-btn:not(:hover) .tag { background: #f0f0f0; color: #bbb; }
+    .nav-dropdown { position: relative; display: inline-flex; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; padding-top: 8px; min-width: 200px; z-index: 200; flex-direction: column; }
+    .nav-dropdown-menu-inner { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 12px; padding: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 2px; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: flex; }
+    .nav-dropdown-item { font-size: 14px; color: #555; padding: 9px 14px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: background 0.12s, color 0.12s; white-space: nowrap; }
+    .nav-dropdown-item:hover { background: #e8f4fd; color: #2A7FD4; }
+    .nav-dropdown-item.soon { color: #ccc; pointer-events: none; }
+    .nav-dropdown-item.soon .tag { background: #f5f5f5; color: #ccc; }
+
+    .main { max-width: 1280px; margin: 0 auto; padding: 2.5rem 160px 4rem; }
+    .section-title { font-size: 28px; font-weight: 300; color: #1a1a1a; margin-bottom: 4px; }
+    .section-sub { font-size: 13px; color: #999; margin-bottom: 2.5rem; }
+    .modules-label { font-size: 11px; text-transform: uppercase; letter-spacing: 2.5px; color: #bbb; font-weight: 500; margin-bottom: 1rem; }
+    .modules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+
+    .module-card { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 16px; padding: 1.5rem 1.5rem 1.25rem; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 10px; transition: box-shadow 0.18s, border-color 0.18s, transform 0.18s; }
+    .module-card.active:hover { box-shadow: 0 8px 28px rgba(42,127,212,0.12); border-color: #2A7FD4; transform: translateY(-2px); }
+    .module-card.soon { opacity: 0.45; cursor: default; pointer-events: none; }
+    .module-icon { font-size: 32px; line-height: 1; }
+    .module-title { font-size: 17px; font-weight: 500; color: #1a1a1a; }
+    .module-desc { font-size: 13px; color: #888; line-height: 1.55; flex: 1; }
+    .module-tag { font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; padding: 3px 9px; border-radius: 20px; background: #e8f4fd; color: #2A7FD4; align-self: flex-start; }
+    .module-card.soon .module-tag { background: #f5f5f5; color: #bbb; }
+
+    /* Leerkracht-uitleg */
+    .uitleg-intro { font-size: 14px; color: #555; line-height: 1.75; max-width: 700px; margin-bottom: 2.5rem; }
+    .uitleg-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; margin-bottom: 2.5rem; }
+    .uitleg-card { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 16px; padding: 1.5rem 1.6rem; display: flex; flex-direction: column; gap: 8px; }
+    .uitleg-card .u-head { display: flex; align-items: center; gap: 12px; }
+    .uitleg-card .u-title { font-size: 17px; font-weight: 600; color: #1a1a1a; }
+    .uitleg-card .u-desc { font-size: 13px; color: #777; line-height: 1.6; }
+    .uitleg-card .u-tip { font-size: 12.5px; color: #2DBF8E; line-height: 1.55; background: #eafaf4; border-radius: 8px; padding: 8px 12px; margin-top: 4px; }
+    .uitleg-note { font-size: 13px; color: #888; line-height: 1.7; background: #f8f8f8; border: 0.5px solid #eee; border-radius: 12px; padding: 1rem 1.25rem; max-width: 700px; }
+    .uitleg-note strong { color: #1a1a1a; }
+
+    @media (max-width: 1100px) { .topbar-inner, .main { padding-left: 2rem; padding-right: 2rem; } }
+    @media (max-width: 600px) { .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; } nav { gap: 2px; } .nav-btn { font-size: 12px; padding: 5px 10px; } .main { padding: 1.5rem 1rem 3rem; } }
+  </style>
+  <link rel="stylesheet" href="../assets/theme.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-link" href="../index.html">
+      <span class="logo-text">Leerblad</span>
+      <div class="logo-tagline-row"><div class="logo-tagline-line"></div><div class="logo-tagline">Werkbladen op maat</div><div class="logo-tagline-line"></div></div>
+    </a>
+    <nav>
+      <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
+      <div class="nav-dropdown">
+        <a class="nav-btn active" href="rekenindex.html">Rekenen</a>
+        <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
+          <a class="nav-dropdown-item" href="tafelsommen.html">Tafelsommen</a>
+          <a class="nav-dropdown-item" href="deeltafels.html">Deeltafels</a>
+          <a class="nav-dropdown-item" href="tafelspellen.html">Tafelspellen</a>
+          <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+        </div></div>
+      </div>
+      <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
+      <span class="nav-btn soon">Werkboekjes<span class="tag">binnenkort</span></span>
+    </nav>
+  </div>
+</header>
+<main class="main">
+
+  <!-- ══════ LEERLING: speelbare spellen ══════ -->
+  <div data-role-view="leerling">
+    <h1 class="section-title">Verhaalspellen</h1>
+    <p class="section-sub">Los echte verhaalsommen op met een spel. Kies een spel om te beginnen.</p>
+    <div class="modules-label">Beschikbare spellen</div>
+    <div class="modules-grid">
+
+      <a class="module-card active" href="verhaalpad.html">
+        <div class="module-icon">🚶</div>
+        <div class="module-title">Verhaalpad</div>
+        <div class="module-desc">Loop met het mannetje over het pad. Kies bij elke stap het juiste antwoord en bereik de finish.</div>
+        <span class="module-tag">Beschikbaar</span>
+      </a>
+
+      <a class="module-card active" href="verhaallijn.html">
+        <div class="module-icon">✏️</div>
+        <div class="module-title">Trek de lijn</div>
+        <div class="module-desc">Verbind elke verhaalsom met het juiste antwoord door een lijn te trekken.</div>
+        <span class="module-tag">Beschikbaar</span>
+      </a>
+
+      <a class="module-card active" href="verhaalballon.html">
+        <div class="module-icon">🎈</div>
+        <div class="module-title">Antwoordballon</div>
+        <div class="module-desc">Knal de ballon met het juiste antwoord voordat de tijd om is. Hoeveel haal je er?</div>
+        <span class="module-tag">Beschikbaar</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ══════ LEERKRACHT: uitleg ══════ -->
+  <div data-role-view="leerkracht" hidden>
+    <h1 class="section-title">Verhaalspellen</h1>
+    <p class="section-sub">Uitleg over de verhaalspellen voor je leerlingen.</p>
+    <p class="uitleg-intro">Bij de verhaalspellen oefenen leerlingen met echte redactiesommen (verhaalsommen). De leerling kiest eerst de eigen groep (4 t/m 8); de sommen lopen automatisch op in moeilijkheid — van optellen en aftrekken met geld tot procenten, verhoudingen en meerstapssommen. Elk spel verpakt de sommen in een ander spelelement, zodat oefenen leuk blijft.</p>
+
+    <div class="uitleg-grid">
+      <div class="uitleg-card">
+        <div class="u-head"><span class="u-title">🚶 Verhaalpad</span></div>
+        <div class="u-desc">De leerling loopt met een figuurtje over een pad. Bij elke halte verschijnt een verhaalsom en kiest de leerling uit drie deuren het juiste antwoord om verder te komen naar de finish.</div>
+        <div class="u-tip">Didactisch: zorgvuldig lezen en stap-voor-stap oplossen; een fout kost een leven, dus nauwkeurigheid loont.</div>
+      </div>
+      <div class="uitleg-card">
+        <div class="u-head"><span class="u-title">✏️ Trek de lijn</span></div>
+        <div class="u-desc">Vier verhaalsommen en vier antwoorden staan door elkaar. De leerling verbindt elke som met het juiste antwoord door een lijn te trekken.</div>
+        <div class="u-tip">Didactisch: overzicht houden en meerdere sommen vergelijken; goed voor het schatten van uitkomsten.</div>
+      </div>
+      <div class="uitleg-card">
+        <div class="u-head"><span class="u-title">🎈 Antwoordballon</span></div>
+        <div class="u-desc">Er verschijnt een verhaalsom; de juiste uitkomst zweeft tussen de foute antwoorden in ballonnen. De leerling knalt de juiste ballon voor de tijd om is.</div>
+        <div class="u-tip">Didactisch: vlot hoofdrekenen onder lichte tijdsdruk; goed voor automatiseren.</div>
+      </div>
+    </div>
+
+    <div class="uitleg-note">
+      <strong>Hoe spelen leerlingen deze spellen?</strong> De verhaalspellen staan in de leerling-weergave onder <em>Rekenen → Verhaalspellen</em>. Laat de leerling rechtsboven (onder het logo) op <em>Leerling</em> klikken, of open Leerblad op de tablets en kies bij het startscherm voor <em>Ik ben leerling</em>.
+    </div>
+  </div>
+
+</main>
+<footer>www.leerblad.nl</footer>
+
+<script src="../assets/role.js"></script>
+</body>
+</html>
