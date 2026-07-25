@@ -626,7 +626,7 @@
       doc.setFontSize(11);
       doc.setTextColor(30);
       doc.setFont('helvetica', 'bold');
-      doc.text(titelTekst + ' — Antwoordblad', ml, mt + 5);
+      doc.text(titelTekst + ' - Antwoordblad', ml, mt + 5);
       doc.setDrawColor(200);
       doc.line(ml, mt + 8, pw - mr, mt + 8);
     }
@@ -658,7 +658,7 @@
         /* Lijn de getallen op: max 2 cijfers per getal */
         const a2 = String(s.a).padStart(2, ' '); /* figure space */
         const b2 = String(s.b).padStart(2, ' ');
-        const somTekst = `${a2} × ${b2} = `;
+        const somTekst = `${a2} x ${b2} = `;
 
         doc.setTextColor(30);
         if (isAntwoord) {
@@ -689,7 +689,7 @@
     doc.setFontSize(7);
     doc.setTextColor(160);
     const midTekst = totaalPaginas > 1
-      ? `Print een werkblad of oefen online op leerblad.nl  ·  pagina ${paginaNr} van ${totaalPaginas}`
+      ? `Print een werkblad of oefen online op leerblad.nl  -  pagina ${paginaNr} van ${totaalPaginas}`
       : 'Print een werkblad of oefen online op leerblad.nl';
     doc.text(midTekst, pw / 2, footerY - 0.5, { align: 'center' });
 
@@ -710,7 +710,7 @@
     const gekozen = [...document.querySelectorAll('#tafelGrid input:checked')].map(c => +c.value);
     const titelTekst = gekozen.length === 11
       ? 'Tafelsommen 0 t/m 10'
-      : 'Tafelsommen — tafel van ' + gekozen.join(', ');
+      : 'Tafelsommen - tafel van ' + gekozen.join(', ');
 
     const maxPerPagina = 100;
     const paginas = [];
