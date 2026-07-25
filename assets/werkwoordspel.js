@@ -68,8 +68,29 @@
     return shuffle(alle);
   }
 
+  /* In de spellen staat de tijd er niet bij, dus de zin moet de tijd zelf verraden.
+     - Tegenwoordige tijd en deelwoorden (met heb/is): altijd duidelijk.
+     - Verleden-tijd persoonsvorm: alleen tonen als er een signaalwoord in staat
+       (gisteren, ... geleden, ...). Zonder signaal is tegenwoordige tijd 'ook goed'. */
+  var SIGNAALWOORDEN = ['gisteren', 'gisteravond', 'gistermiddag', 'gistermorgen', 'eergisteren',
+    'vroeger', 'toen', 'laatst', 'geleden', 'destijds', 'afgelopen', 'vorige week', 'vorige maand',
+    'vorig jaar', 'vorige zomer', 'vorige winter', 'vorige keer', 'verleden week', 'jaren geleden'];
+  var PERSOONSVORMEN = { 'ik-vorm': 1, 'jij-vorm': 1, 'hij-vorm': 1, 'wij-vorm': 1 };
+
+  function tijdDuidelijk(z) {
+    if (PERSOONSVORMEN[z.vorm] && z.tijd === 'verleden tijd') {
+      var zin = z.zin.toLowerCase();
+      for (var i = 0; i < SIGNAALWOORDEN.length; i++) {
+        if (zin.indexOf(SIGNAALWOORDEN[i]) !== -1) return true;
+      }
+      return false;
+    }
+    return true;
+  }
+
   function kiesZin(groep) {
-    var pool = DATA.filter(function (z) { return z.groep === groep; });
+    var pool = DATA.filter(function (z) { return z.groep === groep && tijdDuidelijk(z); });
+    if (!pool.length) pool = DATA.filter(tijdDuidelijk);
     if (!pool.length) pool = DATA;
     return pick(pool);
   }
@@ -101,11 +122,38 @@
     return out;
   }
 
+  /* Reeks van ÉÉN werkwoord in verschillende vormen (voor 'Trek de lijn').
+     Zo moet de leerling echt op de spelling letten i.p.v. het werkwoord herkennen. */
+  function reeksZelfdeWerkwoord(groep, aantal) {
+    aantal = aantal || 4;
+    var pool = DATA.filter(function (z) { return z.groep === groep && tijdDuidelijk(z); });
+    var perWw = {};
+    pool.forEach(function (z) {
+      var i = infinitiefUit(z.zin);
+      if (!i) return;
+      if (!perWw[i]) perWw[i] = {};
+      if (!perWw[i][z.antwoord]) perWw[i][z.antwoord] = z;   // één zin per unieke vorm
+    });
+    var kandidaten = Object.keys(perWw).filter(function (i) {
+      return Object.keys(perWw[i]).length >= aantal;
+    });
+    if (!kandidaten.length) return reeks(groep, aantal);       // terugval: gemengd
+
+    var ww = kandidaten[Math.floor(Math.random() * kandidaten.length)];
+    var zinnen = Object.keys(perWw[ww]).map(function (a) { return perWw[ww][a]; });
+    shuffle(zinnen);
+    return zinnen.slice(0, aantal).map(function (z) {
+      return { zin: z.zin, antwoord: z.antwoord, infinitief: ww };
+    });
+  }
+
   global.Werkwoordspel = {
     laad: laad,
     genereer: genereer,
     reeks: reeks,
+    reeksZelfdeWerkwoord: reeksZelfdeWerkwoord,
     klaar: function () { return !!DATA; },
-    _afleiders: afleiders  // voor tests
+    _afleiders: afleiders,      // voor tests
+    _tijdDuidelijk: tijdDuidelijk
   };
 })(typeof window !== 'undefined' ? window : this);

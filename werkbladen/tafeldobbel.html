@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){try{var r=sessionStorage.getItem('leerblad-role');document.documentElement.setAttribute('data-theme',r==='leerling'?'dark':'light');if(r)document.documentElement.setAttribute('data-role',r);}catch(e){}})();</script>
+  <title>Leerblad – Tafeldobbel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/tafelspel.css" />
+  <link rel="stylesheet" href="../assets/theme.css" />
+  <style>
+    .dobbel-wrap { text-align: center; padding: 1.5rem 0 0.5rem; }
+    .dice { font-size: 84px; line-height: 1; color: #2A7FD4; display: inline-block; }
+    .dice.rol { animation: tuimel 0.6s; }
+    @keyframes tuimel { 0%{transform:rotate(0) scale(1)} 50%{transform:rotate(180deg) scale(1.15)} 100%{transform:rotate(360deg) scale(1)} }
+    .hearts { font-size: 20px; letter-spacing: 2px; }
+    [data-theme="dark"] .dice { color: #7cc4ff; }
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-link" href="../index.html">
+      <span class="logo-text">Leerblad</span>
+      <div class="logo-tagline-row"><div class="logo-tagline-line"></div><div class="logo-tagline">Werkbladen op maat</div><div class="logo-tagline-line"></div></div>
+    </a>
+    <nav>
+      <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
+      <div class="nav-dropdown">
+        <a class="nav-btn active" href="rekenindex.html">Rekenen</a>
+        <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
+          <a class="nav-dropdown-item" href="tafelsommen.html">Tafelsommen</a>
+          <a class="nav-dropdown-item" href="deeltafels.html">Deeltafels</a>
+          <a class="nav-dropdown-item" href="tafelspellen.html">Tafelspellen</a>
+          <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+        </div></div>
+      </div>
+      <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
+      <span class="nav-btn soon">Werkboekjes<span class="tag">binnenkort</span></span>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+  <h1 class="page-title">Tafeldobbel</h1>
+  <p class="page-sub">Gooi de dobbelsteen en los de som op voordat je beurt voorbij is!</p>
+
+  <div class="setup" id="setup">
+    <h2>Welke tafels wil je oefenen?</h2>
+    <p>De dobbelsteen kiest het eerste getal, jij de tafel.</p>
+    <div class="chips" id="tafelChips"></div>
+    <button class="start-btn" id="startBtn" disabled>Start het spel</button>
+  </div>
+
+  <div class="game" id="game" style="display:none">
+    <div class="hud">
+      <div class="hearts" id="hearts">❤️❤️❤️</div>
+      <div class="box"><div class="lbl">Score</div><div class="val accent" id="scoreVal">0</div></div>
+    </div>
+
+    <div class="dobbel-wrap">
+      <div class="dice" id="dice">🎲</div>
+      <div><button class="start-btn" id="rollBtn" style="margin-top:8px">Gooi de dobbelsteen</button></div>
+    </div>
+
+    <div id="somBlok" style="display:none">
+      <div class="som-bar"><span class="som-vraag" id="somVraag">— × — = ?</span></div>
+      <div class="timebar-wrap"><div class="timebar" id="timebar"></div></div>
+      <div class="answers" id="answers"></div>
+    </div>
+  </div>
+</main>
+
+<footer>www.leerblad.nl</footer>
+
+<div class="overlay" id="overlay">
+  <div class="over-card">
+    <div class="over-emoji">🎲</div>
+    <h2>Game over!</h2>
+    <p>Je gooide en rekende <b id="eindScore">0</b> sommen goed. Top!</p>
+    <button class="start-btn" id="overBtn">Nog een keer</button>
+  </div>
+</div>
+
+<script>
+  var DFACES = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+  var RONDE_MS = 9000;
+  var gekozen = new Set(), score = 0, levens = 3, huidige = null, bezig = false;
+  var rafT = null, rondeStart = 0;
+
+  var chips = document.getElementById('tafelChips');
+  var alle = document.createElement('span'); alle.className='chip'; alle.textContent='Alle';
+  alle.onclick = function(){ var aan=gekozen.size===10; gekozen.clear();
+    Array.prototype.forEach.call(chips.querySelectorAll('.chip'), function(c){ c.classList.remove('active'); });
+    if(!aan){ for(var t=1;t<=10;t++) gekozen.add(t); Array.prototype.forEach.call(chips.querySelectorAll('[data-t]'), function(c){ c.classList.add('active'); }); }
+    document.getElementById('startBtn').disabled = gekozen.size===0; };
+  for (var t=1;t<=10;t++){ (function(tafel){
+    var c=document.createElement('span'); c.className='chip'; c.textContent=tafel; c.setAttribute('data-t',tafel);
+    c.onclick=function(){ if(gekozen.has(tafel)){gekozen.delete(tafel);c.classList.remove('active');}else{gekozen.add(tafel);c.classList.add('active');} document.getElementById('startBtn').disabled=gekozen.size===0; };
+    chips.appendChild(c);
+  })(t); }
+  chips.appendChild(alle);
+
+  function shuffle(a){ for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var x=a[i];a[i]=a[j];a[j]=x; } return a; }
+
+  function gooi(){
+    if (!bezig) return;
+    document.getElementById('rollBtn').disabled = true;
+    document.getElementById('somBlok').style.display = 'none';
+    var dice = document.getElementById('dice');
+    dice.classList.remove('rol'); void dice.offsetWidth; dice.classList.add('rol');
+    var rolls = 0;
+    var iv = setInterval(function(){
+      dice.textContent = DFACES[Math.floor(Math.random()*6)];
+      if (++rolls > 8){ clearInterval(iv); klaarMetGooien(); }
+    }, 60);
+  }
+
+  function klaarMetGooien(){
+    var a = Math.floor(Math.random()*6) + 1;                 // dobbelsteen 1..6
+    document.getElementById('dice').textContent = DFACES[a-1];
+    var tafels = Array.from(gekozen);
+    var b = tafels[Math.floor(Math.random()*tafels.length)]; // gekozen tafel
+    huidige = a * b;
+    document.getElementById('somVraag').textContent = a + ' × ' + b + ' = ?';
+    var opties = new Set([huidige]);
+    while (opties.size < 4){ var d = huidige + (Math.floor(Math.random()*9)-4); if (d>=0 && d!==huidige) opties.add(d); }
+    var arr = shuffle(Array.from(opties));
+    var box = document.getElementById('answers'); box.innerHTML='';
+    arr.forEach(function(v){ var btn=document.createElement('button'); btn.className='answer'; btn.textContent=v; btn.onclick=function(){ kies(btn,v); }; box.appendChild(btn); });
+    document.getElementById('somBlok').style.display = 'block';
+    rondeStart = performance.now(); tickTijd();
+  }
+
+  function tickTijd(){
+    if (!bezig) return;
+    var frac = Math.max(0, 1 - (performance.now()-rondeStart)/RONDE_MS);
+    document.getElementById('timebar').style.width = (frac*100)+'%';
+    if (frac <= 0){ mis(); return; }
+    rafT = requestAnimationFrame(tickTijd);
+  }
+
+  function toonJuist(){ Array.prototype.forEach.call(document.querySelectorAll('.answer'), function(b){ b.classList.add('disabled'); if(+b.textContent===huidige) b.classList.add('goed'); }); }
+
+  function kies(btn, v){
+    if (!bezig) return; cancelAnimationFrame(rafT);
+    if (v === huidige){ btn.classList.add('goed'); score++; document.getElementById('scoreVal').textContent=score;
+      Array.prototype.forEach.call(document.querySelectorAll('.answer'), function(b){ b.classList.add('disabled'); });
+      setTimeout(volgende, 500);
+    } else { btn.classList.add('fout'); toonJuist(); verlies(800); }
+  }
+  function mis(){ toonJuist(); verlies(800); }
+
+  function verlies(delay){ cancelAnimationFrame(rafT); levens--;
+    document.getElementById('hearts').textContent = '❤️'.repeat(Math.max(0,levens)) + '🖤'.repeat(3-Math.max(0,levens));
+    if (levens<=0) setTimeout(eind, delay); else setTimeout(volgende, delay); }
+
+  function volgende(){ document.getElementById('somBlok').style.display='none'; document.getElementById('rollBtn').disabled=false; }
+
+  function start(){ score=0; levens=3; bezig=true;
+    document.getElementById('scoreVal').textContent='0'; document.getElementById('hearts').textContent='❤️❤️❤️';
+    document.getElementById('dice').textContent='🎲'; document.getElementById('somBlok').style.display='none'; document.getElementById('rollBtn').disabled=false;
+    document.getElementById('setup').style.display='none'; document.getElementById('game').style.display='block'; }
+  function eind(){ bezig=false; cancelAnimationFrame(rafT); document.getElementById('eindScore').textContent=score; document.getElementById('overlay').classList.add('on'); }
+
+  document.getElementById('startBtn').onclick = start;
+  document.getElementById('rollBtn').onclick = gooi;
+  document.getElementById('overBtn').onclick = function(){ document.getElementById('overlay').classList.remove('on'); document.getElementById('game').style.display='none'; document.getElementById('setup').style.display='block'; };
+</script>
+<script src="../assets/role.js"></script>
+</body>
+</html>

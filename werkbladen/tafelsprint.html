@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){try{var r=sessionStorage.getItem('leerblad-role');document.documentElement.setAttribute('data-theme',r==='leerling'?'dark':'light');if(r)document.documentElement.setAttribute('data-role',r);}catch(e){}})();</script>
+  <title>Leerblad – Tafelsprint</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/tafelspel.css" />
+  <link rel="stylesheet" href="../assets/theme.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-link" href="../index.html">
+      <span class="logo-text">Leerblad</span>
+      <div class="logo-tagline-row"><div class="logo-tagline-line"></div><div class="logo-tagline">Werkbladen op maat</div><div class="logo-tagline-line"></div></div>
+    </a>
+    <nav>
+      <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
+      <div class="nav-dropdown">
+        <a class="nav-btn active" href="rekenindex.html">Rekenen</a>
+        <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
+          <a class="nav-dropdown-item" href="tafelsommen.html">Tafelsommen</a>
+          <a class="nav-dropdown-item" href="deeltafels.html">Deeltafels</a>
+          <a class="nav-dropdown-item" href="tafelspellen.html">Tafelspellen</a>
+          <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+        </div></div>
+      </div>
+      <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
+      <span class="nav-btn soon">Werkboekjes<span class="tag">binnenkort</span></span>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+  <h1 class="page-title">Tafelsprint</h1>
+  <p class="page-sub">Beantwoord zoveel mogelijk sommen in 60 seconden. Klaar voor de sprint?</p>
+
+  <div class="setup" id="setup">
+    <h2>Welke tafels wil je oefenen?</h2>
+    <p>Kies één of meer tafels.</p>
+    <div class="chips" id="tafelChips"></div>
+    <button class="start-btn" id="startBtn" disabled>Start de sprint</button>
+  </div>
+
+  <div class="game" id="game" style="display:none">
+    <div class="hud">
+      <div class="box"><div class="lbl">Goed</div><div class="val" id="scoreVal">0</div></div>
+      <div class="box"><div class="lbl">Tijd</div><div class="val accent" id="tijdVal">60</div></div>
+    </div>
+    <div class="som-bar"><span class="som-vraag" id="somVraag">— × — = ?</span></div>
+    <div class="answers" id="answers"></div>
+    <div class="timebar-wrap"><div class="timebar" id="timebar"></div></div>
+  </div>
+</main>
+
+<footer>www.leerblad.nl</footer>
+
+<div class="overlay" id="overlay">
+  <div class="over-card">
+    <div class="over-emoji">⚡</div>
+    <h2>Tijd om!</h2>
+    <p>Je had <b id="eindScore">0</b> sommen goed. Goed gesprint!</p>
+    <button class="start-btn" id="overBtn">Nog een keer</button>
+  </div>
+</div>
+
+<script>
+  var TIJD = 60;
+  var gekozen = new Set(), score = 0, tijd = TIJD, huidige = null, tijdId = null, bezig = false;
+
+  /* Tafelkeuze */
+  var chips = document.getElementById('tafelChips');
+  var alle = document.createElement('span');
+  alle.className = 'chip'; alle.textContent = 'Alle';
+  alle.onclick = function(){
+    var alleAan = gekozen.size === 10;
+    gekozen.clear();
+    Array.prototype.forEach.call(chips.querySelectorAll('.chip'), function(c){ c.classList.remove('active'); });
+    if (!alleAan) { for (var t=1;t<=10;t++) gekozen.add(t); Array.prototype.forEach.call(chips.querySelectorAll('[data-t]'), function(c){ c.classList.add('active'); }); }
+    document.getElementById('startBtn').disabled = gekozen.size === 0;
+  };
+  for (var t=1;t<=10;t++){
+    (function(tafel){
+      var c = document.createElement('span');
+      c.className = 'chip'; c.textContent = tafel; c.setAttribute('data-t', tafel);
+      c.onclick = function(){
+        if (gekozen.has(tafel)) { gekozen.delete(tafel); c.classList.remove('active'); }
+        else { gekozen.add(tafel); c.classList.add('active'); }
+        document.getElementById('startBtn').disabled = gekozen.size === 0;
+      };
+      chips.appendChild(c);
+    })(t);
+  }
+  chips.appendChild(alle);
+
+  function shuffle(a){ for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var x=a[i];a[i]=a[j];a[j]=x; } return a; }
+
+  function nieuweSom(){
+    var tafels = Array.from(gekozen);
+    var a = tafels[Math.floor(Math.random()*tafels.length)];
+    var b = Math.floor(Math.random()*11);
+    var correct = a * b;
+    huidige = correct;
+    document.getElementById('somVraag').textContent = a + ' × ' + b + ' = ?';
+
+    var opties = new Set([correct]);
+    while (opties.size < 4){
+      var d = correct + (Math.floor(Math.random()*11) - 5);
+      if (d >= 0 && d !== correct) opties.add(d);
+    }
+    var arr = shuffle(Array.from(opties));
+    var box = document.getElementById('answers'); box.innerHTML = '';
+    arr.forEach(function(v){
+      var btn = document.createElement('button');
+      btn.className = 'answer'; btn.textContent = v;
+      btn.onclick = function(){ kies(btn, v); };
+      box.appendChild(btn);
+    });
+  }
+
+  function kies(btn, v){
+    if (!bezig) return;
+    if (v === huidige){
+      score++; document.getElementById('scoreVal').textContent = score;
+      nieuweSom();
+    } else {
+      btn.classList.add('fout');
+      Array.prototype.forEach.call(document.querySelectorAll('.answer'), function(b){ if (+b.textContent === huidige) b.classList.add('goed'); });
+      tijd = Math.max(0, tijd - 2);      // kleine straftijd
+      document.getElementById('tijdVal').textContent = tijd;
+      var box = document.getElementById('answers');
+      Array.prototype.forEach.call(box.children, function(b){ b.classList.add('disabled'); });
+      setTimeout(nieuweSom, 550);
+    }
+  }
+
+  function tik(){
+    tijd--;
+    document.getElementById('tijdVal').textContent = tijd;
+    document.getElementById('timebar').style.width = (tijd / TIJD * 100) + '%';
+    if (tijd <= 0) eind();
+  }
+
+  function start(){
+    score = 0; tijd = TIJD; bezig = true;
+    document.getElementById('scoreVal').textContent = '0';
+    document.getElementById('tijdVal').textContent = TIJD;
+    document.getElementById('timebar').style.width = '100%';
+    document.getElementById('setup').style.display = 'none';
+    document.getElementById('game').style.display = 'block';
+    nieuweSom();
+    clearInterval(tijdId); tijdId = setInterval(tik, 1000);
+  }
+
+  function eind(){
+    bezig = false; clearInterval(tijdId);
+    document.getElementById('eindScore').textContent = score;
+    document.getElementById('overlay').classList.add('on');
+  }
+
+  document.getElementById('startBtn').onclick = start;
+  document.getElementById('overBtn').onclick = function(){
+    document.getElementById('overlay').classList.remove('on');
+    document.getElementById('game').style.display = 'none';
+    document.getElementById('setup').style.display = 'block';
+  };
+</script>
+<script src="../assets/role.js"></script>
+</body>
+</html>

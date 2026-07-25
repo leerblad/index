@@ -66,7 +66,7 @@
     .balloon { position: absolute; width: 62px; height: 76px; border-radius: 50% 50% 48% 48%; display: flex; align-items: center; justify-content: center;
                font-size: 18px; font-weight: 800; color: #fff; cursor: pointer; will-change: transform; user-select: none;
                box-shadow: inset -6px -8px 0 rgba(0,0,0,0.12); }
-    .balloon::after { content: ''; position: absolute; bottom: -8px; left: 50%; width: 2px; height: 12px; background: rgba(0,0,0,0.25); transform: translateX(-50%); }
+    .balloon::after { content: none; }
     .balloon.pop { animation: pop 0.25s forwards; pointer-events: none; }
     @keyframes pop { to { transform: scale(1.6); opacity: 0; } }
 
@@ -127,11 +127,11 @@
 
 <main class="main">
   <h1 class="page-title">Antwoordballon</h1>
-  <p class="page-sub">Lees de verhaalsom en knal de ballon met het juiste antwoord. Hoeveel haal je in 60 seconden?</p>
+  <p class="page-sub">Lees de opdracht en knal de ballon met het juiste antwoord. Hoeveel haal je in 60 seconden?</p>
 
   <div class="setup" id="setup">
     <h2>In welke groep zit je?</h2>
-    <p>De verhaalsommen passen zich aan jouw groep aan.</p>
+    <p>De opdrachten passen zich aan jouw groep aan.</p>
     <div class="groep-chips" id="groepChips"></div>
     <button class="start-btn" id="startBtn" disabled>Start het spel</button>
   </div>
@@ -152,7 +152,7 @@
   <div class="over-card">
     <div class="over-emoji">🎈</div>
     <h2>Tijd om!</h2>
-    <p>Je hebt <b id="eindScore">0</b> verhaalsommen goed opgelost.</p>
+    <p>Je hebt <b id="eindScore">0</b> opdrachten goed opgelost.</p>
     <button class="start-btn" id="overBtn">Nog een keer</button>
   </div>
 </div>

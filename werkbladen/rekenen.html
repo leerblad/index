@@ -626,7 +626,7 @@
       doc.setFontSize(11);
       doc.setTextColor(30);
       doc.setFont('helvetica', 'bold');
-      doc.text(titelTekst + ' — Antwoordblad', ml, mt + 5);
+      doc.text(titelTekst + ' - Antwoordblad', ml, mt + 5);
       doc.setDrawColor(200);
       doc.line(ml, mt + 8, pw - mr, mt + 8);
     }
@@ -645,6 +645,26 @@
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(9.5);
+    doc.setTextColor(30);
+
+    /* Kolom-ankers: operator, '=' en antwoord staan recht onder elkaar.
+       Getallen worden rechts uitgelijnd (helvetica-cijfers zijn even breed). */
+    let maxA = 1, maxB = 1, maxAns = 1;
+    sommen.forEach(s => {
+      maxA   = Math.max(maxA,   String(s.a).length);
+      maxB   = Math.max(maxB,   String(s.b).length);
+      maxAns = Math.max(maxAns, String(s.a * s.b).length);
+    });
+    const dW  = doc.getTextWidth('0');
+    const opW = doc.getTextWidth('x');
+    const eqW = doc.getTextWidth('=');
+    const g   = 1.6;
+    const aX   = maxA * dW;
+    const opX  = aX + g;
+    const bX   = opX + opW + g + maxB * dW;
+    const eqX  = bX + g;
+    const ansX = eqX + eqW + g;
+    const lineLen = maxAns * dW + 2;
 
     for (let col = 0; col < colCount; col++) {
       for (let rij = 0; rij < sommenPerKolom; rij++) {
@@ -655,20 +675,15 @@
         const x = ml + col * colW;
         const y = startY + rij * rowH + groep * gapH;
 
-        /* Lijn de getallen op: max 2 cijfers per getal */
-        const a2 = String(s.a).padStart(2, ' '); /* figure space */
-        const b2 = String(s.b).padStart(2, ' ');
-        const somTekst = `${a2} × ${b2} = `;
-
-        doc.setTextColor(30);
+        doc.text(String(s.a), x + aX,  y, { align: 'right' });
+        doc.text('x',         x + opX, y);
+        doc.text(String(s.b), x + bX,  y, { align: 'right' });
+        doc.text('=',         x + eqX, y);
         if (isAntwoord) {
-          /* Antwoord in één tekst-string, zodat de volgorde altijd klopt */
-          doc.text(somTekst + (s.a * s.b), x, y);
+          doc.text(String(s.a * s.b), x + ansX, y);
         } else {
-          doc.text(somTekst, x, y);
-          const lineX = x + doc.getTextWidth(somTekst);
           doc.setDrawColor(180);
-          doc.line(lineX, y + 0.3, lineX + 10, y + 0.3);
+          doc.line(x + ansX, y + 0.3, x + ansX + lineLen, y + 0.3);
         }
       }
     }
@@ -689,7 +704,7 @@
     doc.setFontSize(7);
     doc.setTextColor(160);
     const midTekst = totaalPaginas > 1
-      ? `Print een werkblad of oefen online op leerblad.nl  ·  pagina ${paginaNr} van ${totaalPaginas}`
+      ? `Print een werkblad of oefen online op leerblad.nl  -  pagina ${paginaNr} van ${totaalPaginas}`
       : 'Print een werkblad of oefen online op leerblad.nl';
     doc.text(midTekst, pw / 2, footerY - 0.5, { align: 'center' });
 
@@ -710,7 +725,7 @@
     const gekozen = [...document.querySelectorAll('#tafelGrid input:checked')].map(c => +c.value);
     const titelTekst = gekozen.length === 11
       ? 'Tafelsommen 0 t/m 10'
-      : 'Tafelsommen — tafel van ' + gekozen.join(', ');
+      : 'Tafelsommen - tafel van ' + gekozen.join(', ');
 
     const maxPerPagina = 100;
     const paginas = [];

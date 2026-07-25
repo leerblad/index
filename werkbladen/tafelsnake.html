@@ -176,8 +176,9 @@
   let snake, dir, nextDir, goodFood, badFood;
   let goodColor, badColor;
   let score = 0, highScore = +localStorage.getItem('snake_hs') || 0;
-  let running = false, timer = null, tickMs = MS_START;
+  let running = false, tickMs = MS_START;
   let question = null;
+  let prevSnake = [], lastTick = 0, raf = null;   /* voor vloeiende beweging */
 
   function speedForScore(s) {
     const t = Math.min(s, 100) / 100;
@@ -235,12 +236,14 @@
     score   = 0;
     tickMs  = MS_START;
     running = true;
+    prevSnake = snake.map(s => ({ ...s }));
+    lastTick = performance.now();
     document.getElementById('scoreDisplay').textContent = '0';
     document.getElementById('hsDisplay').textContent    = highScore;
     document.getElementById('overlay').classList.add('hidden');
     newQuestion();
-    clearTimeout(timer);
-    timer = setTimeout(tick, tickMs);
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(loop);
   }
 
   /* ── Richting ── */
@@ -270,18 +273,19 @@
     Math.abs(dx) > Math.abs(dy) ? setDir(dx > 0 ? 1 : -1, 0) : setDir(0, dy > 0 ? 1 : -1);
   }, { passive: true });
 
-  /* ── Tick ── */
-  function tick() {
+  /* ── Eén stap in het raster (logica) ── */
+  function step() {
     dir = { ...nextDir };
     const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
 
-    if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) { gameOver('muur'); return; }
-    if (snake.some(s => s.x === head.x && s.y === head.y))             { gameOver('staart'); return; }
+    if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) { draw(1); gameOver('muur'); return; }
+    if (snake.some(s => s.x === head.x && s.y === head.y))             { draw(1); gameOver('staart'); return; }
 
     /* Controleer voedsel VOOR het toevoegen aan snake */
     const ateGood = head.x === goodFood.x && head.y === goodFood.y;
     const ateBad  = head.x === badFood.x  && head.y === badFood.y;
 
+    prevSnake = snake.map(s => ({ ...s }));   /* startpositie voor de interpolatie */
     snake.unshift(head);
 
     if (ateGood) {
@@ -293,23 +297,34 @@
         document.getElementById('hsDisplay').textContent = highScore;
       }
       tickMs = speedForScore(score);
-      draw();
       newQuestion();
     } else if (ateBad) {
-      /* Staart niet verwijderen zodat de slang zichtbaar blijft */
-      draw(); gameOver('fout'); return;
+      draw(1); gameOver('fout'); return;
     } else {
       snake.pop();
-      draw();
     }
+  }
 
-    timer = setTimeout(tick, tickMs);
+  /* ── Vloeiende lus: interpoleert tussen de rasterstappen ── */
+  function loop(now) {
+    if (!running) return;
+    let p = (now - lastTick) / tickMs;
+    let guard = 0;
+    while (p >= 1 && running && guard < 5) {
+      step();
+      lastTick += tickMs;
+      p = (now - lastTick) / tickMs;
+      guard++;
+    }
+    if (!running) return;               /* game over is al getekend */
+    draw(p < 0 ? 0 : (p > 1 ? 1 : p));
+    raf = requestAnimationFrame(loop);
   }
 
   /* ── Game over ── */
   function gameOver(reden) {
     running = false;
-    clearTimeout(timer);
+    cancelAnimationFrame(raf);
 
     ctx.fillStyle = 'rgba(255,23,68,0.2)';
     ctx.fillRect(0, 0, CELL * COLS, CELL * ROWS);
@@ -327,8 +342,9 @@
     overlay.classList.remove('hidden');
   }
 
-  /* ── Teken ── */
-  function draw() {
+  /* ── Teken (p = voortgang 0..1 tussen de rasterstappen) ── */
+  function draw(p) {
+    p = (p == null) ? 1 : p;
     ctx.fillStyle = '#0e1117';
     ctx.fillRect(0, 0, CELL * COLS, CELL * ROWS);
 
@@ -342,9 +358,13 @@
     drawFood(goodFood, goodColor, question.correct);
     drawFood(badFood,  badColor,  question.wrong);
 
-    /* Slang */
+    /* Slang — vloeiend geïnterpoleerd van vorige naar huidige positie */
     const len = snake.length;
     snake.forEach((seg, i) => {
+      const from = prevSnake[i] || seg;
+      const gx = (from.x + (seg.x - from.x) * p) * CELL;
+      const gy = (from.y + (seg.y - from.y) * p) * CELL;
+
       const t   = i / Math.max(len - 1, 1);
       const rv  = Math.round(42  + (26  - 42)  * t);
       const gv  = Math.round(127 + (144 - 127) * t);
@@ -353,7 +373,7 @@
       const rad = Math.max(3, CELL / (i === 0 ? 4 : 5));
 
       ctx.fillStyle = `rgb(${rv},${gv},${bv})`;
-      rr(seg.x*CELL + pad, seg.y*CELL + pad, CELL - pad*2, CELL - pad*2, rad);
+      rr(gx + pad, gy + pad, CELL - pad*2, CELL - pad*2, rad);
       ctx.fill();
 
       /* Ogen */
@@ -361,13 +381,13 @@
         ctx.fillStyle = '#fff';
         const er = Math.max(1.5, CELL * 0.1);
         if (dir.x !== 0) {
-          const ex = seg.x*CELL + CELL*(dir.x > 0 ? 0.72 : 0.28);
-          ctx.beginPath(); ctx.arc(ex, seg.y*CELL + CELL*0.3, er, 0, Math.PI*2); ctx.fill();
-          ctx.beginPath(); ctx.arc(ex, seg.y*CELL + CELL*0.7, er, 0, Math.PI*2); ctx.fill();
+          const ex = gx + CELL*(dir.x > 0 ? 0.72 : 0.28);
+          ctx.beginPath(); ctx.arc(ex, gy + CELL*0.3, er, 0, Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.arc(ex, gy + CELL*0.7, er, 0, Math.PI*2); ctx.fill();
         } else {
-          const ey = seg.y*CELL + CELL*(dir.y > 0 ? 0.72 : 0.28);
-          ctx.beginPath(); ctx.arc(seg.x*CELL + CELL*0.3, ey, er, 0, Math.PI*2); ctx.fill();
-          ctx.beginPath(); ctx.arc(seg.x*CELL + CELL*0.7, ey, er, 0, Math.PI*2); ctx.fill();
+          const ey = gy + CELL*(dir.y > 0 ? 0.72 : 0.28);
+          ctx.beginPath(); ctx.arc(gx + CELL*0.3, ey, er, 0, Math.PI*2); ctx.fill();
+          ctx.beginPath(); ctx.arc(gx + CELL*0.7, ey, er, 0, Math.PI*2); ctx.fill();
         }
       }
     });
