@@ -128,11 +128,11 @@
 
 <main class="main">
   <h1 class="page-title">Trek de lijn</h1>
-  <p class="page-sub">Verbind elke verhaalsom met het juiste antwoord. Klik een som en daarna het antwoord.</p>
+  <p class="page-sub">Verbind elke opdracht met het juiste antwoord. Klik een som en daarna het antwoord.</p>
 
   <div class="setup" id="setup">
     <h2>In welke groep zit je?</h2>
-    <p>De verhaalsommen passen zich aan jouw groep aan.</p>
+    <p>De opdrachten passen zich aan jouw groep aan.</p>
     <div class="groep-chips" id="groepChips"></div>
     <button class="start-btn" id="startBtn" disabled>Start het spel</button>
   </div>
@@ -258,7 +258,7 @@
   }
 
   function win(){
-    document.getElementById('overText').textContent = 'Super! Je hebt alle vier de verhaalsommen aan het juiste antwoord gekoppeld.';
+    document.getElementById('overText').textContent = 'Super! Je hebt alle vier de opdrachten aan het juiste antwoord gekoppeld.';
     document.getElementById('overlay').classList.add('on');
   }
 
