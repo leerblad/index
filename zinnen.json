@@ -5358,5 +5358,677 @@
     "vorm": "ik-vorm",
     "zin": "Ik ___ een liniaal bij rekenen. (gebruiken)",
     "antwoord": "gebruik"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ hard aan mijn som. (werken)",
+    "antwoord": "werk"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ heel netjes. (werken)",
+    "antwoord": "werkt"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ samen in de klas. (werken)",
+    "antwoord": "werken"
+  },
+  {
+    "groep": 5,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik in de tuin. (werken)",
+    "antwoord": "werkte"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ met de bal. (spelen)",
+    "antwoord": "speel"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ heel goed. (spelen)",
+    "antwoord": "speelt"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ op het plein. (spelen)",
+    "antwoord": "spelen"
+  },
+  {
+    "groep": 5,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik de hele dag buiten. (spelen)",
+    "antwoord": "speelde"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een tekening. (maken)",
+    "antwoord": "maak"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ je huiswerk. (maken)",
+    "antwoord": "maakt"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ een hoge toren. (maken)",
+    "antwoord": "maken"
+  },
+  {
+    "groep": 5,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik een taart. (maken)",
+    "antwoord": "maakte"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ lekkere soep. (koken)",
+    "antwoord": "kook"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ heel vaak. (koken)",
+    "antwoord": "kookt"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ samen pasta. (koken)",
+    "antwoord": "koken"
+  },
+  {
+    "groep": 5,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik rijst met groente. (koken)",
+    "antwoord": "kookte"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ de tafels. (leren)",
+    "antwoord": "leer"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ heel snel. (leren)",
+    "antwoord": "leert"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ nieuwe woorden. (leren)",
+    "antwoord": "leren"
+  },
+  {
+    "groep": 5,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik een mooi liedje. (leren)",
+    "antwoord": "leerde"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ in een groot huis. (wonen)",
+    "antwoord": "woon"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ naast de school. (wonen)",
+    "antwoord": "woont"
+  },
+  {
+    "groep": 5,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ in de stad. (wonen)",
+    "antwoord": "wonen"
+  },
+  {
+    "groep": 5,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik vroeger op een boerderij. (wonen)",
+    "antwoord": "woonde"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ naar school. (fietsen)",
+    "antwoord": "fiets"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ heel hard. (fietsen)",
+    "antwoord": "fietst"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ samen naar het bos. (fietsen)",
+    "antwoord": "fietsen"
+  },
+  {
+    "groep": 6,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik helemaal naar oma. (fietsen)",
+    "antwoord": "fietste"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een huis. (tekenen)",
+    "antwoord": "teken"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ heel mooi. (tekenen)",
+    "antwoord": "tekent"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ met stiften. (tekenen)",
+    "antwoord": "tekenen"
+  },
+  {
+    "groep": 6,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik een grote draak. (tekenen)",
+    "antwoord": "tekende"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ naar de juf. (luisteren)",
+    "antwoord": "luister"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ altijd goed. (luisteren)",
+    "antwoord": "luistert"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ naar muziek. (luisteren)",
+    "antwoord": "luisteren"
+  },
+  {
+    "groep": 6,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik naar een spannend verhaal. (luisteren)",
+    "antwoord": "luisterde"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ op het feest. (dansen)",
+    "antwoord": "dans"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ heel leuk. (dansen)",
+    "antwoord": "danst"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ in de gymzaal. (dansen)",
+    "antwoord": "dansen"
+  },
+  {
+    "groep": 6,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik de hele avond. (dansen)",
+    "antwoord": "danste"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een plaatje in. (plakken)",
+    "antwoord": "plak"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ netjes. (plakken)",
+    "antwoord": "plakt"
+  },
+  {
+    "groep": 6,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ de stukjes aan elkaar. (plakken)",
+    "antwoord": "plakken"
+  },
+  {
+    "groep": 6,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik een poster op de muur. (plakken)",
+    "antwoord": "plakte"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een pizza. (bestellen)",
+    "antwoord": "bestel"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ een nieuw boek. (bestellen)",
+    "antwoord": "bestelt"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ samen nieuwe schriften. (bestellen)",
+    "antwoord": "bestellen"
+  },
+  {
+    "groep": 7,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik een cadeau voor papa. (bestellen)",
+    "antwoord": "bestelde"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ de moeilijke som. (herhalen)",
+    "antwoord": "herhaal"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ het goede antwoord. (herhalen)",
+    "antwoord": "herhaalt"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ de hele les. (herhalen)",
+    "antwoord": "herhalen"
+  },
+  {
+    "groep": 7,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik dat woord nog een keer. (herhalen)",
+    "antwoord": "herhaalde"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ naar een nieuw huis. (verhuizen)",
+    "antwoord": "verhuis"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ volgende week. (verhuizen)",
+    "antwoord": "verhuist"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ naar de grote stad. (verhuizen)",
+    "antwoord": "verhuizen"
+  },
+  {
+    "groep": 7,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik vorig jaar naar een dorp. (verhuizen)",
+    "antwoord": "verhuisde"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een geheim. (ontdekken)",
+    "antwoord": "ontdek"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ steeds iets nieuws. (ontdekken)",
+    "antwoord": "ontdekt"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ samen een grot. (ontdekken)",
+    "antwoord": "ontdekken"
+  },
+  {
+    "groep": 7,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik een spoor in het bos. (ontdekken)",
+    "antwoord": "ontdekte"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ veel bezoek. (verwachten)",
+    "antwoord": "verwacht"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ een pakketje. (verwachten)",
+    "antwoord": "verwacht"
+  },
+  {
+    "groep": 7,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ een leuk feest. (verwachten)",
+    "antwoord": "verwachten"
+  },
+  {
+    "groep": 7,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik een hoog cijfer. (verwachten)",
+    "antwoord": "verwachtte"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ mijn werkstuk. (presenteren)",
+    "antwoord": "presenteer"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ het plan. (presenteren)",
+    "antwoord": "presenteert"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ samen de resultaten. (presenteren)",
+    "antwoord": "presenteren"
+  },
+  {
+    "groep": 8,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik mijn spreekbeurt. (presenteren)",
+    "antwoord": "presenteerde"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ een feest. (organiseren)",
+    "antwoord": "organiseer"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ de hele reis. (organiseren)",
+    "antwoord": "organiseert"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ een groot toernooi. (organiseren)",
+    "antwoord": "organiseren"
+  },
+  {
+    "groep": 8,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik de opruiming. (organiseren)",
+    "antwoord": "organiseerde"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ mijn antwoorden. (controleren)",
+    "antwoord": "controleer"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ de som nog eens. (controleren)",
+    "antwoord": "controleert"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ samen het werk. (controleren)",
+    "antwoord": "controleren"
+  },
+  {
+    "groep": 8,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik de hele lijst. (controleren)",
+    "antwoord": "controleerde"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ het eten. (bereiden)",
+    "antwoord": "bereid"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ de maaltijd. (bereiden)",
+    "antwoord": "bereidt"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ samen een diner. (bereiden)",
+    "antwoord": "bereiden"
+  },
+  {
+    "groep": 8,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik de soep voor iedereen. (bereiden)",
+    "antwoord": "bereidde"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Ik ___ jouw hulp. (waarderen)",
+    "antwoord": "waardeer"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "jij-vorm",
+    "zin": "Jij ___ het cadeau. (waarderen)",
+    "antwoord": "waardeert"
+  },
+  {
+    "groep": 8,
+    "tijd": "tegenwoordige tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "wij-vorm",
+    "zin": "Wij ___ elkaars werk. (waarderen)",
+    "antwoord": "waarderen"
+  },
+  {
+    "groep": 8,
+    "tijd": "verleden tijd",
+    "type": "zwakke werkwoorden",
+    "vorm": "ik-vorm",
+    "zin": "Gisteren ___ ik die aardige woorden. (waarderen)",
+    "antwoord": "waardeerde"
   }
 ]

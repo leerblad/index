@@ -128,7 +128,7 @@
 
 <main class="main">
   <h1 class="page-title">Trek de lijn</h1>
-  <p class="page-sub">Verbind elke zin met het juist gespelde werkwoord. Klik een zin en daarna het woord.</p>
+  <p class="page-sub">Alle zinnen gaan over hetzelfde werkwoord. Verbind elke zin met de juiste vorm — let goed op de spelling!</p>
 
   <div class="setup" id="setup">
     <h2>In welke groep zit je?</h2>
@@ -182,7 +182,8 @@
   function shuffle(a){ for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t; } return a; }
 
   function maakSommen(){
-    var set = Werkwoordspel.reeks(groep, 4);
+    // Eén werkwoord in vier vormen — je moet dus echt op de spelling letten.
+    var set = Werkwoordspel.reeksZelfdeWerkwoord(groep, 4);
     return set.map(function(s, i){ return { vraag: s.zin, antw: s.antwoord, id: i }; });
   }
 
