@@ -65,7 +65,7 @@
     .station { width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 3px solid #ffd166; box-shadow: 0 2px 4px rgba(0,0,0,0.12); }
     .station.done { background: #2DBF8E; border-color: #2DBF8E; }
     .station.finish { border-color: #ff6b6b; background: #fff; }
-    .runner { position: absolute; top: 0; font-size: 30px; transition: left 0.5s cubic-bezier(0.34,1.3,0.64,1); transform: translateX(-50%); }
+    .runner { position: absolute; top: 2px; font-size: 30px; transition: left 0.5s cubic-bezier(0.34,1.3,0.64,1); transform: translateX(-50%) scaleX(-1); }
     .flag { position: absolute; top: 4px; right: 1%; font-size: 26px; }
 
     .som-card { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 14px; padding: 1.4rem 1.5rem; margin-top: 16px; }
@@ -138,7 +138,7 @@
 
 <main class="main">
   <h1 class="page-title">Verhaalpad</h1>
-  <p class="page-sub">Loop met het mannetje naar de finish. Kies bij elke stap het juiste antwoord!</p>
+  <p class="page-sub">Race naar de finish! Kies bij elke stap het juiste antwoord om verder te rijden.</p>
 
   <!-- Groepskeuze -->
   <div class="setup" id="setup">
@@ -158,7 +158,7 @@
       <div class="track">
         <div class="track-line"></div>
         <div class="stations" id="stations"></div>
-        <div class="runner" id="runner">🧒</div>
+        <div class="runner" id="runner">🏎️</div>
         <div class="flag">🏁</div>
       </div>
     </div>
