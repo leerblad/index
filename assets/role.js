@@ -13,6 +13,7 @@
   /* Pagina's die een leerling wél mag gebruiken (de spelletjes) */
   var LEERLING_TOEGESTAAN = [
     'tafelspellen.html', 'tafelsnake.html', 'tafelgeheugen.html',
+    'tafelraket.html', 'tafelsprint.html', 'tafeltoernooi.html', 'tafeldobbel.html',
     'verhaalspellen.html', 'verhaalpad.html', 'verhaallijn.html', 'verhaalballon.html',
     'werkwoordspellen.html', 'wwpad.html', 'wwlijn.html', 'wwballon.html'
   ];

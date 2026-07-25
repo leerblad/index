@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){try{var r=sessionStorage.getItem('leerblad-role');document.documentElement.setAttribute('data-theme',r==='leerling'?'dark':'light');if(r)document.documentElement.setAttribute('data-role',r);}catch(e){}})();</script>
+  <title>Leerblad – Tafeltoernooi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/tafelspel.css" />
+  <link rel="stylesheet" href="../assets/theme.css" />
+  <style>
+    .naam-input { font-family: inherit; font-size: 15px; text-align: center; border: 1px solid #e0e0e0; background: #f8f8f8; color: #1a1a1a; padding: 10px 16px; border-radius: 12px; width: 220px; margin-bottom: 1.25rem; }
+    .naam-input:focus { outline: none; border-color: #2A7FD4; }
+    .scorebord { margin-top: 1.5rem; text-align: left; }
+    .scorebord h3 { font-family: 'Space Grotesk','Inter',sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: #bbb; margin-bottom: 10px; }
+    .score-rij { display: flex; align-items: center; gap: 12px; padding: 9px 14px; border-radius: 10px; font-size: 14px; }
+    .score-rij + .score-rij { margin-top: 4px; }
+    .score-rij .rang { width: 22px; font-weight: 800; color: #bbb; text-align: center; }
+    .score-rij .naam { flex: 1; color: #1a1a1a; }
+    .score-rij .pnt { font-weight: 800; color: #2A7FD4; }
+    .score-rij.nieuw { background: #e8f4fd; }
+    .score-rij:nth-child(1) .rang { color: #f7971e; }
+    [data-theme="dark"] .naam-input { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.14); color: #e9eef8; }
+    [data-theme="dark"] .score-rij .naam { color: #e9eef8; }
+    [data-theme="dark"] .score-rij .pnt { color: #7cc4ff; }
+    [data-theme="dark"] .score-rij.nieuw { background: rgba(77,169,255,0.14); }
+  </style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-link" href="../index.html">
+      <span class="logo-text">Leerblad</span>
+      <div class="logo-tagline-row"><div class="logo-tagline-line"></div><div class="logo-tagline">Werkbladen op maat</div><div class="logo-tagline-line"></div></div>
+    </a>
+    <nav>
+      <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
+      <div class="nav-dropdown">
+        <a class="nav-btn active" href="rekenindex.html">Rekenen</a>
+        <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
+          <a class="nav-dropdown-item" href="tafelsommen.html">Tafelsommen</a>
+          <a class="nav-dropdown-item" href="deeltafels.html">Deeltafels</a>
+          <a class="nav-dropdown-item" href="tafelspellen.html">Tafelspellen</a>
+          <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+        </div></div>
+      </div>
+      <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
+      <span class="nav-btn soon">Werkboekjes<span class="tag">binnenkort</span></span>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+  <h1 class="page-title">Tafeltoernooi</h1>
+  <p class="page-sub">Speel tegen de klok en zet je naam op het scorebord!</p>
+
+  <div class="setup" id="setup">
+    <h2>Doe mee aan het toernooi</h2>
+    <p>Vul je naam in en kies je tafels.</p>
+    <div><input class="naam-input" id="naamInput" maxlength="12" placeholder="Jouw naam" /></div>
+    <div class="chips" id="tafelChips"></div>
+    <button class="start-btn" id="startBtn" disabled>Start het toernooi</button>
+    <div class="scorebord" id="scorebordSetup"></div>
+  </div>
+
+  <div class="game" id="game" style="display:none">
+    <div class="hud">
+      <div class="box"><div class="lbl">Goed</div><div class="val" id="scoreVal">0</div></div>
+      <div class="box"><div class="lbl">Tijd</div><div class="val accent" id="tijdVal">60</div></div>
+    </div>
+    <div class="som-bar"><span class="som-vraag" id="somVraag">— × — = ?</span></div>
+    <div class="answers" id="answers"></div>
+    <div class="timebar-wrap"><div class="timebar" id="timebar"></div></div>
+  </div>
+</main>
+
+<footer>www.leerblad.nl</footer>
+
+<div class="overlay" id="overlay">
+  <div class="over-card">
+    <div class="over-emoji">🏆</div>
+    <h2>Toernooi klaar!</h2>
+    <p><b id="eindScore">0</b> goede sommen. Bekijk het scorebord!</p>
+    <div class="scorebord" id="scorebordEind"></div>
+    <button class="start-btn" id="overBtn" style="margin-top:1rem">Nog een keer</button>
+  </div>
+</div>
+
+<script>
+  var KEY = 'tafeltoernooi_top';
+  var TIJD = 60;
+  var gekozen = new Set(), score = 0, tijd = TIJD, huidige = null, tijdId = null, bezig = false, naam = '';
+
+  function laadScores(){ try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch(e){ return []; } }
+  function bewaarScore(n, s){
+    var lijst = laadScores();
+    var entry = { naam: n, score: s };
+    lijst.push(entry);
+    lijst.sort(function(a,b){ return b.score - a.score; });
+    lijst = lijst.slice(0, 10);
+    try { localStorage.setItem(KEY, JSON.stringify(lijst)); } catch(e){}
+    return { lijst: lijst, entry: entry };
+  }
+  function toonScorebord(el, lijst, nieuw){
+    if (!lijst.length){ el.innerHTML = '<h3>Scorebord</h3><div style="font-size:13px;color:#bbb">Nog geen scores. Wees de eerste!</div>'; return; }
+    var h = '<h3>Scorebord — top 10</h3>';
+    lijst.forEach(function(r, i){
+      var isNew = nieuw && r === nieuw;
+      h += '<div class="score-rij' + (isNew ? ' nieuw' : '') + '"><span class="rang">' + (i+1) + '</span><span class="naam">' + escapeHtml(r.naam) + '</span><span class="pnt">' + r.score + '</span></div>';
+    });
+    el.innerHTML = h;
+  }
+  function escapeHtml(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  var chips = document.getElementById('tafelChips');
+  var alle = document.createElement('span'); alle.className='chip'; alle.textContent='Alle';
+  alle.onclick = function(){ var aan=gekozen.size===10; gekozen.clear();
+    Array.prototype.forEach.call(chips.querySelectorAll('.chip'), function(c){ c.classList.remove('active'); });
+    if(!aan){ for(var t=1;t<=10;t++) gekozen.add(t); Array.prototype.forEach.call(chips.querySelectorAll('[data-t]'), function(c){ c.classList.add('active'); }); }
+    checkKlaar(); };
+  for (var t=1;t<=10;t++){ (function(tafel){
+    var c=document.createElement('span'); c.className='chip'; c.textContent=tafel; c.setAttribute('data-t',tafel);
+    c.onclick=function(){ if(gekozen.has(tafel)){gekozen.delete(tafel);c.classList.remove('active');}else{gekozen.add(tafel);c.classList.add('active');} checkKlaar(); };
+    chips.appendChild(c);
+  })(t); }
+  chips.appendChild(alle);
+
+  function checkKlaar(){ document.getElementById('startBtn').disabled = gekozen.size===0 || document.getElementById('naamInput').value.trim()===''; }
+  document.getElementById('naamInput').addEventListener('input', checkKlaar);
+
+  function shuffle(a){ for (var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var x=a[i];a[i]=a[j];a[j]=x; } return a; }
+
+  function nieuweSom(){
+    var tafels = Array.from(gekozen);
+    var a = tafels[Math.floor(Math.random()*tafels.length)];
+    var b = Math.floor(Math.random()*11);
+    huidige = a*b;
+    document.getElementById('somVraag').textContent = a + ' × ' + b + ' = ?';
+    var opties = new Set([huidige]);
+    while (opties.size < 4){ var d = huidige + (Math.floor(Math.random()*11)-5); if (d>=0 && d!==huidige) opties.add(d); }
+    var arr = shuffle(Array.from(opties));
+    var box = document.getElementById('answers'); box.innerHTML='';
+    arr.forEach(function(v){ var btn=document.createElement('button'); btn.className='answer'; btn.textContent=v; btn.onclick=function(){ kies(btn,v); }; box.appendChild(btn); });
+  }
+
+  function kies(btn, v){
+    if (!bezig) return;
+    if (v === huidige){ score++; document.getElementById('scoreVal').textContent=score; nieuweSom(); }
+    else { btn.classList.add('fout'); Array.prototype.forEach.call(document.querySelectorAll('.answer'), function(b){ if(+b.textContent===huidige) b.classList.add('goed'); b.classList.add('disabled'); }); tijd=Math.max(0,tijd-2); document.getElementById('tijdVal').textContent=tijd; setTimeout(nieuweSom, 500); }
+  }
+
+  function tik(){ tijd--; document.getElementById('tijdVal').textContent=tijd; document.getElementById('timebar').style.width=(tijd/TIJD*100)+'%'; if (tijd<=0) eind(); }
+
+  function start(){
+    naam = document.getElementById('naamInput').value.trim() || 'Speler';
+    score=0; tijd=TIJD; bezig=true;
+    document.getElementById('scoreVal').textContent='0'; document.getElementById('tijdVal').textContent=TIJD; document.getElementById('timebar').style.width='100%';
+    document.getElementById('setup').style.display='none'; document.getElementById('game').style.display='block';
+    nieuweSom(); clearInterval(tijdId); tijdId=setInterval(tik,1000);
+  }
+  function eind(){
+    bezig=false; clearInterval(tijdId);
+    var res = bewaarScore(naam, score);
+    document.getElementById('eindScore').textContent = score;
+    toonScorebord(document.getElementById('scorebordEind'), res.lijst, res.entry);
+    document.getElementById('overlay').classList.add('on');
+  }
+
+  document.getElementById('startBtn').onclick = start;
+  document.getElementById('overBtn').onclick = function(){
+    document.getElementById('overlay').classList.remove('on');
+    document.getElementById('game').style.display='none';
+    document.getElementById('setup').style.display='block';
+    toonScorebord(document.getElementById('scorebordSetup'), laadScores(), null);
+    checkKlaar();
+  };
+
+  /* Toon bestaand scorebord bij binnenkomst */
+  toonScorebord(document.getElementById('scorebordSetup'), laadScores(), null);
+</script>
+<script src="../assets/role.js"></script>
+</body>
+</html>
