@@ -1436,8 +1436,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ mij voor de wedstrijd. (voorbereiden)",
-    "antwoord": "bereid voor"
+    "zin": "Ik ___ mij voor op de wedstrijd. (voorbereiden)",
+    "antwoord": "bereid"
   },
   {
     "groep": 7,
@@ -1468,8 +1468,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "jij-vorm",
-    "zin": "Jij ___ je goed voor de toets. (voorbereiden)",
-    "antwoord": "bereidt voor"
+    "zin": "Jij ___ je goed voor op de toets. (voorbereiden)",
+    "antwoord": "bereidt"
   },
   {
     "groep": 7,
@@ -1508,8 +1508,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "hij-vorm",
-    "zin": "Eva ___ zich goed voor het optreden. (voorbereiden)",
-    "antwoord": "bereidt voor"
+    "zin": "Eva ___ zich goed voor op het optreden. (voorbereiden)",
+    "antwoord": "bereidt"
   },
   {
     "groep": 7,
@@ -1548,8 +1548,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "wij-vorm",
-    "zin": "Wij ___ ons voor de wedstrijd. (voorbereiden)",
-    "antwoord": "bereiden voor"
+    "zin": "Wij ___ ons voor op de wedstrijd. (voorbereiden)",
+    "antwoord": "bereiden"
   },
   {
     "groep": 7,
@@ -1588,8 +1588,8 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ afgelopen zomer mij goed voor het examen. (voorbereiden)",
-    "antwoord": "bereidde voor"
+    "zin": "Ik ___ afgelopen zomer mij goed voor op het examen. (voorbereiden)",
+    "antwoord": "bereidde"
   },
   {
     "groep": 7,
@@ -1628,8 +1628,8 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "hij-vorm",
-    "zin": "Eva ___ laatst zich voor het optreden. (voorbereiden)",
-    "antwoord": "bereidde voor"
+    "zin": "Eva ___ laatst zich voor op het optreden. (voorbereiden)",
+    "antwoord": "bereidde"
   },
   {
     "groep": 7,
@@ -1660,8 +1660,8 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "wij-vorm",
-    "zin": "Wij ___ vorige maand ons goed voor de voorstelling. (voorbereiden)",
-    "antwoord": "bereidden voor"
+    "zin": "Wij ___ vorige maand ons goed voor op de voorstelling. (voorbereiden)",
+    "antwoord": "bereidden"
   },
   {
     "groep": 7,
@@ -2068,8 +2068,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ mij goed voor de eindtoets. (voorbereiden)",
-    "antwoord": "bereid voor"
+    "zin": "Ik ___ mij goed voor op de eindtoets. (voorbereiden)",
+    "antwoord": "bereid"
   },
   {
     "groep": 8,
@@ -2093,7 +2093,7 @@
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
     "zin": "Ik ___ mij aan bij de debatclub. (aansluiten)",
-    "antwoord": "sluit aan"
+    "antwoord": "sluit"
   },
   {
     "groep": 8,
@@ -2116,8 +2116,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "jij-vorm",
-    "zin": "Emma, jij ___ je goed voor het eindexamen. (voorbereiden)",
-    "antwoord": "bereidt voor"
+    "zin": "Emma, jij ___ je goed voor op het eindexamen. (voorbereiden)",
+    "antwoord": "bereidt"
   },
   {
     "groep": 8,
@@ -2196,8 +2196,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "wij-vorm",
-    "zin": "Wij ___ ons goed voor de eindtoets. (voorbereiden)",
-    "antwoord": "bereiden voor"
+    "zin": "Wij ___ ons goed voor op de eindtoets. (voorbereiden)",
+    "antwoord": "bereiden"
   },
   {
     "groep": 8,
@@ -2236,8 +2236,8 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ gistermiddag me goed voor de toets. (voorbereiden)",
-    "antwoord": "bereidde voor"
+    "zin": "Ik ___ gistermiddag me goed voor op de toets. (voorbereiden)",
+    "antwoord": "bereidde"
   },
   {
     "groep": 8,
@@ -2316,8 +2316,8 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "wij-vorm",
-    "zin": "Wij ___ gistermiddag ons goed voor de eindtoets. (voorbereiden)",
-    "antwoord": "bereidden voor"
+    "zin": "Wij ___ gistermiddag ons goed voor op de eindtoets. (voorbereiden)",
+    "antwoord": "bereidden"
   },
   {
     "groep": 8,
@@ -2421,7 +2421,7 @@
     "type": "sterke werkwoorden",
     "vorm": "ik-vorm",
     "zin": "Ik ___ informatie op voor mijn werkstuk. (zoeken)",
-    "antwoord": "zoek op"
+    "antwoord": "zoek"
   },
   {
     "groep": 8,
@@ -2813,7 +2813,7 @@
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
     "zin": "Ik ___ mijn werkstuk op tijd in. (leveren)",
-    "antwoord": "lever in"
+    "antwoord": "lever"
   },
   {
     "groep": 6,
@@ -3189,7 +3189,7 @@
     "type": "sterke werkwoorden",
     "vorm": "ik-vorm",
     "zin": "Ik ___ mij in bij het debatteam. (inschrijven)",
-    "antwoord": "schrijf in"
+    "antwoord": "schrijf"
   },
   {
     "groep": 8,
@@ -3197,7 +3197,7 @@
     "type": "sterke werkwoorden",
     "vorm": "ik-vorm",
     "zin": "Ik ___ goede argumenten aan. (dragen)",
-    "antwoord": "draag aan"
+    "antwoord": "draag"
   },
   {
     "groep": 8,
@@ -3205,7 +3205,7 @@
     "type": "sterke werkwoorden",
     "vorm": "jij-vorm",
     "zin": "Jij ___ je in bij de leerlingenraad. (inschrijven)",
-    "antwoord": "schrijft in"
+    "antwoord": "schrijft"
   },
   {
     "groep": 8,
@@ -3213,7 +3213,7 @@
     "type": "sterke werkwoorden",
     "vorm": "jij-vorm",
     "zin": "Emma, jij ___ altijd veel bij. (dragen)",
-    "antwoord": "draagt bij"
+    "antwoord": "draagt"
   },
   {
     "groep": 8,
@@ -3221,7 +3221,7 @@
     "type": "sterke werkwoorden",
     "vorm": "hij-vorm",
     "zin": "Lars ___ zich in bij de verkiezingen. (inschrijven)",
-    "antwoord": "schrijft in"
+    "antwoord": "schrijft"
   },
   {
     "groep": 8,
@@ -3229,7 +3229,7 @@
     "type": "sterke werkwoorden",
     "vorm": "hij-vorm",
     "zin": "Koen ___ veel bij aan de discussie. (dragen)",
-    "antwoord": "draagt bij"
+    "antwoord": "draagt"
   },
   {
     "groep": 8,
@@ -3237,7 +3237,7 @@
     "type": "sterke werkwoorden",
     "vorm": "wij-vorm",
     "zin": "Wij ___ ons in voor het debattoernooi. (inschrijven)",
-    "antwoord": "schrijven in"
+    "antwoord": "schrijven"
   },
   {
     "groep": 8,
@@ -3245,7 +3245,7 @@
     "type": "sterke werkwoorden",
     "vorm": "wij-vorm",
     "zin": "Wij ___ bij aan een duurzame wereld. (dragen)",
-    "antwoord": "dragen bij"
+    "antwoord": "dragen"
   },
   {
     "groep": 8,
@@ -3253,7 +3253,7 @@
     "type": "sterke werkwoorden",
     "vorm": "ik-vorm",
     "zin": "Ik ___ vorig jaar me in voor het schooldebat. (inschrijven)",
-    "antwoord": "schreef in"
+    "antwoord": "schreef"
   },
   {
     "groep": 8,
@@ -3261,7 +3261,7 @@
     "type": "sterke werkwoorden",
     "vorm": "ik-vorm",
     "zin": "Ik ___ gisteravond veel bij aan het project. (dragen)",
-    "antwoord": "droeg bij"
+    "antwoord": "droeg"
   },
   {
     "groep": 8,
@@ -3269,7 +3269,7 @@
     "type": "sterke werkwoorden",
     "vorm": "hij-vorm",
     "zin": "Lars ___ vorige maand zich in voor het debattoernooi. (inschrijven)",
-    "antwoord": "schreef in"
+    "antwoord": "schreef"
   },
   {
     "groep": 8,
@@ -3277,7 +3277,7 @@
     "type": "sterke werkwoorden",
     "vorm": "hij-vorm",
     "zin": "Koen ___ afgelopen zomer veel bij aan de oplossing. (dragen)",
-    "antwoord": "droeg bij"
+    "antwoord": "droeg"
   },
   {
     "groep": 8,
@@ -3285,7 +3285,7 @@
     "type": "sterke werkwoorden",
     "vorm": "wij-vorm",
     "zin": "Wij ___ vorige zomer ons in voor het kampioenschap. (inschrijven)",
-    "antwoord": "schreven in"
+    "antwoord": "schreven"
   },
   {
     "groep": 8,
@@ -3293,7 +3293,7 @@
     "type": "sterke werkwoorden",
     "vorm": "wij-vorm",
     "zin": "Wij ___ gisteren bij aan een beter milieu. (dragen)",
-    "antwoord": "droegen bij"
+    "antwoord": "droegen"
   },
   {
     "groep": 8,
@@ -3485,7 +3485,7 @@
     "type": "sterke werkwoorden",
     "vorm": "ik-vorm",
     "zin": "Ik ___ bij de discussie aan. (sluiten)",
-    "antwoord": "sluit aan"
+    "antwoord": "sluit"
   },
   {
     "groep": 7,
@@ -3493,7 +3493,7 @@
     "type": "sterke werkwoorden",
     "vorm": "jij-vorm",
     "zin": "Finn, jij ___ aan bij de debatclub. (sluiten)",
-    "antwoord": "sluit aan"
+    "antwoord": "sluit"
   },
   {
     "groep": 7,
@@ -3501,7 +3501,7 @@
     "type": "sterke werkwoorden",
     "vorm": "hij-vorm",
     "zin": "Bram ___ aan bij het leesclubje. (sluiten)",
-    "antwoord": "sluit aan"
+    "antwoord": "sluit"
   },
   {
     "groep": 7,
@@ -3509,7 +3509,7 @@
     "type": "sterke werkwoorden",
     "vorm": "ik-vorm",
     "zin": "Ik ___ eergisteren aan bij de sportclub. (sluiten)",
-    "antwoord": "sloot aan"
+    "antwoord": "sloot"
   },
   {
     "groep": 7,
@@ -3517,7 +3517,7 @@
     "type": "sterke werkwoorden",
     "vorm": "hij-vorm",
     "zin": "Bram ___ vorig jaar aan bij het project. (sluiten)",
-    "antwoord": "sloot aan"
+    "antwoord": "sloot"
   },
   {
     "groep": 7,
@@ -3525,7 +3525,7 @@
     "type": "sterke werkwoorden",
     "vorm": "wij-vorm",
     "zin": "Wij ___ gisteravond aan bij de leerlingenraad. (sluiten)",
-    "antwoord": "sloten aan"
+    "antwoord": "sloten"
   },
   {
     "groep": 7,
@@ -3797,7 +3797,7 @@
     "type": "zwakke werkwoorden",
     "vorm": "wij-vorm",
     "zin": "Wij ___ woorden op in het woordenboek. (opzoeken)",
-    "antwoord": "zoeken op"
+    "antwoord": "zoeken"
   },
   {
     "groep": 7,
@@ -3805,7 +3805,7 @@
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
     "zin": "Ik ___ gisteravond een woord op in het woordenboek. (opzoeken)",
-    "antwoord": "zocht op"
+    "antwoord": "zocht"
   },
   {
     "groep": 7,
@@ -3821,7 +3821,7 @@
     "type": "zwakke werkwoorden",
     "vorm": "wij-vorm",
     "zin": "Wij ___ afgelopen zomer woorden op in het woordenboek. (opzoeken)",
-    "antwoord": "zochten op"
+    "antwoord": "zochten"
   },
   {
     "groep": 7,
@@ -3909,7 +3909,7 @@
     "type": "zwakke werkwoorden",
     "vorm": "jij-vorm",
     "zin": "Nora, jij ___ je goed in op het publiek. (instellen)",
-    "antwoord": "stelt in"
+    "antwoord": "stelt"
   },
   {
     "groep": 7,
@@ -4101,7 +4101,7 @@
     "type": "sterke werkwoorden",
     "vorm": "ik-vorm",
     "zin": "Ik ___ vorige week sterke argumenten in het debat. (inbrengen)",
-    "antwoord": "bracht in"
+    "antwoord": "bracht"
   },
   {
     "groep": 8,
@@ -4109,7 +4109,7 @@
     "type": "sterke werkwoorden",
     "vorm": "hij-vorm",
     "zin": "Lars ___ gistermiddag nieuwe feiten in de discussie. (inbrengen)",
-    "antwoord": "bracht in"
+    "antwoord": "bracht"
   },
   {
     "groep": 8,
@@ -4117,7 +4117,7 @@
     "type": "sterke werkwoorden",
     "vorm": "wij-vorm",
     "zin": "Wij ___ laatst nieuwe ideeën in het gesprek. (inbrengen)",
-    "antwoord": "brachten in"
+    "antwoord": "brachten"
   },
   {
     "groep": 8,
