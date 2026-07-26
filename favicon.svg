@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Leerblad">
+  <defs>
+    <linearGradient id="lb" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2A7FD4"/>
+      <stop offset="1" stop-color="#2DBF8E"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" fill="url(#lb)"/>
+</svg>

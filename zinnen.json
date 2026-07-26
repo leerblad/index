@@ -100,8 +100,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "hij-vorm",
-    "zin": "Tom ___ elke ochtend vroeg. (opstaan)",
-    "antwoord": "staat op"
+    "zin": "Tom ___ elke ochtend vroeg op. (opstaan)",
+    "antwoord": "staat"
   },
   {
     "groep": 5,
@@ -244,8 +244,8 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "jij-vorm",
-    "zin": "Jij ___ gisteren vroeg. (opstaan)",
-    "antwoord": "stond op"
+    "zin": "Jij ___ gisteren vroeg op. (opstaan)",
+    "antwoord": "stond"
   },
   {
     "groep": 7,
@@ -844,8 +844,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "hij-vorm",
-    "zin": "De meester ___ een moeilijke som. (uitleggen)",
-    "antwoord": "legt uit"
+    "zin": "De meester ___ een moeilijke som uit. (uitleggen)",
+    "antwoord": "legt"
   },
   {
     "groep": 6,
@@ -980,8 +980,8 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "hij-vorm",
-    "zin": "De juf ___ afgelopen zomer de opdracht. (uitleggen)",
-    "antwoord": "legde uit"
+    "zin": "De juf ___ afgelopen zomer de opdracht uit. (uitleggen)",
+    "antwoord": "legde"
   },
   {
     "groep": 7,
@@ -1412,8 +1412,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ de regels van het spel. (uitleggen)",
-    "antwoord": "leg uit"
+    "zin": "Ik ___ de regels van het spel uit. (uitleggen)",
+    "antwoord": "leg"
   },
   {
     "groep": 7,
@@ -1444,16 +1444,16 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ mij in bij de sportclub. (aanmelden)",
-    "antwoord": "meld aan"
+    "zin": "Ik ___ mij bij de sportclub aan. (aanmelden)",
+    "antwoord": "meld"
   },
   {
     "groep": 7,
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "jij-vorm",
-    "zin": "Jij ___ de moeilijke opdracht goed. (uitleggen)",
-    "antwoord": "legt uit"
+    "zin": "Jij ___ de moeilijke opdracht goed uit. (uitleggen)",
+    "antwoord": "legt"
   },
   {
     "groep": 7,
@@ -1492,8 +1492,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "hij-vorm",
-    "zin": "Nora ___ de nieuwe opdracht aan de klas. (uitleggen)",
-    "antwoord": "legt uit"
+    "zin": "Nora ___ de nieuwe opdracht aan de klas uit. (uitleggen)",
+    "antwoord": "legt"
   },
   {
     "groep": 7,
@@ -1532,8 +1532,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "wij-vorm",
-    "zin": "Wij ___ de regels van het spel. (uitleggen)",
-    "antwoord": "leggen uit"
+    "zin": "Wij ___ de regels van het spel uit. (uitleggen)",
+    "antwoord": "leggen"
   },
   {
     "groep": 7,
@@ -1572,8 +1572,8 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ gisteravond de moeilijke som aan mijn klasgenoot. (uitleggen)",
-    "antwoord": "legde uit"
+    "zin": "Ik ___ gisteravond de moeilijke som aan mijn klasgenoot uit. (uitleggen)",
+    "antwoord": "legde"
   },
   {
     "groep": 7,
@@ -1604,16 +1604,16 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ gisteren mij in voor de cursus. (aanmelden)",
-    "antwoord": "meldde aan"
+    "zin": "Ik ___ mij gisteren voor de cursus aan. (aanmelden)",
+    "antwoord": "meldde"
   },
   {
     "groep": 7,
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "hij-vorm",
-    "zin": "Nora ___ vorige week de opdracht aan de groep. (uitleggen)",
-    "antwoord": "legde uit"
+    "zin": "Nora ___ vorige week de opdracht aan de groep uit. (uitleggen)",
+    "antwoord": "legde"
   },
   {
     "groep": 7,
@@ -1644,8 +1644,8 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "wij-vorm",
-    "zin": "Wij ___ vorig jaar de opdracht aan de klas. (uitleggen)",
-    "antwoord": "legden uit"
+    "zin": "Wij ___ vorig jaar de opdracht aan de klas uit. (uitleggen)",
+    "antwoord": "legden"
   },
   {
     "groep": 7,
@@ -2029,7 +2029,7 @@
     "type": "zwakke werkwoorden",
     "vorm": "bijvoeglijk gebruikt voltooid deelwoord",
     "zin": "De ___ opdracht lag op het bureau. (uitleggen)",
-    "antwoord": "uitlegde"
+    "antwoord": "uitgelegde"
   },
   {
     "groep": 7,
@@ -2060,8 +2060,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ mij altijd extra voor moeilijke presentaties. (uitsloven)",
-    "antwoord": "slooft uit"
+    "zin": "Ik ___ mij altijd extra voor moeilijke presentaties uit. (uitsloven)",
+    "antwoord": "sloof"
   },
   {
     "groep": 8,
@@ -2108,8 +2108,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "jij-vorm",
-    "zin": "Jij ___ je altijd erg voor presentaties. (uitsloven)",
-    "antwoord": "slooft uit"
+    "zin": "Jij ___ je altijd erg voor presentaties uit. (uitsloven)",
+    "antwoord": "slooft"
   },
   {
     "groep": 8,
@@ -2140,16 +2140,16 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "jij-vorm",
-    "zin": "Jij ___ je bij de leerlingenraad. (aansluiten)",
-    "antwoord": "sluit aan"
+    "zin": "Jij ___ je bij de leerlingenraad aan. (aansluiten)",
+    "antwoord": "sluit"
   },
   {
     "groep": 8,
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "hij-vorm",
-    "zin": "Lars ___ zich altijd voor de presentaties. (uitsloven)",
-    "antwoord": "slooft uit"
+    "zin": "Lars ___ zich altijd voor de presentaties uit. (uitsloven)",
+    "antwoord": "slooft"
   },
   {
     "groep": 8,
@@ -2164,8 +2164,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "hij-vorm",
-    "zin": "Rosa ___ zich op de eindtoets. (voorbereiden)",
-    "antwoord": "bereidt voor"
+    "zin": "Rosa ___ zich voor op de eindtoets. (voorbereiden)",
+    "antwoord": "bereidt"
   },
   {
     "groep": 8,
@@ -2188,8 +2188,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "wij-vorm",
-    "zin": "Wij ___ ons voor de jaarlijkse schoolwedstrijd. (uitsloven)",
-    "antwoord": "sloven uit"
+    "zin": "Wij ___ ons voor de jaarlijkse schoolwedstrijd uit. (uitsloven)",
+    "antwoord": "sloven"
   },
   {
     "groep": 8,
@@ -2228,8 +2228,8 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ vorige week me altijd voor de schoolpresentaties. (uitsloven)",
-    "antwoord": "sloof uit"
+    "zin": "Ik ___ me vorige week voor de schoolpresentaties uit. (uitsloven)",
+    "antwoord": "sloofde"
   },
   {
     "groep": 8,
@@ -2268,16 +2268,16 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ gisteravond mij bij de debatclub. (aansluiten)",
-    "antwoord": "sloot aan"
+    "zin": "Ik ___ mij gisteravond bij de debatclub aan. (aansluiten)",
+    "antwoord": "sloot"
   },
   {
     "groep": 8,
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "hij-vorm",
-    "zin": "Lars ___ vorige maand zich altijd voor de presentaties. (uitsloven)",
-    "antwoord": "sloofde uit"
+    "zin": "Lars ___ zich vorige maand voor de presentaties uit. (uitsloven)",
+    "antwoord": "sloofde"
   },
   {
     "groep": 8,
@@ -2292,8 +2292,8 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "hij-vorm",
-    "zin": "Rosa ___ vorige zomer zich op de eindtoets. (voorbereiden)",
-    "antwoord": "bereidde voor"
+    "zin": "Rosa ___ zich vorige zomer voor op de eindtoets. (voorbereiden)",
+    "antwoord": "bereidde"
   },
   {
     "groep": 8,
@@ -2308,8 +2308,8 @@
     "tijd": "verleden tijd",
     "type": "zwakke werkwoorden",
     "vorm": "wij-vorm",
-    "zin": "Wij ___ vorige week ons voor de schoolwedstrijd. (uitsloven)",
-    "antwoord": "sloofden uit"
+    "zin": "Wij ___ ons vorige week voor de schoolwedstrijd uit. (uitsloven)",
+    "antwoord": "sloofden"
   },
   {
     "groep": 8,
@@ -2341,7 +2341,7 @@
     "type": "zwakke werkwoorden",
     "vorm": "voltooid deelwoord",
     "zin": "Emma heeft zich erg ___. (uitsloven)",
-    "antwoord": "uitgeslooft"
+    "antwoord": "uitgesloofd"
   },
   {
     "groep": 8,
@@ -2908,8 +2908,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ mij voor de debatavond. (inschrijven)",
-    "antwoord": "schrijf in"
+    "zin": "Ik ___ mij voor de debatavond in. (inschrijven)",
+    "antwoord": "schrijf"
   },
   {
     "groep": 7,
@@ -3532,7 +3532,7 @@
     "tijd": "verleden tijd",
     "type": "sterke werkwoorden",
     "vorm": "voltooid deelwoord",
-    "zin": "Finn heeft zich bij de club ___. (sluiten)",
+    "zin": "Finn heeft zich bij de club ___. (aansluiten)",
     "antwoord": "aangesloten"
   },
   {
@@ -3548,8 +3548,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "jij-vorm",
-    "zin": "Jij ___ je werkstuk op tijd. (inleveren)",
-    "antwoord": "levert in"
+    "zin": "Jij ___ je werkstuk op tijd in. (inleveren)",
+    "antwoord": "levert"
   },
   {
     "groep": 8,
@@ -3772,8 +3772,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ een nieuw woord in het woordenboek. (opzoeken)",
-    "antwoord": "zoek op"
+    "zin": "Ik ___ een nieuw woord in het woordenboek op. (opzoeken)",
+    "antwoord": "zoek"
   },
   {
     "groep": 6,
@@ -3900,8 +3900,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "ik-vorm",
-    "zin": "Ik ___ me op het debat. (instellen)",
-    "antwoord": "stel in"
+    "zin": "Ik ___ me op het debat in. (instellen)",
+    "antwoord": "stel"
   },
   {
     "groep": 7,
@@ -3924,8 +3924,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "zwakke werkwoorden",
     "vorm": "wij-vorm",
-    "zin": "Wij ___ ons voor de grote presentatie. (instellen)",
-    "antwoord": "stellen in"
+    "zin": "Wij ___ ons op de grote presentatie in. (instellen)",
+    "antwoord": "stellen"
   },
   {
     "groep": 7,
@@ -4092,8 +4092,8 @@
     "tijd": "tegenwoordige tijd",
     "type": "sterke werkwoorden",
     "vorm": "jij-vorm",
-    "zin": "Jij ___ altijd sterke argumenten. (inbrengen)",
-    "antwoord": "brengt in"
+    "zin": "Jij ___ altijd sterke argumenten in. (inbrengen)",
+    "antwoord": "brengt"
   },
   {
     "groep": 8,

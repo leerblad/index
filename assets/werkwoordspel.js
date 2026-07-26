@@ -37,33 +37,72 @@
 
   /* Plausibele foute spellingen op basis van het juiste woord + de infinitief.
      Bewust alleen realistische werkwoordspelling-fouten (geen dubbele letters). */
-  function afleiders(a, inf) {
+  /* Scheidbare prefixen — voor het herkennen van scheidbaar-voltooid-deelwoord
+     (prefix + 'ge' + rest, bv. aan+ge+sloten) en niet-scheidbaar (ver/be/ge/...). */
+  var SEP_PREFIX = ['aan', 'op', 'uit', 'in', 'bij', 'af', 'mee', 'toe', 'voor', 'na',
+    'om', 'over', 'onder', 'door', 'terug', 'weg', 'samen', 'tegen', 'vast', 'los', 'neer'];
+
+  function afleiders(a, inf, ctx) {
     var set = {}, out = [];
     set[a] = 1;
     function add(w) { if (w && !set[w] && /^[a-zA-ZëéèïÉ' -]+$/.test(w)) { set[w] = 1; out.push(w); } }
 
+    /* Sterk verleden-tijd (ik/jij/hij) verzwakken: veelgemaakte fout waarbij een
+       leerling er een zwak werkwoord van maakt, bv. trof -> trofte, schrok -> schrokte.
+       Alleen bij een sterke verleden-tijd persoonsvorm (geen -e/-t/-d uitgang). */
+    if (ctx && ctx.tijd === 'verleden tijd' &&
+        (ctx.vorm === 'ik-vorm' || ctx.vorm === 'jij-vorm' || ctx.vorm === 'hij-vorm') &&
+        !/[etd]$/i.test(a)) {
+      var kofschip = /(ch|[tkfsp])$/i.test(a);   // 't kofschip -> -te, anders -de
+      add(a + (kofschip ? 'te' : 'de'));         // trofte / klomde
+    }
+
+    /* Scheidbaar voltooid deelwoord? -> fout met 'ge' vooraan (geaansloten). */
+    var geVooraan = null;
+    for (var i = 0; i < SEP_PREFIX.length; i++) {
+      var p = SEP_PREFIX[i];
+      if (a.indexOf(p) === 0 && a.substr(p.length, 2) === 'ge') {
+        geVooraan = 'ge' + p + a.slice(p.length + 2);   // aangesloten -> geaansloten
+        break;
+      }
+    }
+
+    var isDeelwoord = ctx && (ctx.vorm === 'voltooid deelwoord' ||
+                              ctx.vorm === 'bijvoeglijk gebruikt voltooid deelwoord');
+
+    /* d/t- en verbuigingsfouten, afhankelijk van de uitgang */
     if (/dt$/.test(a)) {                 // wordt
-      add(a.slice(0, -1));               // word  (t vergeten)
-      add(a.slice(0, -2) + 't');         // wort  (t i.p.v. dt)
-      add(inf);                          // worden
+      add(a.slice(0, -1));               // word   (t vergeten)
+      add(a.slice(0, -2) + 't');         // wort   (t i.p.v. dt)
+    } else if (/de$/.test(a)) {          // zwak -de of verbogen deelwoord: geschilderde, probeerde
+      add(a + 'n');                      // geschilderden (onterechte verbuigings-n)
+      add(a.slice(0, -2) + 'te');        // geschilderte  (d/t-fout)
+      add(a.slice(0, -1));               // geschilderd   (verbuigings-e eraf)
+    } else if (/te$/.test(a)) {          // zwak -te of verbogen deelwoord: geplante, verraste
+      add(a + 'n');                      // geplanten (onterechte verbuigings-n)
+      add(a.slice(0, -2) + 'de');        // geplande  (d/t-fout)
+      add(a.slice(0, -1));               // geplant   (verbuigings-e eraf)
+    } else if (/en$/.test(a) && isDeelwoord) {  // sterk deelwoord: geschreven, gebroken
+      add(a + 'e');                      // geschrevene (te veel verbogen)
+      add(a + 'd');                      // geschrevend (onterechte d)
     } else if (/d$/.test(a)) {           // gebeurd / stam op d
       add(a + 't');                      // gebeurdt (dt-fout)
       add(a.slice(0, -1) + 't');         // gebeurt  (t i.p.v. d)
-      add(inf);                          // gebeuren
     } else if (/t$/.test(a)) {           // poetst / gefietst
       add(a.slice(0, -1));               // poets  (t vergeten)
       add(a.slice(0, -1) + 'd');         // poetsd (d i.p.v. t)
-      add(inf);                          // poetsen
-    } else {                             // ik-vorm stam / voltooid deelwoord op -en
+    } else {                             // ik-vorm stam / deelwoord op -en (niet-bijvoeglijk)
       add(a + 't');                      // poetst
       add(a + 'd');                      // poetsd
-      add(inf);                          // poetsen
     }
+
+    add(geVooraan);   // scheidbaar deelwoord met ge- verkeerd vooraan
+    add(inf);         // de infinitief als afleider (bv. aansluiten i.p.v. aangesloten)
     return out;
   }
 
-  function opties(antwoord, inf) {
-    var fout = shuffle(afleiders(antwoord, inf)).slice(0, 3);
+  function opties(antwoord, inf, ctx) {
+    var fout = shuffle(afleiders(antwoord, inf, ctx)).slice(0, 3);
     var alle = [{ tekst: antwoord, goed: true }].concat(fout.map(function (w) { return { tekst: w, goed: false }; }));
     return shuffle(alle);
   }
@@ -104,7 +143,7 @@
       infinitief: inf,
       antwoord: z.antwoord,
       vorm: z.vorm,
-      opties: opties(z.antwoord, inf),
+      opties: opties(z.antwoord, inf, z),
       groep: groep
     };
   }
