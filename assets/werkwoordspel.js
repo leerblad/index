@@ -67,17 +67,31 @@
       }
     }
 
-    /* d/t-fouten, afhankelijk van de uitgang */
+    var isDeelwoord = ctx && (ctx.vorm === 'voltooid deelwoord' ||
+                              ctx.vorm === 'bijvoeglijk gebruikt voltooid deelwoord');
+
+    /* d/t- en verbuigingsfouten, afhankelijk van de uitgang */
     if (/dt$/.test(a)) {                 // wordt
-      add(a.slice(0, -1));               // word  (t vergeten)
-      add(a.slice(0, -2) + 't');         // wort  (t i.p.v. dt)
+      add(a.slice(0, -1));               // word   (t vergeten)
+      add(a.slice(0, -2) + 't');         // wort   (t i.p.v. dt)
+    } else if (/de$/.test(a)) {          // zwak -de of verbogen deelwoord: geschilderde, probeerde
+      add(a + 'n');                      // geschilderden (onterechte verbuigings-n)
+      add(a.slice(0, -2) + 'te');        // geschilderte  (d/t-fout)
+      add(a.slice(0, -1));               // geschilderd   (verbuigings-e eraf)
+    } else if (/te$/.test(a)) {          // zwak -te of verbogen deelwoord: geplante, verraste
+      add(a + 'n');                      // geplanten (onterechte verbuigings-n)
+      add(a.slice(0, -2) + 'de');        // geplande  (d/t-fout)
+      add(a.slice(0, -1));               // geplant   (verbuigings-e eraf)
+    } else if (/en$/.test(a) && isDeelwoord) {  // sterk deelwoord: geschreven, gebroken
+      add(a + 'e');                      // geschrevene (te veel verbogen)
+      add(a + 'd');                      // geschrevend (onterechte d)
     } else if (/d$/.test(a)) {           // gebeurd / stam op d
       add(a + 't');                      // gebeurdt (dt-fout)
       add(a.slice(0, -1) + 't');         // gebeurt  (t i.p.v. d)
     } else if (/t$/.test(a)) {           // poetst / gefietst
       add(a.slice(0, -1));               // poets  (t vergeten)
       add(a.slice(0, -1) + 'd');         // poetsd (d i.p.v. t)
-    } else {                             // ik-vorm stam / voltooid deelwoord op -en
+    } else {                             // ik-vorm stam / deelwoord op -en (niet-bijvoeglijk)
       add(a + 't');                      // poetst
       add(a + 'd');                      // poetsd
     }
