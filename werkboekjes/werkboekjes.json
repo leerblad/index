@@ -1,0 +1,47 @@
+{
+  "categorieen": ["gouden weken", "rekenen", "spelling", "taal", "weektaak", "feestdagen"],
+  "werkboeken": [
+    {
+      "titel": "Voorbeeld: Gouden Weken startpakket",
+      "categorie": "gouden weken",
+      "beschrijving": "Kant-en-klaar startpakket voor de eerste weken van het schooljaar: kennismakingsopdrachten, groepsvormende activiteiten en afspraken voor een goede sfeer.",
+      "bestand": "voorbeeld-gouden-weken.pdf",
+      "cover": ""
+    },
+    {
+      "titel": "Voorbeeld: Rekenen groep 5",
+      "categorie": "rekenen",
+      "beschrijving": "Oefenbladen rekenen voor groep 5, met sommen tot 100 en eenvoudige verhaalsommen. Ideaal als extra oefenstof of huiswerk.",
+      "bestand": "voorbeeld-rekenen.pdf",
+      "cover": ""
+    },
+    {
+      "titel": "Voorbeeld: Spelling categoriekaarten",
+      "categorie": "spelling",
+      "beschrijving": "Overzichtelijke categoriekaarten voor de spellingcategorieën, om op te hangen in de klas of uit te delen.",
+      "bestand": "voorbeeld-spelling.pdf",
+      "cover": ""
+    },
+    {
+      "titel": "Voorbeeld: Taal woordenschat",
+      "categorie": "taal",
+      "beschrijving": "Woordenschatoefeningen met nieuwe woorden, betekenissen en zinnen om zelf aan te vullen.",
+      "bestand": "voorbeeld-taal.pdf",
+      "cover": ""
+    },
+    {
+      "titel": "Voorbeeld: Weektaak sjabloon",
+      "categorie": "weektaak",
+      "beschrijving": "Een leeg weektaak-sjabloon dat je per week kunt invullen. Print voor elke leerling of projecteer op het digibord.",
+      "bestand": "voorbeeld-weektaak.pdf",
+      "cover": ""
+    },
+    {
+      "titel": "Voorbeeld: Feestdagen Sinterklaas",
+      "categorie": "feestdagen",
+      "beschrijving": "Themawerkblad rond Sinterklaas met knutsel- en schrijfopdrachten voor de onderbouw en middenbouw.",
+      "bestand": "voorbeeld-feestdagen.pdf",
+      "cover": ""
+    }
+  ]
+}

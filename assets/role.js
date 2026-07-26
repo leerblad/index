@@ -15,7 +15,8 @@
     'tafelspellen.html', 'tafelsnake.html', 'tafelgeheugen.html',
     'tafelraket.html', 'tafelsprint.html', 'tafeltoernooi.html', 'tafeldobbel.html',
     'verhaalspellen.html', 'verhaalpad.html', 'verhaallijn.html', 'verhaalballon.html',
-    'werkwoordspellen.html', 'wwpad.html', 'wwlijn.html', 'wwballon.html'
+    'werkwoordspellen.html', 'wwpad.html', 'wwlijn.html', 'wwballon.html',
+    'werkboekjes.html'   // eigen leerling-melding i.p.v. onderhoud-overlay
   ];
 
   /* sessionStorage: de rol geldt alleen binnen het huidige bezoek.

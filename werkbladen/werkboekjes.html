@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>(function(){try{var r=sessionStorage.getItem('leerblad-role');document.documentElement.setAttribute('data-theme',r==='leerling'?'dark':'light');if(r)document.documentElement.setAttribute('data-role',r);}catch(e){}})();</script>
+  <title>Leerblad – Werkboekjes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f8f8f8; color: #1a1a1a; min-height: 100vh; }
+
+    .topbar { background: #fff; border-bottom: 0.5px solid #e5e5e5; position: sticky; top: 0; z-index: 100; }
+    .topbar-inner { max-width: 1280px; margin: 0 auto; padding: 0 160px; display: flex; align-items: center; justify-content: space-between; height: 84px; gap: 1rem; }
+    .logo-link { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; flex-shrink: 0; }
+    .logo-text { font-size: 40px; font-weight: 200; letter-spacing: 1.5px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.1; }
+    .logo-tagline-row { display: flex; align-items: center; gap: 7px; }
+    .logo-tagline-line { height: 1px; width: 36px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); opacity: 0.4; }
+    .logo-tagline { font-size: 8.5px; letter-spacing: 3px; color: #2A7FD4; font-weight: 400; text-transform: uppercase; }
+    nav { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+    .nav-btn { font-size: 16px; font-weight: 400; color: #888; border: none; background: none; padding: 10px 20px; border-radius: 24px; cursor: pointer; transition: background 0.18s, color 0.18s; white-space: nowrap; text-decoration: none; display: inline-flex; align-items: center; }
+    .nav-btn:hover, .nav-dropdown:hover > .nav-btn { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
+    .nav-btn.active { background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
+    .nav-btn.active:hover { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
+    .nav-btn.soon { color: #ccc; cursor: default; pointer-events: none; }
+    .tag { font-size: 9px; background: rgba(255,255,255,0.25); color: inherit; padding: 2px 6px; border-radius: 10px; margin-left: 4px; }
+    .nav-btn:not(:hover) .tag { background: #f0f0f0; color: #bbb; }
+    .nav-dropdown { position: relative; display: inline-flex; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; padding-top: 8px; min-width: 200px; z-index: 200; flex-direction: column; }
+    .nav-dropdown-menu-inner { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 12px; padding: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 2px; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: flex; }
+    .nav-dropdown-item { font-size: 14px; color: #555; padding: 9px 14px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: background 0.12s, color 0.12s; white-space: nowrap; }
+    .nav-dropdown-item:hover { background: #e8f4fd; color: #2A7FD4; }
+    .nav-dropdown-item.soon { color: #ccc; pointer-events: none; }
+    .nav-dropdown-item.soon .tag { background: #f5f5f5; color: #ccc; }
+
+    .main { max-width: 1280px; margin: 0 auto; padding: 2.5rem 160px 4rem; }
+    .section-title { font-size: 28px; font-weight: 300; color: #1a1a1a; margin-bottom: 4px; }
+    .section-sub { font-size: 13px; color: #999; margin-bottom: 2.25rem; }
+
+    /* ── Webshop-layout ── */
+    .wb-layout { display: flex; gap: 2.25rem; align-items: flex-start; }
+    .wb-filters { width: 210px; flex-shrink: 0; position: sticky; top: 108px; }
+    .wb-filters h2 { font-size: 11px; text-transform: uppercase; letter-spacing: 2.5px; color: #bbb; font-weight: 600; margin-bottom: 1rem; }
+    .wb-search { width: 100%; font-family: inherit; font-size: 13.5px; padding: 10px 14px; border: 0.5px solid #e0e0e0; border-radius: 12px; background: #fff; color: #1a1a1a; margin-bottom: 1.5rem; outline: none; transition: border-color .15s; }
+    .wb-search:focus { border-color: #2A7FD4; }
+    .wb-filter-list { display: flex; flex-direction: column; gap: 2px; }
+    .wb-filter { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px; cursor: pointer; font-size: 14px; color: #555; transition: background .12s, color .12s; user-select: none; }
+    .wb-filter:hover { background: #f0f4f8; }
+    .wb-filter input { appearance: none; -webkit-appearance: none; width: 17px; height: 17px; border: 1.5px solid #cfd6df; border-radius: 5px; flex-shrink: 0; cursor: pointer; position: relative; transition: border-color .12s, background .12s; }
+    .wb-filter input:checked { background: #2A7FD4; border-color: #2A7FD4; }
+    .wb-filter input:checked::after { content: ''; position: absolute; left: 5px; top: 1.5px; width: 4px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+    .wb-filter .dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+    .wb-filter .cnt { margin-left: auto; font-size: 11.5px; color: #b6b6b6; font-variant-numeric: tabular-nums; }
+    .wb-filter.checked { color: #1a1a1a; font-weight: 500; }
+    .wb-reset { margin-top: 1rem; font-size: 12.5px; color: #2A7FD4; background: none; border: none; cursor: pointer; padding: 4px 12px; font-family: inherit; display: none; }
+    .wb-reset.show { display: inline-block; }
+
+    .wb-main { flex: 1; min-width: 0; }
+    .wb-count { font-size: 12.5px; color: #999; margin-bottom: 1.25rem; }
+    .wb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1.4rem; }
+
+    .wb-card { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 16px; overflow: hidden; cursor: pointer; display: flex; flex-direction: column; text-align: left; padding: 0; font-family: inherit; transition: box-shadow .18s, border-color .18s, transform .18s; }
+    .wb-card:hover { box-shadow: 0 10px 30px rgba(42,127,212,0.14); border-color: #cfe0f2; transform: translateY(-3px); }
+    .wb-cover { aspect-ratio: 3 / 4; position: relative; display: flex; flex-direction: column; justify-content: space-between; padding: 16px; color: #fff; overflow: hidden; }
+    .wb-cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .wb-cover.has-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0.05) 55%); }
+    .wb-cover .wb-cat-badge { align-self: flex-start; position: relative; z-index: 1; font-size: 9.5px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.22); backdrop-filter: blur(4px); }
+    .wb-cover .wb-cover-title { position: relative; z-index: 1; font-size: 16px; font-weight: 600; line-height: 1.3; text-shadow: 0 1px 10px rgba(0,0,0,0.35); }
+    .wb-cover .wb-pdf-glyph { position: absolute; right: -10px; bottom: -14px; font-size: 90px; opacity: 0.12; font-weight: 700; }
+    .wb-card-body { padding: 12px 15px 14px; display: flex; flex-direction: column; gap: 7px; }
+    .wb-card-cat { font-size: 11.5px; font-weight: 500; letter-spacing: .5px; text-transform: capitalize; display: inline-flex; align-items: center; gap: 7px; color: #888; }
+    .wb-card-cat .dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    .wb-empty { padding: 3rem 1rem; text-align: center; color: #aaa; font-size: 14px; }
+
+    /* ── Detail-modal ── */
+    .wb-modal { position: fixed; inset: 0; z-index: 300; display: none; align-items: center; justify-content: center; padding: 2rem; background: rgba(15,22,33,0.55); backdrop-filter: blur(3px); }
+    .wb-modal.open { display: flex; }
+    .wb-modal-inner { background: #fff; border-radius: 20px; width: 100%; max-width: 1000px; max-height: 88vh; display: flex; overflow: hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.4); }
+    .wb-preview { flex: 1.35; background: #eef1f4; min-width: 0; display: flex; }
+    .wb-preview iframe { width: 100%; height: 100%; border: none; }
+    .wb-preview .wb-noprev { margin: auto; text-align: center; color: #9aa3ad; font-size: 13px; padding: 2rem; }
+    .wb-detail { flex: 1; padding: 2.25rem 2rem; display: flex; flex-direction: column; overflow-y: auto; }
+    .wb-detail .wb-d-cat { font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; display: inline-flex; align-items: center; gap: 7px; align-self: flex-start; padding: 5px 12px; border-radius: 20px; margin-bottom: 1rem; }
+    .wb-detail h3 { font-size: 22px; font-weight: 600; color: #1a1a1a; line-height: 1.25; margin-bottom: 1rem; }
+    .wb-detail .wb-d-desc { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 2rem; }
+    .wb-detail .wb-d-actions { margin-top: auto; }
+    .wb-download { display: inline-flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 600; color: #fff; text-decoration: none; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); padding: 14px 30px; border-radius: 30px; box-shadow: 0 8px 26px rgba(42,127,212,0.28); transition: transform .15s, box-shadow .15s; }
+    .wb-download:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(42,127,212,0.4); }
+    .wb-modal-close { position: absolute; top: 1.25rem; right: 1.5rem; width: 40px; height: 40px; border-radius: 50%; border: none; background: rgba(255,255,255,0.9); color: #333; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0,0,0,0.2); }
+    .wb-modal-close:hover { background: #fff; }
+
+    /* ── Leerling-melding ── */
+    .lln-melding { max-width: 520px; margin: 3rem auto; text-align: center; }
+    .lln-melding .lln-emoji { font-size: 54px; margin-bottom: 1rem; }
+    .lln-melding h1 { font-size: 26px; font-weight: 300; margin-bottom: 0.85rem; }
+    .lln-melding p { font-size: 15px; line-height: 1.7; color: #9aa7bf; }
+
+    @media (max-width: 1100px) { .topbar-inner, .main { padding-left: 2rem; padding-right: 2rem; } }
+    @media (max-width: 860px) {
+      .wb-layout { flex-direction: column; }
+      .wb-filters { width: 100%; position: static; }
+      .wb-filter-list { flex-direction: row; flex-wrap: wrap; }
+      .wb-filter { background: #fff; border: 0.5px solid #e5e5e5; }
+      .wb-modal-inner { flex-direction: column; max-height: 92vh; }
+      .wb-preview { min-height: 45vh; }
+    }
+    @media (max-width: 600px) { .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; } nav { gap: 2px; } .nav-btn { font-size: 12px; padding: 5px 10px; } .main { padding: 1.5rem 1rem 3rem; } }
+  </style>
+  <link rel="stylesheet" href="../assets/theme.css" />
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-link" href="../index.html">
+      <span class="logo-text">Leerblad</span>
+      <div class="logo-tagline-row"><div class="logo-tagline-line"></div><div class="logo-tagline">Werkbladen op maat</div><div class="logo-tagline-line"></div></div>
+    </a>
+    <nav>
+      <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
+      <div class="nav-dropdown">
+        <a class="nav-btn" href="rekenindex.html">Rekenen</a>
+        <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
+          <a class="nav-dropdown-item" href="tafelsommen.html">Tafelsommen</a>
+          <a class="nav-dropdown-item" href="deeltafels.html">Deeltafels</a>
+          <a class="nav-dropdown-item" href="tafelspellen.html">Tafelspellen</a>
+          <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+        </div></div>
+      </div>
+      <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
+      <a class="nav-btn active" href="werkboekjes.html">Werkboekjes</a>
+    </nav>
+  </div>
+</header>
+<main class="main">
+
+  <!-- ══════ LEERKRACHT: webshop ══════ -->
+  <div data-role-view="leerkracht">
+    <h1 class="section-title">Werkboekjes</h1>
+    <p class="section-sub">Bekijk en download kant-en-klare werkboekjes. Filter links op onderwerp en klik op een werkboekje voor een voorbeeld.</p>
+
+    <div class="wb-layout">
+      <aside class="wb-filters">
+        <h2>Filteren</h2>
+        <input type="search" class="wb-search" id="wbSearch" placeholder="Zoek een werkboekje…" />
+        <div class="wb-filter-list" id="wbFilters"></div>
+        <button type="button" class="wb-reset" id="wbReset">Filters wissen</button>
+      </aside>
+
+      <div class="wb-main">
+        <div class="wb-count" id="wbCount"></div>
+        <div class="wb-grid" id="wbGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ LEERLING: melding ══════ -->
+  <div data-role-view="leerling">
+    <div class="lln-melding">
+      <div class="lln-emoji">📚</div>
+      <h1>Werkboekjes</h1>
+      <p>Vraag je leerkracht om een werkboek te printen indien nodig.</p>
+    </div>
+  </div>
+
+</main>
+
+<!-- Detail-modal -->
+<div class="wb-modal" id="wbModal">
+  <div class="wb-modal-inner" style="position:relative;">
+    <button type="button" class="wb-modal-close" id="wbClose" aria-label="Sluiten">×</button>
+    <div class="wb-preview" id="wbPreview"></div>
+    <div class="wb-detail">
+      <span class="wb-d-cat" id="wbDCat"></span>
+      <h3 id="wbDTitle"></h3>
+      <p class="wb-d-desc" id="wbDDesc"></p>
+      <div class="wb-d-actions">
+        <a class="wb-download" id="wbDownload" href="#" download>
+          <span aria-hidden="true">⬇</span> Download werkboekje
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>www.leerblad.nl</footer>
+
+<script>
+(function () {
+  /* Alleen de webshop opbouwen voor de leerkracht (leerling ziet de melding). */
+  var role = 'leerkracht';
+  try { role = sessionStorage.getItem('leerblad-role') || 'leerkracht'; } catch (e) {}
+  if (role === 'leerling') return;
+
+  var BASIS = '../werkboekjes/';
+  var PDF_PAD = BASIS + 'pdfs/';
+  var COVER_PAD = BASIS + 'covers/';
+
+  /* Kleur per categorie (voor omslag, stip en badge) */
+  var KLEUREN = {
+    'gouden weken': '#E0A83E',
+    'rekenen': '#2A7FD4',
+    'spelling': '#2DBF8E',
+    'taal': '#8B5CF6',
+    'weektaak': '#0EA5A5',
+    'feestdagen': '#E4572E'
+  };
+  function kleurVoor(cat) { return KLEUREN[cat] || '#2A7FD4'; }
+  function categorieenVan(wb) { return Array.isArray(wb.categorie) ? wb.categorie : [wb.categorie]; }
+
+  var grid = document.getElementById('wbGrid');
+  var filterList = document.getElementById('wbFilters');
+  var countEl = document.getElementById('wbCount');
+  var searchEl = document.getElementById('wbSearch');
+  var resetEl = document.getElementById('wbReset');
+  var actief = {};          // geselecteerde categorieën
+  var alleBoeken = [];
+  var categorieen = [];
+
+  fetch(BASIS + 'werkboekjes.json')
+    .then(function (r) { if (!r.ok) throw new Error('geen data'); return r.json(); })
+    .then(function (data) {
+      categorieen = data.categorieen || [];
+      alleBoeken = data.werkboeken || [];
+      bouwFilters();
+      render();
+    })
+    .catch(function () {
+      grid.innerHTML = '<div class="wb-empty">De werkboekjes konden niet worden geladen.</div>';
+    });
+
+  function telPer(cat) {
+    var n = 0;
+    for (var i = 0; i < alleBoeken.length; i++) {
+      if (categorieenVan(alleBoeken[i]).indexOf(cat) !== -1) n++;
+    }
+    return n;
+  }
+
+  function bouwFilters() {
+    filterList.innerHTML = '';
+    categorieen.forEach(function (cat) {
+      var lbl = document.createElement('label');
+      lbl.className = 'wb-filter';
+      var cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.value = cat;
+      cb.addEventListener('change', function () {
+        if (cb.checked) { actief[cat] = true; lbl.classList.add('checked'); }
+        else { delete actief[cat]; lbl.classList.remove('checked'); }
+        render();
+      });
+      var dot = document.createElement('span'); dot.className = 'dot'; dot.style.background = kleurVoor(cat);
+      var naam = document.createElement('span'); naam.textContent = cat;
+      naam.style.textTransform = 'capitalize';
+      var cnt = document.createElement('span'); cnt.className = 'cnt'; cnt.textContent = telPer(cat);
+      lbl.appendChild(cb); lbl.appendChild(dot); lbl.appendChild(naam); lbl.appendChild(cnt);
+      filterList.appendChild(lbl);
+    });
+    resetEl.addEventListener('click', function () {
+      actief = {};
+      var cbs = filterList.querySelectorAll('input');
+      for (var i = 0; i < cbs.length; i++) { cbs[i].checked = false; }
+      var labels = filterList.querySelectorAll('.wb-filter');
+      for (var j = 0; j < labels.length; j++) { labels[j].classList.remove('checked'); }
+      searchEl.value = '';
+      render();
+    });
+    searchEl.addEventListener('input', render);
+  }
+
+  function zichtbaar() {
+    var geselecteerd = Object.keys(actief);
+    var zoek = (searchEl.value || '').trim().toLowerCase();
+    return alleBoeken.filter(function (wb) {
+      if (geselecteerd.length) {
+        var cats = categorieenVan(wb);
+        var match = false;
+        for (var i = 0; i < geselecteerd.length; i++) { if (cats.indexOf(geselecteerd[i]) !== -1) { match = true; break; } }
+        if (!match) return false;
+      }
+      if (zoek) {
+        var hooi = (wb.titel + ' ' + (wb.beschrijving || '') + ' ' + categorieenVan(wb).join(' ')).toLowerCase();
+        if (hooi.indexOf(zoek) === -1) return false;
+      }
+      return true;
+    });
+  }
+
+  function render() {
+    var lijst = zichtbaar();
+    resetEl.classList.toggle('show', Object.keys(actief).length > 0 || (searchEl.value || '').trim() !== '');
+    countEl.textContent = lijst.length + (lijst.length === 1 ? ' werkboekje' : ' werkboekjes');
+    grid.innerHTML = '';
+    if (!lijst.length) {
+      grid.innerHTML = '<div class="wb-empty">Geen werkboekjes gevonden. Pas het filter of de zoekopdracht aan.</div>';
+      return;
+    }
+    lijst.forEach(function (wb) {
+      var hoofdCat = categorieenVan(wb)[0];
+      var kleur = kleurVoor(hoofdCat);
+      var card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'wb-card';
+
+      var cover = document.createElement('div');
+      cover.className = 'wb-cover';
+      if (wb.cover) {
+        cover.className += ' has-img';
+        var img = document.createElement('img');
+        img.src = COVER_PAD + wb.cover; img.alt = '';
+        cover.appendChild(img);
+      } else {
+        cover.style.background = 'linear-gradient(150deg, ' + kleur + ', ' + schaduw(kleur) + ')';
+        var glyph = document.createElement('span'); glyph.className = 'wb-pdf-glyph'; glyph.textContent = 'PDF';
+        cover.appendChild(glyph);
+      }
+      var badge = document.createElement('span'); badge.className = 'wb-cat-badge'; badge.textContent = hoofdCat;
+      var ct = document.createElement('span'); ct.className = 'wb-cover-title'; ct.textContent = wb.titel;
+      cover.appendChild(badge); cover.appendChild(ct);
+
+      var body = document.createElement('div');
+      body.className = 'wb-card-body';
+      var c = document.createElement('div'); c.className = 'wb-card-cat';
+      var d = document.createElement('span'); d.className = 'dot'; d.style.background = kleur;
+      var cn = document.createElement('span'); cn.textContent = categorieenVan(wb).join(', ');
+      c.appendChild(d); c.appendChild(cn);
+      body.appendChild(c);
+
+      card.appendChild(cover); card.appendChild(body);
+      card.addEventListener('click', function () { openDetail(wb); });
+      grid.appendChild(card);
+    });
+  }
+
+  /* Iets donkerder tint voor het omslagverloop */
+  function schaduw(hex) {
+    var n = parseInt(hex.slice(1), 16);
+    var r = Math.max(0, (n >> 16) - 40), g = Math.max(0, ((n >> 8) & 255) - 40), b = Math.max(0, (n & 255) - 40);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+  }
+
+  /* ── Detail-modal ── */
+  var modal = document.getElementById('wbModal');
+  var preview = document.getElementById('wbPreview');
+  var dCat = document.getElementById('wbDCat');
+  var dTitle = document.getElementById('wbDTitle');
+  var dDesc = document.getElementById('wbDDesc');
+  var dDownload = document.getElementById('wbDownload');
+
+  function openDetail(wb) {
+    var hoofdCat = categorieenVan(wb)[0];
+    var kleur = kleurVoor(hoofdCat);
+    var pdf = PDF_PAD + wb.bestand;
+
+    preview.innerHTML = '';
+    if (wb.bestand) {
+      var frame = document.createElement('iframe');
+      frame.src = pdf + '#toolbar=0&navpanes=0&view=FitH';
+      frame.title = 'Voorbeeld van ' + wb.titel;
+      preview.appendChild(frame);
+    } else {
+      preview.innerHTML = '<div class="wb-noprev">Geen voorbeeld beschikbaar.</div>';
+    }
+
+    dCat.textContent = categorieenVan(wb).join(' · ');
+    dCat.style.background = 'rgba(0,0,0,0.04)';
+    dCat.style.color = kleur;
+    dTitle.textContent = wb.titel;
+    dDesc.textContent = wb.beschrijving || '';
+    dDownload.href = pdf;
+    dDownload.setAttribute('download', '');
+
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function sluit() {
+    modal.classList.remove('open');
+    preview.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+  document.getElementById('wbClose').addEventListener('click', sluit);
+  modal.addEventListener('click', function (e) { if (e.target === modal) sluit(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('open')) sluit(); });
+})();
+</script>
+
+<script src="../assets/role.js"></script>
+</body>
+</html>
