@@ -215,6 +215,23 @@
   function kleurVoor(cat) { return KLEUREN[cat] || '#2A7FD4'; }
   function categorieenVan(wb) { return Array.isArray(wb.categorie) ? wb.categorie : [wb.categorie]; }
 
+  /* Nette downloadnaam. Automatisch op basis van de (hoofd)categorie:
+     eerste boek van een categorie -> "goudenweken_leerblad", tweede -> "goudenweken2_leerblad", ...
+     Een expliciet "downloadnaam" in het manifest overschrijft dit. */
+  function downloadNaam(wb) {
+    if (wb.downloadnaam) return wb.downloadnaam.replace(/\.pdf$/i, '') + '.pdf';
+    var cat = categorieenVan(wb)[0] || 'werkboek';
+    var slug = cat.toLowerCase().replace(/[^a-z0-9]+/g, '');
+    var nr = 0;
+    for (var i = 0; i < alleBoeken.length; i++) {
+      if (categorieenVan(alleBoeken[i])[0] === cat) {
+        nr++;
+        if (alleBoeken[i] === wb) break;
+      }
+    }
+    return slug + (nr > 1 ? nr : '') + '_leerblad.pdf';
+  }
+
   var grid = document.getElementById('wbGrid');
   var filterList = document.getElementById('wbFilters');
   var countEl = document.getElementById('wbCount');
@@ -376,7 +393,7 @@
     dTitle.textContent = wb.titel;
     dDesc.textContent = wb.beschrijving || '';
     dDownload.href = pdf;
-    dDownload.setAttribute('download', '');
+    dDownload.setAttribute('download', downloadNaam(wb));
 
     modal.classList.add('open');
     document.body.style.overflow = 'hidden';

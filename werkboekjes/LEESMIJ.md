@@ -36,6 +36,14 @@ een voorbeeld met download-knop. De pagina leest alle gegevens uit
 | `bestand`      | ja        | Bestandsnaam van de PDF in `werkboekjes/pdfs/`. |
 | `cover`        | nee       | Optionele omslagafbeelding in `werkboekjes/covers/`. Laat leeg (`""`) voor een automatische omslag met de titel. |
 
+## Downloadnaam
+
+De download krijgt automatisch een nette naam op basis van de categorie:
+het eerste boek van *gouden weken* downloadt als `goudenweken_leerblad.pdf`,
+het tweede als `goudenweken2_leerblad.pdf`, enzovoort. Je hoeft hier niets
+voor in te stellen. Wil je toch een eigen naam? Voeg dan `"downloadnaam":
+"eigen_naam"` toe aan het blok.
+
 ## Filters wijzigen
 
 De filters staan bovenaan in `"categorieen"`. Voeg hier een categorie toe of
