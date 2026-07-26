@@ -1,11 +1,18 @@
 {
-  "categorieen": ["gouden weken", "rekenen", "spelling", "taal", "weektaak", "feestdagen"],
+  "categorieen": [
+    "gouden weken",
+    "rekenen",
+    "spelling",
+    "taal",
+    "weektaak",
+    "feestdagen"
+  ],
   "werkboeken": [
     {
-      "titel": "Voorbeeld: Gouden Weken startpakket",
+      "titel": "De gouden weken",
       "categorie": "gouden weken",
-      "beschrijving": "Kant-en-klaar startpakket voor de eerste weken van het schooljaar: kennismakingsopdrachten, groepsvormende activiteiten en afspraken voor een goede sfeer.",
-      "bestand": "voorbeeld-gouden-weken.pdf",
+      "beschrijving": "Praktisch werkboek voor de gouden weken: de eerste weken van het schooljaar waarin je met groepsvormende activiteiten werkt aan een positieve sfeer, afspraken en een goede groep. Met kant-en-klare opdrachten en werkvormen.",
+      "bestand": "198485_28082024_De_gouden_weken_1.pdf",
       "cover": ""
     },
     {
