@@ -37,28 +37,43 @@
 
   /* Plausibele foute spellingen op basis van het juiste woord + de infinitief.
      Bewust alleen realistische werkwoordspelling-fouten (geen dubbele letters). */
+  /* Scheidbare prefixen — voor het herkennen van scheidbaar-voltooid-deelwoord
+     (prefix + 'ge' + rest, bv. aan+ge+sloten) en niet-scheidbaar (ver/be/ge/...). */
+  var SEP_PREFIX = ['aan', 'op', 'uit', 'in', 'bij', 'af', 'mee', 'toe', 'voor', 'na',
+    'om', 'over', 'onder', 'door', 'terug', 'weg', 'samen', 'tegen', 'vast', 'los', 'neer'];
+
   function afleiders(a, inf) {
     var set = {}, out = [];
     set[a] = 1;
     function add(w) { if (w && !set[w] && /^[a-zA-ZëéèïÉ' -]+$/.test(w)) { set[w] = 1; out.push(w); } }
 
+    /* Scheidbaar voltooid deelwoord? -> fout met 'ge' vooraan (geaansloten). */
+    var geVooraan = null;
+    for (var i = 0; i < SEP_PREFIX.length; i++) {
+      var p = SEP_PREFIX[i];
+      if (a.indexOf(p) === 0 && a.substr(p.length, 2) === 'ge') {
+        geVooraan = 'ge' + p + a.slice(p.length + 2);   // aangesloten -> geaansloten
+        break;
+      }
+    }
+
+    /* d/t-fouten, afhankelijk van de uitgang */
     if (/dt$/.test(a)) {                 // wordt
       add(a.slice(0, -1));               // word  (t vergeten)
       add(a.slice(0, -2) + 't');         // wort  (t i.p.v. dt)
-      add(inf);                          // worden
     } else if (/d$/.test(a)) {           // gebeurd / stam op d
       add(a + 't');                      // gebeurdt (dt-fout)
       add(a.slice(0, -1) + 't');         // gebeurt  (t i.p.v. d)
-      add(inf);                          // gebeuren
     } else if (/t$/.test(a)) {           // poetst / gefietst
       add(a.slice(0, -1));               // poets  (t vergeten)
       add(a.slice(0, -1) + 'd');         // poetsd (d i.p.v. t)
-      add(inf);                          // poetsen
     } else {                             // ik-vorm stam / voltooid deelwoord op -en
       add(a + 't');                      // poetst
       add(a + 'd');                      // poetsd
-      add(inf);                          // poetsen
     }
+
+    add(geVooraan);   // scheidbaar deelwoord met ge- verkeerd vooraan
+    add(inf);         // de infinitief als afleider (bv. aansluiten i.p.v. aangesloten)
     return out;
   }
 
