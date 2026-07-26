@@ -42,10 +42,20 @@
   var SEP_PREFIX = ['aan', 'op', 'uit', 'in', 'bij', 'af', 'mee', 'toe', 'voor', 'na',
     'om', 'over', 'onder', 'door', 'terug', 'weg', 'samen', 'tegen', 'vast', 'los', 'neer'];
 
-  function afleiders(a, inf) {
+  function afleiders(a, inf, ctx) {
     var set = {}, out = [];
     set[a] = 1;
     function add(w) { if (w && !set[w] && /^[a-zA-ZëéèïÉ' -]+$/.test(w)) { set[w] = 1; out.push(w); } }
+
+    /* Sterk verleden-tijd (ik/jij/hij) verzwakken: veelgemaakte fout waarbij een
+       leerling er een zwak werkwoord van maakt, bv. trof -> trofte, schrok -> schrokte.
+       Alleen bij een sterke verleden-tijd persoonsvorm (geen -e/-t/-d uitgang). */
+    if (ctx && ctx.tijd === 'verleden tijd' &&
+        (ctx.vorm === 'ik-vorm' || ctx.vorm === 'jij-vorm' || ctx.vorm === 'hij-vorm') &&
+        !/[etd]$/i.test(a)) {
+      var kofschip = /(ch|[tkfsp])$/i.test(a);   // 't kofschip -> -te, anders -de
+      add(a + (kofschip ? 'te' : 'de'));         // trofte / klomde
+    }
 
     /* Scheidbaar voltooid deelwoord? -> fout met 'ge' vooraan (geaansloten). */
     var geVooraan = null;
@@ -77,8 +87,8 @@
     return out;
   }
 
-  function opties(antwoord, inf) {
-    var fout = shuffle(afleiders(antwoord, inf)).slice(0, 3);
+  function opties(antwoord, inf, ctx) {
+    var fout = shuffle(afleiders(antwoord, inf, ctx)).slice(0, 3);
     var alle = [{ tekst: antwoord, goed: true }].concat(fout.map(function (w) { return { tekst: w, goed: false }; }));
     return shuffle(alle);
   }
@@ -119,7 +129,7 @@
       infinitief: inf,
       antwoord: z.antwoord,
       vorm: z.vorm,
-      opties: opties(z.antwoord, inf),
+      opties: opties(z.antwoord, inf, z),
       groep: groep
     };
   }
