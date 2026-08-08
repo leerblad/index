@@ -69,10 +69,11 @@
 
     .vgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 18px 22px; }
     .vsom { font-variant-numeric: tabular-nums; text-align: right; font-size: 16px; line-height: 1.45; color: #1a1a1a; }
-    .vsom .op { float: left; color: #888; }
+    .vsom .op { margin-left: 6px; color: #888; }
     .vsom .vline { border-top: 1.5px solid #bbb; margin-top: 3px; padding-top: 3px; min-height: 20px; }
     .vsom.deling { text-align: left; border-bottom: 0.5px solid #f0f0f0; padding-bottom: 8px; }
     .vsom.deling .lijn { display: inline-block; width: 46px; border-bottom: 1px solid #ccc; }
+    .vsom.deling .vak { border: 0.5px solid #eee; border-radius: 4px; height: 62px; margin-top: 6px; }
 
     .action-row { display: flex; gap: 8px; margin-top: 1.5rem; flex-wrap: wrap; }
     .action-btn { font-size: 12.5px; border: 0.5px solid #e0e0e0; background: #fff; color: #555; padding: 9px 18px; border-radius: 20px; cursor: pointer; transition: all 0.15s; font-family: inherit; }
@@ -127,7 +128,7 @@
       <button type="button" class="opt-btn active" data-bew="+">Optellen +</button>
       <button type="button" class="opt-btn" data-bew="-">Aftrekken &minus;</button>
       <button type="button" class="opt-btn" data-bew="x">Vermenigvuldigen &times;</button>
-      <button type="button" class="opt-btn" data-bew=":">Staartdeling &divide;</button>
+      <button type="button" class="opt-btn" data-bew=":">Grote deelsom &divide;</button>
     </div>
   </div>
 
@@ -223,7 +224,7 @@
   var huidige = [], huidigeTitel = '', huidigeBew = '+';
 
   function titelVoor(bew, niv, rest) {
-    var naam = { '+': 'Cijferend optellen', '-': 'Cijferend aftrekken', 'x': 'Cijferend vermenigvuldigen', ':': 'Staartdeling' }[bew];
+    var naam = { '+': 'Cijferend optellen', '-': 'Cijferend aftrekken', 'x': 'Cijferend vermenigvuldigen', ':': 'Grote deelsom' }[bew];
     if (bew === 'x') { var p = NIV['x'][niv]; return naam + ' (' + p[0] + ' x ' + p[1] + ' cijfers)'; }
     if (bew === ':') return naam + ' (' + (rest === 'met' ? 'met rest' : 'zonder rest') + ')';
     return naam + ' (' + NIV[bew][niv] + ' cijfers)';
@@ -246,11 +247,11 @@
       var d = document.createElement('div');
       if (bew === ':') {
         d.className = 'vsom deling';
-        d.innerHTML = s.a + ' : ' + s.b + ' = <span class="lijn">&nbsp;</span>';
+        d.innerHTML = s.a + ' : ' + s.b + ' = <span class="lijn">&nbsp;</span><div class="vak"></div>';
       } else {
         d.className = 'vsom';
         var teken = { '+': '+', '-': '&minus;', 'x': '&times;' }[s.op];
-        d.innerHTML = '<div>' + s.a + '</div><div><span class="op">' + teken + '</span>' + s.b + '</div><div class="vline">&nbsp;</div>';
+        d.innerHTML = '<div>' + s.a + '</div><div>' + s.b + '<span class="op">' + teken + '</span></div><div class="vline">&nbsp;</div>';
       }
       grid.appendChild(d);
     });
@@ -263,14 +264,16 @@
 
   /* ── PDF ── */
   function tekenVerticaal(doc, s, x, yTop, colW, isAntwoord) {
-    var pad = 7, xr = x + colW - pad, opX = x + pad;
+    var pad = 7, opRuimte = 6;
+    var xr = x + colW - pad - opRuimte;   /* rechterrand van de cijfers */
+    var xl = x + pad;                     /* linkerrand van de streep */
     doc.setFont('helvetica', 'normal'); doc.setFontSize(13); doc.setTextColor(30);
     var lh = 6.6, y1 = yTop + 6, y2 = y1 + lh;
     doc.text(String(s.a), xr, y1, { align: 'right' });
-    doc.text(s.op, opX, y2);
     doc.text(String(s.b), xr, y2, { align: 'right' });
+    doc.text(s.op, xr + 2.6, y2);         /* operator rechts van de som */
     var lineY = y2 + 2.4;
-    doc.setDrawColor(60); doc.setLineWidth(0.4); doc.line(opX, lineY, xr, lineY);
+    doc.setDrawColor(60); doc.setLineWidth(0.4); doc.line(xl, lineY, xr, lineY);
     if (isAntwoord) { doc.setTextColor(42, 127, 212); doc.text(String(s.antwoord), xr, lineY + lh, { align: 'right' }); doc.setTextColor(30); }
   }
   function tekenStaart(doc, s, x, yTop, colW, cellH, isAntwoord) {
@@ -300,7 +303,7 @@
     }
     var cols = bew === ':' ? 2 : 3;
     var colW = bw / cols, startY = mt + 13;
-    var cellH = bew === ':' ? 34 : 27;
+    var cellH = bew === ':' ? 54 : 27;
     sommen.forEach(function (s, i) {
       var col = i % cols, row = Math.floor(i / cols);
       var x = ml + col * colW, yTop = startY + row * cellH;
@@ -324,7 +327,7 @@
     var jsPDF = window.jspdf.jsPDF;
     var doc = new jsPDF({ unit: 'mm', format: 'a4' });
     var cols = huidigeBew === ':' ? 2 : 3;
-    var cellH = huidigeBew === ':' ? 34 : 27;
+    var cellH = huidigeBew === ':' ? 54 : 27;
     var rijenPerPagina = Math.floor((297 - 12 - 12 - (12 + 13)) / cellH);
     var perPagina = cols * rijenPerPagina;
     var paginas = [];
