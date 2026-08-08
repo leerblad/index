@@ -165,6 +165,7 @@
           inner.appendChild(navItem(prefix, 'Optellen & aftrekken', 'optellenaftrekken.html'));
           inner.appendChild(navItem(prefix, 'Cijferend rekenen', 'cijferend.html'));
           inner.appendChild(navItem(prefix, 'Klokkijken', 'klokkijken.html'));
+          inner.appendChild(navItem(prefix, 'Geld', 'geld.html'));
           // streep, daarna de uitleg van de leerlingpagina's (met grijs 'lln')
           inner.appendChild(navDivider());
           inner.appendChild(navItem(prefix, 'Tafelspellen', 'tafelspellen.html', { lln: true }));
