@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <!-- Cookie-toestemming + Google Analytics -->
+  <script src="/assets/cookie.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/favicon-180.png" />
+  <script>(function(){try{var r=sessionStorage.getItem('leerblad-role');document.documentElement.setAttribute('data-theme',r==='leerling'?'dark':'light');if(r)document.documentElement.setAttribute('data-role',r);}catch(e){}})();</script>
+  <title>Leerblad – Klokkijken</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; background: #f8f8f8; color: #1a1a1a; min-height: 100vh; }
+
+    .topbar { background: #fff; border-bottom: 0.5px solid #e5e5e5; position: sticky; top: 0; z-index: 100; }
+    .topbar-inner { max-width: 1280px; margin: 0 auto; padding: 0 160px; display: flex; align-items: center; justify-content: space-between; height: 84px; gap: 1rem; }
+    .logo-link { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; flex-shrink: 0; }
+    .logo-text { font-size: 40px; font-weight: 200; letter-spacing: 1.5px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.1; }
+    .logo-tagline-row { display: flex; align-items: center; gap: 7px; }
+    .logo-tagline-line { height: 1px; width: 36px; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); opacity: 0.4; }
+    .logo-tagline { font-size: 8.5px; letter-spacing: 3px; color: #2A7FD4; font-weight: 400; text-transform: uppercase; }
+
+    nav { display: flex; gap: 4px; flex-wrap: wrap; align-items: center; }
+    .nav-btn { font-size: 16px; font-weight: 400; color: #888; border: none; background: none; padding: 10px 20px; border-radius: 24px; cursor: pointer; transition: background 0.18s, color 0.18s; white-space: nowrap; text-decoration: none; display: inline-flex; align-items: center; }
+    .nav-btn:hover, .nav-dropdown:hover > .nav-btn { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
+    .nav-btn.active { background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
+    .nav-btn.active:hover { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; }
+    .nav-btn.soon { color: #ccc; cursor: default; pointer-events: none; }
+    .tag { font-size: 9px; background: rgba(255,255,255,0.25); color: inherit; padding: 2px 6px; border-radius: 10px; margin-left: 4px; }
+    .nav-btn:not(:hover) .tag { background: #f0f0f0; color: #bbb; }
+    .nav-dropdown { position: relative; display: inline-flex; }
+    .nav-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; padding-top: 8px; min-width: 200px; z-index: 200; flex-direction: column; }
+    .nav-dropdown-menu-inner { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 12px; padding: 6px; box-shadow: 0 8px 24px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 2px; }
+    .nav-dropdown:hover .nav-dropdown-menu { display: flex; }
+    .nav-dropdown-item { font-size: 14px; color: #555; padding: 9px 14px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 8px; transition: background 0.12s, color 0.12s; white-space: nowrap; }
+    .nav-dropdown-item:hover { background: #e8f4fd; color: #2A7FD4; }
+    .nav-dropdown-item.soon { color: #ccc; pointer-events: none; }
+    .nav-dropdown-item.soon .tag { background: #f5f5f5; color: #ccc; }
+
+    .main { max-width: 1280px; margin: 0 auto; padding: 2.5rem 160px 4rem; }
+    .section-title { font-size: 28px; font-weight: 300; color: #1a1a1a; margin-bottom: 4px; }
+    .section-sub { font-size: 13px; color: #999; margin-bottom: 2rem; }
+
+    .card { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 12px; padding: 1.25rem 1.5rem; margin-bottom: 1rem; }
+    .card-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 2.5px; color: #2A7FD4; margin-bottom: 12px; }
+
+    .opt-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .opt-row + .opt-row { margin-top: 12px; }
+    .opt-label { font-size: 13px; color: #888; min-width: 92px; }
+    .opt-btn { font-size: 13px; border: 0.5px solid #e0e0e0; background: #f8f8f8; color: #555; padding: 8px 18px; border-radius: 8px; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .opt-btn:hover { border-color: #2A7FD4; color: #2A7FD4; background: #e8f4fd; }
+    .opt-btn.active { border-color: #2A7FD4; background: #e8f4fd; color: #2A7FD4; font-weight: 500; }
+
+    .generate-btn { font-size: 14px; font-weight: 500; background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; border: none; padding: 13px 32px; border-radius: 24px; cursor: pointer; transition: opacity 0.2s, transform 0.15s; }
+    .generate-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+
+    .output-area { background: #fff; border: 0.5px solid #e5e5e5; border-radius: 12px; padding: 1.5rem; margin-top: 1.5rem; display: none; }
+    .output-area.visible { display: block; }
+    .output-title { font-size: 17px; font-weight: 400; color: #1a1a1a; margin-bottom: 4px; }
+    .output-instr { font-size: 13px; color: #999; margin-bottom: 1rem; }
+
+    .kgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 18px; }
+    .kcel { text-align: center; }
+    .kcel svg { display: block; margin: 0 auto; }
+    .kcel .tijd { font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+    .kcel .lijn { display: inline-block; width: 54px; border-bottom: 1px solid #bbb; height: 16px; margin-top: 6px; }
+
+    .action-row { display: flex; gap: 8px; margin-top: 1.5rem; flex-wrap: wrap; }
+    .action-btn { font-size: 12.5px; border: 0.5px solid #e0e0e0; background: #fff; color: #555; padding: 9px 18px; border-radius: 20px; cursor: pointer; transition: all 0.15s; font-family: inherit; }
+    .action-btn:hover { border-color: #2A7FD4; color: #2A7FD4; }
+    .action-btn.primary { background: linear-gradient(90deg, #2A7FD4, #2DBF8E); color: #fff; border-color: transparent; }
+    .action-btn.primary:hover { opacity: 0.85; }
+
+    @media (max-width: 1100px) { .topbar-inner, .main { padding-left: 2rem; padding-right: 2rem; } }
+    @media (max-width: 600px) {
+      .topbar-inner { flex-wrap: wrap; height: auto; padding: 0.75rem 1rem; gap: 0.5rem; }
+      nav { gap: 2px; } .nav-btn { font-size: 12px; padding: 5px 10px; }
+      .main { padding: 1.5rem 1rem 3rem; }
+      .opt-label { min-width: 100%; }
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/theme.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="logo-link" href="../index.html">
+      <span class="logo-text">Leerblad</span>
+      <div class="logo-tagline-row"><div class="logo-tagline-line"></div><div class="logo-tagline">Werkbladen op maat</div><div class="logo-tagline-line"></div></div>
+    </a>
+    <nav>
+      <a class="nav-btn" href="werkwoordspelling.html">Werkwoordspelling</a>
+      <div class="nav-dropdown">
+        <a class="nav-btn active" href="rekenindex.html">Rekenen</a>
+        <div class="nav-dropdown-menu"><div class="nav-dropdown-menu-inner">
+          <a class="nav-dropdown-item" href="tafelsommen.html">Tafelsommen</a>
+          <a class="nav-dropdown-item" href="deeltafels.html">Deeltafels</a>
+          <a class="nav-dropdown-item" href="tafelspellen.html">Tafelspellen</a>
+          <span class="nav-dropdown-item soon">Redactiesommen<span class="tag">binnenkort</span></span>
+        </div></div>
+      </div>
+      <span class="nav-btn soon">Lezen<span class="tag">binnenkort</span></span>
+      <a class="nav-btn" href="werkboekjes.html">Werkboekjes</a>
+    </nav>
+  </div>
+</header>
+
+<main class="main">
+  <h1 class="section-title">Klokkijken</h1>
+  <p class="section-sub">Analoge klokken aflezen of zelf tekenen. Kies het type, hoe nauwkeurig de tijden zijn en het aantal klokken.</p>
+
+  <div class="card">
+    <div class="card-label">Stap 1 &nbsp;·&nbsp; Type</div>
+    <div class="opt-row" id="typeRow">
+      <button type="button" class="opt-btn active" data-type="aflezen">Klok aflezen</button>
+      <button type="button" class="opt-btn" data-type="tekenen">Tijd tekenen</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Stap 2 &nbsp;·&nbsp; Nauwkeurigheid</div>
+    <div class="opt-row" id="nivRow">
+      <button type="button" class="opt-btn" data-niv="uur">Hele uren</button>
+      <button type="button" class="opt-btn active" data-niv="half">Halve uren</button>
+      <button type="button" class="opt-btn" data-niv="kwartier">Kwartieren</button>
+      <button type="button" class="opt-btn" data-niv="vijf">Vijf minuten</button>
+      <button type="button" class="opt-btn" data-niv="minuut">Alle minuten</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Stap 3 &nbsp;·&nbsp; Aantal klokken</div>
+    <div class="opt-row" id="aantalRow">
+      <span class="opt-label">Kies het aantal:</span>
+      <button type="button" class="opt-btn" data-aantal="6">6</button>
+      <button type="button" class="opt-btn active" data-aantal="12">12</button>
+      <button type="button" class="opt-btn" data-aantal="20">20</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label">Stap 4 &nbsp;·&nbsp; Werkblad genereren</div>
+    <button class="generate-btn" onclick="genereer()">Werkblad genereren</button>
+  </div>
+
+  <div class="output-area" id="outputArea">
+    <div class="output-title" id="outputTitle">Klokkijken</div>
+    <div class="output-instr" id="outputInstr"></div>
+    <div class="kgrid" id="kgrid"></div>
+    <div class="action-row">
+      <button class="action-btn" onclick="genereer()">Opnieuw genereren</button>
+      <button class="action-btn primary" onclick="maakPDF()">Download PDF + antwoordblad</button>
+    </div>
+  </div>
+</main>
+
+<footer>www.leerblad.nl</footer>
+
+<script>
+  function enkel(rowId) {
+    document.querySelectorAll('#' + rowId + ' .opt-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.querySelectorAll('#' + rowId + ' .opt-btn').forEach(x => x.classList.remove('active'));
+        b.classList.add('active');
+      });
+    });
+  }
+  enkel('typeRow'); enkel('nivRow'); enkel('aantalRow');
+  function actief(rowId, attr) { var e = document.querySelector('#' + rowId + ' .opt-btn.active'); return e ? e.getAttribute(attr) : null; }
+  function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  function fmt(u, m) { return u + ':' + (m < 10 ? '0' + m : m); }
+
+  function maakTijd(niv) {
+    var uur = randInt(1, 12), m;
+    if (niv === 'uur') m = 0;
+    else if (niv === 'half') m = [0, 30][randInt(0, 1)];
+    else if (niv === 'kwartier') m = [0, 15, 30, 45][randInt(0, 3)];
+    else if (niv === 'vijf') m = randInt(0, 11) * 5;
+    else m = randInt(0, 59);
+    return { uur: uur, minuut: m };
+  }
+
+  /* ── SVG-klok voor het voorbeeld ── */
+  function svgKlok(uur, minuut, wijzers, size) {
+    var c = size / 2, r = size / 2 - 3, o = '';
+    o += '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '">';
+    o += '<circle cx="' + c + '" cy="' + c + '" r="' + r + '" fill="#fff" stroke="#333" stroke-width="1.5"/>';
+    for (var h = 1; h <= 12; h++) {
+      var a = h * 30 * Math.PI / 180, nx = c + r * 0.8 * Math.sin(a), ny = c - r * 0.8 * Math.cos(a);
+      o += '<text x="' + nx.toFixed(1) + '" y="' + ny.toFixed(1) + '" font-size="' + (size * 0.13).toFixed(1) + '" text-anchor="middle" dominant-baseline="central" fill="#333" font-family="Inter,sans-serif">' + h + '</text>';
+    }
+    if (wijzers) {
+      var ma = minuut * 6 * Math.PI / 180, ha = ((uur % 12) * 30 + minuut * 0.5) * Math.PI / 180;
+      o += '<line x1="' + c + '" y1="' + c + '" x2="' + (c + r * 0.72 * Math.sin(ma)).toFixed(1) + '" y2="' + (c - r * 0.72 * Math.cos(ma)).toFixed(1) + '" stroke="#2A7FD4" stroke-width="2" stroke-linecap="round"/>';
+      o += '<line x1="' + c + '" y1="' + c + '" x2="' + (c + r * 0.5 * Math.sin(ha)).toFixed(1) + '" y2="' + (c - r * 0.5 * Math.cos(ha)).toFixed(1) + '" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/>';
+    }
+    o += '<circle cx="' + c + '" cy="' + c + '" r="2.2" fill="#1a1a1a"/></svg>';
+    return o;
+  }
+
+  var huidige = [], huidigeType = 'aflezen', huidigeTitel = '';
+
+  function genereer() {
+    var type = actief('typeRow', 'data-type'), niv = actief('nivRow', 'data-niv'), aantal = +actief('aantalRow', 'data-aantal');
+    huidige = [];
+    for (var i = 0; i < aantal; i++) huidige.push(maakTijd(niv));
+    huidigeType = type;
+    var nivNaam = { uur: 'hele uren', half: 'halve uren', kwartier: 'kwartieren', vijf: 'vijf minuten', minuut: 'alle minuten' }[niv];
+    huidigeTitel = (type === 'aflezen' ? 'Klok aflezen' : 'Tijd tekenen') + ' - ' + nivNaam;
+
+    var grid = document.getElementById('kgrid'); grid.innerHTML = '';
+    huidige.forEach(function (s) {
+      var d = document.createElement('div'); d.className = 'kcel';
+      if (type === 'aflezen') {
+        d.innerHTML = svgKlok(s.uur, s.minuut, true, 96) + '<div class="lijn"></div>';
+      } else {
+        d.innerHTML = '<div class="tijd">' + fmt(s.uur, s.minuut) + '</div>' + svgKlok(s.uur, s.minuut, false, 96);
+      }
+      grid.appendChild(d);
+    });
+    document.getElementById('outputTitle').textContent = huidigeTitel;
+    document.getElementById('outputInstr').textContent = aantal + ' klokken. ' +
+      (type === 'aflezen' ? 'Schrijf de tijd onder elke klok.' : 'Teken de wijzers bij de gegeven tijd.') + ' Met antwoordblad.';
+    document.getElementById('outputArea').classList.add('visible');
+    document.getElementById('outputArea').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  /* ── PDF-klok ── */
+  function tekenKlok(doc, cx, cy, r, uur, minuut, wijzers) {
+    doc.setDrawColor(60); doc.setLineWidth(0.5); doc.circle(cx, cy, r, 'S');
+    doc.setLineWidth(0.4); doc.setDrawColor(90);
+    for (var h = 0; h < 12; h++) {
+      var a = h * 30 * Math.PI / 180;
+      doc.line(cx + (r - 1.4) * Math.sin(a), cy - (r - 1.4) * Math.cos(a), cx + r * Math.sin(a), cy - r * Math.cos(a));
+    }
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(40);
+    for (var n = 1; n <= 12; n++) {
+      var an = n * 30 * Math.PI / 180;
+      doc.text(String(n), cx + r * 0.78 * Math.sin(an), cy - r * 0.78 * Math.cos(an), { align: 'center', baseline: 'middle' });
+    }
+    if (wijzers) {
+      var ma = minuut * 6 * Math.PI / 180, ha = ((uur % 12) * 30 + minuut * 0.5) * Math.PI / 180;
+      doc.setDrawColor(42, 127, 212); doc.setLineWidth(0.8);
+      doc.line(cx, cy, cx + r * 0.72 * Math.sin(ma), cy - r * 0.72 * Math.cos(ma));
+      doc.setDrawColor(26, 26, 26); doc.setLineWidth(1.4);
+      doc.line(cx, cy, cx + r * 0.5 * Math.sin(ha), cy - r * 0.5 * Math.cos(ha));
+    }
+    doc.setFillColor(26, 26, 26); doc.circle(cx, cy, 0.8, 'F');
+  }
+
+  function tekenPagina(doc, items, paginaNr, totaal, titel, isAntwoord, type) {
+    var pw = 210, ph = 297, ml = 14, mr = 14, mt = 12, mb = 12, bw = pw - ml - mr;
+    if (!isAntwoord) {
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(60);
+      var lY = mt + 4, liY = lY + 1, ll = 42;
+      doc.text('Naam:', ml, lY); doc.setDrawColor(160); doc.line(ml + 11, liY, ml + 11 + ll, liY);
+      var midX = pw / 2 - 15; doc.text('Begintijd:', midX, lY); doc.line(midX + 18, liY, midX + 18 + ll, liY);
+      var rX = pw - mr - 18 - ll; doc.text('Eindtijd:', rX, lY); doc.line(rX + 16, liY, rX + 16 + ll, liY);
+      doc.setDrawColor(200); doc.line(ml, mt + 8, pw - mr, mt + 8);
+    } else {
+      doc.setFontSize(11); doc.setTextColor(30); doc.setFont('helvetica', 'bold');
+      doc.text(titel + ' - Antwoordblad', ml, mt + 5);
+      doc.setDrawColor(200); doc.line(ml, mt + 8, pw - mr, mt + 8);
+    }
+    var cols = 4, colW = bw / cols, startY = mt + 13, cellH = 44, r = 15;
+    items.forEach(function (s, i) {
+      var col = i % cols, row = Math.floor(i / cols);
+      var x = ml + col * colW, yTop = startY + row * cellH, cx = x + colW / 2;
+      if (type === 'tekenen') {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(30);
+        doc.text(fmt(s.uur, s.minuut), cx, yTop + 6, { align: 'center' });
+        tekenKlok(doc, cx, yTop + 10 + r, r, s.uur, s.minuut, isAntwoord);
+      } else {
+        tekenKlok(doc, cx, yTop + 5 + r, r, s.uur, s.minuut, true);
+        var ly = yTop + 5 + 2 * r + 7;
+        if (isAntwoord) {
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(12); doc.setTextColor(42, 127, 212);
+          doc.text(fmt(s.uur, s.minuut), cx, ly, { align: 'center' }); doc.setTextColor(30);
+        } else {
+          doc.setDrawColor(170); doc.setLineWidth(0.4); doc.line(cx - 12, ly, cx + 12, ly);
+        }
+      }
+    });
+    var footerY = ph - mb - 2;
+    doc.setFillColor(50, 50, 50); doc.circle(ml + 3.5, footerY - 1.5, 3.5, 'F');
+    doc.setFontSize(7); doc.setTextColor(255); doc.setFont('helvetica', 'bold');
+    doc.text(String(paginaNr), ml + 3.5, footerY - 0.5, { align: 'center' });
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(160);
+    var midTekst = totaal > 1 ? 'Print een werkblad of oefen online op leerblad.nl  -  pagina ' + paginaNr + ' van ' + totaal : 'Print een werkblad of oefen online op leerblad.nl';
+    doc.text(midTekst, pw / 2, footerY - 0.5, { align: 'center' });
+    doc.setFontSize(9); doc.setFont('helvetica', 'bold'); doc.setTextColor(42, 127, 212);
+    doc.text('leerblad', pw - mr - doc.getTextWidth('leerblad.nl') + doc.getTextWidth('leerblad'), footerY - 0.5, { align: 'right' });
+    doc.setTextColor(45, 191, 142); doc.text('.nl', pw - mr, footerY - 0.5, { align: 'right' });
+  }
+
+  function maakPDF() {
+    if (!huidige.length) return;
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ unit: 'mm', format: 'a4' });
+    var perPagina = 4 * 5;   /* 4 kolommen x 5 rijen */
+    var paginas = [];
+    for (var i = 0; i < huidige.length; i += perPagina) paginas.push(huidige.slice(i, i + perPagina));
+    var totaal = paginas.length;
+    paginas.forEach(function (it, pi) { if (pi > 0) doc.addPage(); tekenPagina(doc, it, pi + 1, totaal, huidigeTitel, false, huidigeType); });
+    paginas.forEach(function (it, pi) { doc.addPage(); tekenPagina(doc, it, pi + 1, totaal, huidigeTitel, true, huidigeType); });
+    doc.save('klokkijken-leerblad.pdf');
+  }
+</script>
+
+<script src="../assets/role.js"></script>
+</body>
+</html>
