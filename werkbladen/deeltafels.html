@@ -500,7 +500,6 @@
     const ml = 14, mr = 14, mt = 12, mb = 12;
     const bw = pw - ml - mr;
 
-    /* ── Header: Naam / Begintijd / Eindtijd ── */
     if (!isAntwoord) {
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(9);
@@ -514,13 +513,7 @@
       doc.setDrawColor(160);
       doc.line(ml + 11, lineY, ml + 11 + lineLen, lineY);
 
-      const midX = pw / 2 - 15;
-      doc.text('Begintijd:', midX, labelY);
-      doc.line(midX + 18, lineY, midX + 18 + lineLen, lineY);
 
-      const rX = pw - mr - 18 - lineLen;
-      doc.text('Eindtijd:', rX, labelY);
-      doc.line(rX + 16, lineY, rX + 16 + lineLen, lineY);
 
       doc.setDrawColor(200);
       doc.line(ml, mt + 8, pw - mr, mt + 8);

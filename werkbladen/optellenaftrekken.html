@@ -298,8 +298,6 @@
       doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(60);
       var labelY = mt + 4, lineY = labelY + 1, lineLen = 42;
       doc.text('Naam:', ml, labelY); doc.setDrawColor(160); doc.line(ml + 11, lineY, ml + 11 + lineLen, lineY);
-      var midX = pw / 2 - 15; doc.text('Begintijd:', midX, labelY); doc.line(midX + 18, lineY, midX + 18 + lineLen, lineY);
-      var rX = pw - mr - 18 - lineLen; doc.text('Eindtijd:', rX, labelY); doc.line(rX + 16, lineY, rX + 16 + lineLen, lineY);
       doc.setDrawColor(200); doc.line(ml, mt + 8, pw - mr, mt + 8);
     } else {
       doc.setFontSize(11); doc.setTextColor(30); doc.setFont('helvetica', 'bold');
